@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.Infrastructure.Data
 {
 	public class ApplicationDbContext : DbContext
-	{ public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+	{
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 		{
 
 		}
@@ -16,9 +17,6 @@ namespace Backend.Infrastructure.Data
 		}
 
 		public DbSet<License> License { get; set; }
-		public DbSet<Plugin> Plugin { get; set; }
-		public DbSet<PluginLicenses> PluginLicenses { get; set; }
-		public DbSet<User> User { get; set; }
 
 	}
 }
