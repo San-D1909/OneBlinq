@@ -20,5 +20,8 @@ namespace Backend.Models
 
 		[ModelBinder(Name = "variants")]
 		public string Variants { get; set; }
+
+		[ModelBinder(Name = "sale_timestamp")]
+		public string Creation_Time { get; set; }
 	}
 }
