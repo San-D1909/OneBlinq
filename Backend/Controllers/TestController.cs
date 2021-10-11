@@ -35,6 +35,7 @@ namespace Backend.Controllers
 		}
 
 		[HttpGet]
+		[ApiExplorerSettings(GroupName = "v2")]
 		[Authorize(AuthenticationSchemes = "BasicAuthentication")]
 		public IActionResult Auth()
         {

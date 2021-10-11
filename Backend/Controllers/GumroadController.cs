@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Backend.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class GumroadController : ControllerBase
     {
@@ -18,7 +18,6 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        //[ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult Ping(GumroadResponse response)
         {
             User user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
