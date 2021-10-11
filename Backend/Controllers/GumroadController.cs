@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace Backend.Controllers
 {
-    [Route("[controller]/[action]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class GumroadController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -17,7 +17,7 @@ namespace Backend.Controllers
             _context = context;
         }
 
-        [HttpPost]
+        [HttpPost("Ping")]
         public IActionResult Ping(GumroadResponse response)
         {
             User user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();

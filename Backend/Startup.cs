@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Linq;
 
 namespace Backend
 {
@@ -29,6 +32,11 @@ namespace Backend
                 Configuration.GetConnectionString("DefaultConnection")));
 
 
+            services.AddApiVersioning(o =>
+            {
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.DefaultApiVersion = new ApiVersion(1, 0);
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -44,6 +52,9 @@ namespace Backend
 
                 });
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
+                c.OperationFilter<RemoveVersionFromParameter>();
+                c.DocumentFilter<ReplaceVersionWithExactValueInPath>();
+                c.DocInclusionPredicate(DocInclusionPredicates.FilterByApiVersion);
             });
 
             services.AddAuthentication("BasicAuthentication")

@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace Backend.Controllers
 {
 	[ApiController]
-	[Route("[controller]/[action]")]
-
+	[ApiVersion("1")]
+	[ApiVersion("2")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	public class TestController : ControllerBase
 	{
 		private readonly ApplicationDbContext _context;
@@ -22,7 +23,7 @@ namespace Backend.Controllers
 			_context = context;
 		}
 
-		[HttpGet]
+		[HttpGet("Index")]
 		public IActionResult Index()
 		{
 			var license = _context.License.FirstOrDefault();
@@ -34,15 +35,24 @@ namespace Backend.Controllers
 			return Ok();
 		}
 
-		[HttpGet]
-		[ApiExplorerSettings(GroupName = "v2")]
+		[HttpGet("Auth")]
+		[MapToApiVersion("1")]
 		[Authorize(AuthenticationSchemes = "BasicAuthentication")]
 		public IActionResult Auth()
         {
 			return Ok("data");
         }
 
-		[HttpPost]
+		[HttpGet("Auth")]
+		[MapToApiVersion("2")]
+		[ApiExplorerSettings(GroupName = "v2")]
+		[Authorize(AuthenticationSchemes = "BasicAuthentication")]
+		public IActionResult AuthV2()
+		{
+			return Ok("data V2");
+		}
+
+		[HttpPost("Ping")]
 		public IActionResult Ping(GumroadResponse response)
 		{
 			License license = new License()

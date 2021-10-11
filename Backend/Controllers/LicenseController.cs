@@ -4,7 +4,8 @@ using System;
 
 namespace Backend.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1")]
     [ApiController]
     public class LicenseController : ControllerBase
     {

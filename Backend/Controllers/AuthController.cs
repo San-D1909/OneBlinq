@@ -4,17 +4,18 @@ using System;
 
 namespace Backend.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("LogIn")]
         public IActionResult LogIn()
         {
             throw new NotImplementedException();
         }
 
-        [HttpGet]
+        [HttpGet("Register")]
         public IActionResult Register()
         {
             throw new NotImplementedException();
