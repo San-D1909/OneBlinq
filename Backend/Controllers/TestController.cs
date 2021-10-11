@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Backend.Infrastructure.Data;
 using System.Text.Json;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -32,6 +33,13 @@ namespace Backend.Controllers
 
 			return Ok();
 		}
+
+		[HttpGet]
+		[Authorize(AuthenticationSchemes = "BasicAuthentication")]
+		public IActionResult Auth()
+        {
+			return Ok("data");
+        }
 
 		[HttpPost]
 		public IActionResult Ping(GumroadResponse response)
