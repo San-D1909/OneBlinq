@@ -9,12 +9,16 @@
   <ItemGroup>
     <Compile Remove="Datalayer\**" />
     <Compile Remove="Logiclayer\**" />
+    <Compile Remove="Persistence\**" />
     <Content Remove="Datalayer\**" />
     <Content Remove="Logiclayer\**" />
+    <Content Remove="Persistence\**" />
     <EmbeddedResource Remove="Datalayer\**" />
     <EmbeddedResource Remove="Logiclayer\**" />
+    <EmbeddedResource Remove="Persistence\**" />
     <None Remove="Datalayer\**" />
     <None Remove="Logiclayer\**" />
+    <None Remove="Persistence\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,10 +30,6 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Persistence\" />
   </ItemGroup>
 
 </Project>
