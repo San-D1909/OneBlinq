@@ -10,38 +10,49 @@ import CardImg from 'reactstrap/lib/CardImg';
 import CardTitle from 'reactstrap/lib/CardTitle';
 import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
+import { NavMenu } from './NavMenu';
+import "./Login.css";
 
 export class Login extends Component {
   static displayName = Login.name;
 
   render () {
     return (
-        <div className="row">
-            <div className="col-6 p-1">
-                <Card>
-                    <CardBody>
-                        <CardTitle><h2 className="text-center">Login</h2></CardTitle>
-                        <Form>
-                            <Label for="username">Username</Label>
-                            <Input type="text" name="username"/>
-                            <Label for="password">Password</Label>
-                            <Input type="password" name="password"/>
-                            <div>
-                                <Button className="my-2 mr-2 ml-0">Login</Button>
-                                <Link className="m-2">No account yet? Register here!</Link>
+        <>
+            <NavMenu />
+            <div className="row">
+                <div className="col-6 p-1">
+                    <Card className="h-100">
+                        <CardBody>
+                            <CardTitle><h2 className="text-center">Login</h2></CardTitle>
+                            <div className="center col-12">
+                                <Form>
+                                    <div className="py-3">
+                                        <Label for="username">Username</Label>
+                                        <Input type="text" name="username"/>
+                                    </div>
+                                    <div className="py-3">
+                                        <Label for="password">Password</Label>
+                                        <Input type="password" name="password"/>
+                                    </div>
+                                    <div className="py-3">
+                                        <Button className="my-2 mr-2 ml-0 loginbutton">Login</Button>
+                                        <Link className="m-2 registerlink">No account yet? Register here!</Link>
+                                    </div>
+                                </Form>
                             </div>
-                        </Form>
-                    </CardBody>
-                </Card>
+                        </CardBody>
+                    </Card>
+                </div>
+                <div className="col-6 p-1">
+                    <Card className="loginformcard">
+                        <CardBody className="p-0">
+                            <CardImg src="./images/logo_big_wink.svg" />
+                        </CardBody>
+                    </Card>
+                </div>
             </div>
-            <div className="col-6 p-1">
-                <Card className="loginformcard">
-                    <CardBody className="p-0">
-                        <CardImg src="./images/logo_big_wink.svg" />
-                    </CardBody>
-                </Card>
-            </div>
-        </div>
+        </>
     //   <div>
     //     <h1>Hello, world!</h1>
     //     <p>Welcome to your new single-page application, built with:</p>

@@ -1,0 +1,16 @@
+.loginbutton {
+    background-color: #5E5BFF;
+}
+
+.registerlink {
+    color: #5E5BFF;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    left: 0;
+}
