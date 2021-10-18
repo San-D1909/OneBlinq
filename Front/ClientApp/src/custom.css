@@ -7,6 +7,14 @@ code {
   color: #E01A76;
 }
 
+body {
+  background-color: #02021E;
+}
+
+.nav-item {
+  color: white;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
