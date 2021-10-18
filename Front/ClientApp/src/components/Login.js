@@ -24,7 +24,7 @@ export class Login extends Component {
                 <div className="col-6 p-1">
                     <Card className="h-100">
                         <CardBody>
-                            <CardTitle><h2 className="text-center">Login</h2></CardTitle>
+                            <CardImg className="loginlogo" src="./images/logo_black_name_only.svg" />
                             <div className="center col-12">
                                 <Form>
                                     <div className="py-3">

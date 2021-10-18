@@ -14,3 +14,9 @@
     transform: translate(0, -50%);
     left: 0;
 }
+
+.loginlogo {
+    width: auto;
+    display: block;
+    margin: auto;
+}
