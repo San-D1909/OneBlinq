@@ -11,10 +11,10 @@ import CardTitle from 'reactstrap/lib/CardTitle';
 import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
 import { NavMenu } from './NavMenu';
-import "./Login.css";
+import "./Register.css";
 
-export class Login extends Component {
-  static displayName = Login.name;
+export class Register extends Component {
+  static displayName = Register.name;
 
   render () {
     return (
@@ -22,9 +22,16 @@ export class Login extends Component {
             <NavMenu />
             <div className="row w-100 p-0 m-0">
                 <div className="col-12 col-md-6 p-1">
+                    <Card className="registerformcard h-100">
+                        <CardBody className="p-0">
+                            <CardImg className="h-100" src="./images/logo_big_wink_no_bg.svg" />
+                        </CardBody>
+                    </Card>
+                </div>
+                <div className="col-12 col-md-6 p-1">
                     <Card className="h-100">
                         <CardBody>
-                            <CardImg className="loginlogo" src="./images/logo_black_name_only.svg" />
+                            <CardImg className="registerlogo" src="./images/logo_black_name_only.svg" />
                             <div className="col-12">
                                 <Form>
                                     <div className="py-2">
@@ -36,22 +43,19 @@ export class Login extends Component {
                                         <Input type="password" name="password"/>
                                     </div>
                                     <div className="py-2">
-                                        <Button className="my-2 mr-2 ml-0 loginbutton">Login</Button>
-                                        <Link className="m-2 registerlink" to="/register">No account yet? Register here!</Link>
+                                        <Label for="password">Confirm password</Label>
+                                        <Input type="password" name="password"/>
+                                    </div>
+                                    <div className="py-2">
+                                        <Button className="my-2 mr-2 ml-0 registerbutton">Register</Button>
+                                        <Link className="m-2 loginlink" to="/login">Already have an account? Login here!</Link>
                                     </div>
                                 </Form>
                             </div>
                         </CardBody>
                     </Card>
                 </div>
-                <div className="col-12 col-md-6 p-1">
-                    
-                    <Card className="loginformcard h-100">
-                        <CardBody className="p-0">
-                            <CardImg className="h-100" src="./images/logo_big_wink_no_bg.svg" />
-                        </CardBody>
-                    </Card>
-                </div>
+
             </div>
         </>
     //   <div>

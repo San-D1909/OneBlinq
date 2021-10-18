@@ -1,8 +1,8 @@
-.loginbutton {
+.registerbutton {
     background-color: #5E5BFF;
 }
 
-.registerlink {
+.loginlink {
     color: #5E5BFF;
 }
 
@@ -15,13 +15,13 @@
     left: 0;
 }
 
-.loginlogo {
+.registerlogo {
     width: auto;
     display: block;
     margin: auto;
 }
 
-.loginformcard {
+.registerformcard {
     border: none;
     background-color: #efa9ae;
 }
