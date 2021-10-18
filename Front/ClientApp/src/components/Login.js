@@ -20,22 +20,22 @@ export class Login extends Component {
     return (
         <>
             <NavMenu />
-            <div className="row">
-                <div className="col-6 p-1">
+            <div className="row w-100 p-0 m-0">
+                <div className="col-12 col-md-6 p-1">
                     <Card className="h-100">
                         <CardBody>
                             <CardImg className="loginlogo" src="./images/logo_black_name_only.svg" />
-                            <div className="center col-12">
+                            <div className="col-12">
                                 <Form>
-                                    <div className="py-3">
+                                    <div className="py-2">
                                         <Label for="username">Username</Label>
                                         <Input type="text" name="username"/>
                                     </div>
-                                    <div className="py-3">
+                                    <div className="py-2">
                                         <Label for="password">Password</Label>
                                         <Input type="password" name="password"/>
                                     </div>
-                                    <div className="py-3">
+                                    <div className="py-2">
                                         <Button className="my-2 mr-2 ml-0 loginbutton">Login</Button>
                                         <Link className="m-2 registerlink">No account yet? Register here!</Link>
                                     </div>
@@ -44,7 +44,7 @@ export class Login extends Component {
                         </CardBody>
                     </Card>
                 </div>
-                <div className="col-6 p-1">
+                <div className="col-12 col-md-6 p-1">
                     <Card className="loginformcard">
                         <CardBody className="p-0">
                             <CardImg src="./images/logo_big_wink.svg" />
