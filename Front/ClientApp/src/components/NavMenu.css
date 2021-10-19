@@ -4,12 +4,58 @@
   word-break: break-all;
 }
 
+.navbar-brand img {
+  width: 60%;
+  display: inherit;
+}
+.navbar {
+  margin-left: 0px;
+}
+
 html {
   font-size: 14px;
+}
+
+.btnnavgetstarted {
+  border: white 1px solid;
+  color: white !important;
+  background-color: transparent;
+  border-radius: 0.2em;
+  padding: 0.5em 1em;
+  margin: 0.5em;
+  cursor: pointer;
+  user-select: none;
+}
+
+@media (min-width: 0px) {
+
+}
+@media (min-width: 576px) {
+  .navbar {
+    margin-left: 1em;
+  }
 }
 @media (min-width: 768px) {
   html {
     font-size: 16px;
+  }
+  .navbar {
+    margin-left: 2em;
+  }
+}
+@media (min-width: 992px) {
+  .navbar {
+    margin-left: 3em;
+  }
+}
+@media (min-width: 1200px) {
+  .navbar {
+    margin-left: 4em;
+  }
+}
+@media (min-width: 1400px) {
+  .navbar {
+    margin-left: 6em;
   }
 }
 

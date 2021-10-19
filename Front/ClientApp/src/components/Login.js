@@ -20,8 +20,8 @@ export class Login extends Component {
     return (
         <>
             <NavMenu />
-            <div className="row w-100 p-0 m-0">
-                <div className="col-12 col-md-6 p-1">
+            <div className="row p-0 mx-auto logincontainer">
+                <div className="col-12 col-lg-6 p-1">
                     <Card className="h-100">
                         <CardBody>
                             <CardImg className="loginlogo" src="./images/logo_black_name_only.svg" />
@@ -44,7 +44,7 @@ export class Login extends Component {
                         </CardBody>
                     </Card>
                 </div>
-                <div className="col-12 col-md-6 p-1">
+                <div className="col-12 col-lg-6 p-1">
                     
                     <Card className="loginformcard h-100">
                         <CardBody className="p-0">

@@ -25,3 +25,40 @@
     border: none;
     background-color: #efa9ae;
 }
+
+@media (min-width: 0px) {
+    .registercontainer {
+        margin-top: 0;
+        width: 100vw;
+    }
+}
+@media (min-width: 576px) {
+    .registercontainer {
+        margin-top: 0;
+        width: 90vw;
+    }
+}
+@media (min-width: 768px) {
+    .registercontainer {
+        margin-top: 0;
+        width: 85vw;
+    }
+}
+@media (min-width: 992px) {
+    .registercontainer {
+        margin-top: 18em;
+        width: 80vw;
+    }
+}
+@media (min-width: 1200px) {
+    .registercontainer {
+        margin-top: 10em;
+        width: 70vw;
+    }
+}
+@media (min-width: 1400px) {
+    .registercontainer {
+        margin-top: 10em;
+        width: 60vw;
+    }
+}
