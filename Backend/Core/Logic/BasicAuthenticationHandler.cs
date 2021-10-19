@@ -10,7 +10,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
-namespace Backend.Core.Helpers
+namespace Backend.Core.Logic
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
