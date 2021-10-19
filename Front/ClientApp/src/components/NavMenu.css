@@ -27,6 +27,14 @@ html {
   user-select: none;
 }
 
+.navbar-toggler .navbar-toggler-icon {
+  color: white;
+}
+
+.nav-item.dropdown .dropdown-toggle{
+  color: white;
+}
+
 @media (min-width: 0px) {
 
 }

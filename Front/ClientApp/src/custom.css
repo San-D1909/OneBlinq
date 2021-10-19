@@ -20,3 +20,44 @@ body {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.bg-oneblinq-roze {
+  background-color: #efa9ae;
+}
+
+.border-color-oneblinq-roze {
+  border-color: #efa9ae;
+}
+
+.btn-oneblinq-roze {
+  background-color: #efa9ae;
+  border-color: #efa9ae;
+}
+
+.btn-oneblinq-outline-roze {
+  color: #efa9ae;
+  background-color: transparent;
+  border-color: #efa9ae;
+}
+
+.btn-oneblinq-outline-roze:hover {
+  background-color: #efa9ae;
+  color: black;
+}
+
+.btn-oneblinq-roze:hover {
+  box-shadow: 0 0 0 0.2rem rgb(239 169 174 / 50%);
+  background-color: #efa9ae;
+  border-color: #efa9ae;
+}
+
+.btn-oneblinq-roze:active {
+  background-color: #efa9ae !important;
+  border-color: #efa9ae !important;
+}
+
+.btn-oneblinq-roze:focus {
+  box-shadow: 0 0 0 0.2rem rgb(239 169 174 / 50%);
+  background-color: #efa9ae;
+  border-color: #efa9ae;
+}
