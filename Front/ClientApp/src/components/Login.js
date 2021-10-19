@@ -25,6 +25,7 @@ export class Login extends Component {
         }
         this.handleLogin = this.handleLogin.bind(this)
     }
+
     handleLogin = event => {
         event.preventDefault();
         const mail = this.state.mail
@@ -40,23 +41,23 @@ export class Login extends Component {
     return (
         <>
             <NavMenu />
-            <div className="row w-100 p-0 m-0">
-                <div className="col-12 col-md-6 p-1">
+            <div className="row p-0 mx-auto logingcontainer">
+                <div className="col-12 col-lg-6 p-1">
                     <Card className="h-100">
                         <CardBody>
-                            <CardImg className="loginlogo" src="./images/logo_black_name_only.svg" />
+                            <h1 className="text-center">Register</h1>
                             <div className="col-12">
                                 <Form>
                                     <div className="py-2">
-                                        <Label for="username">Username</Label>
-                                        <Input type="text" name="username"/>
+                                        <Label for="email">Email</Label>
+                                        <Input type="text" onChange={(e) => this.setState({mail: e.target.value})} name="email"/>
                                     </div>
                                     <div className="py-2">
                                         <Label for="password">Password</Label>
-                                        <Input type="password" name="password"/>
+                                        <Input type="password" onChange={(e) => this.setState({password: e.target.value})} name="password"/>
                                     </div>
                                     <div className="py-2">
-                                        <Button className="my-2 mr-2 ml-0 loginbutton">Login</Button>
+                                        <Button className="my-2 mr-2 ml-0 loginbutton" onClick={(e) => this.handleLogin(e)}>Login</Button>
                                         <Link className="m-2 registerlink" to="/register">No account yet? Register here!</Link>
                                     </div>
                                 </Form>
@@ -64,9 +65,9 @@ export class Login extends Component {
                         </CardBody>
                     </Card>
                 </div>
-                <div className="col-12 col-md-6 p-1">
+                <div className="col-12 col-lg-6 p-1">
                     
-                    <Card className="loginformcard h-100">
+                    <Card className="loginformcard h-100 order-last">
                         <CardBody className="p-0">
                             <CardImg className="h-100" src="./images/logo_big_wink_no_bg.svg" />
                         </CardBody>
@@ -74,22 +75,6 @@ export class Login extends Component {
                 </div>
             </div>
         </>
-    //   <div>
-    //     <h1>Hello, world!</h1>
-    //     <p>Welcome to your new single-page application, built with:</p>
-    //     <ul>
-    //       <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-    //       <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-    //       <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-    //     </ul>
-    //     <p>To help you get started, we have also set up:</p>
-    //     <ul>
-    //       <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-    //       <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-    //       <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-    //     </ul>
-    //     <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-    //   </div>
     );
   }
 }
