@@ -17,8 +17,6 @@ function PluginList(props) {
     )
 }
 
-
-
 export class Plugins extends Component {
     static displayName = Plugins.name;
     constructor(props) {
