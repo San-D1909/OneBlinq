@@ -41,11 +41,11 @@ export class Login extends Component {
     return (
         <>
             <NavMenu />
-            <div className="row p-0 mx-auto logingcontainer">
+            <div className="row p-0 mx-auto logincontainer">
                 <div className="col-12 col-lg-6 p-1">
                     <Card className="h-100">
                         <CardBody>
-                            <h1 className="text-center">Register</h1>
+                            <h1 className="text-center">Login</h1>
                             <div className="col-12">
                                 <Form>
                                     <div className="py-2">
