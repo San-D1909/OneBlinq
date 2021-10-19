@@ -22,7 +22,7 @@ export class Register extends Component {
             <NavMenu />
             <div className="row w-100 p-0 m-0">
                 <div className="col-12 col-md-6 p-1">
-                    <Card className="registerformcard h-100">
+                    <Card className="registerformcard h-100 col order-last">
                         <CardBody className="p-0">
                             <CardImg className="h-100" src="./images/logo_big_wink_no_bg.svg" />
                         </CardBody>
@@ -31,12 +31,12 @@ export class Register extends Component {
                 <div className="col-12 col-md-6 p-1">
                     <Card className="h-100">
                         <CardBody>
-                            <CardImg className="registerlogo" src="./images/logo_black_name_only.svg" />
+                            <h1 className="text-center">Register</h1>
                             <div className="col-12">
                                 <Form>
                                     <div className="py-2">
-                                        <Label for="username">Username</Label>
-                                        <Input type="text" name="username"/>
+                                        <Label for="email">Email</Label>
+                                        <Input type="text" name="email"/>
                                     </div>
                                     <div className="py-2">
                                         <Label for="password">Password</Label>
