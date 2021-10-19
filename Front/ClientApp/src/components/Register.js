@@ -22,7 +22,7 @@ export class Register extends Component {
             <NavMenu />
             <div className="row p-0 mx-auto registercontainer">
                 <div className="col-12 col-lg-6 p-1">
-                    <Card className="registerformcard h-100">
+                    <Card className="registerformcard h-100 order-last">
                         <CardBody className="p-0">
                             <CardImg className="h-100" src="./images/logo_big_wink_no_bg.svg" />
                         </CardBody>
