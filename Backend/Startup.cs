@@ -26,11 +26,13 @@ namespace Backend
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseMySQL(
                 Configuration.GetConnectionString("DefaultConnection")));
-
 
             services.AddApiVersioning(o =>
             {
@@ -76,6 +78,9 @@ namespace Backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(builder => builder.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
+
 
             app.UseAuthentication();
             app.UseAuthorization();
