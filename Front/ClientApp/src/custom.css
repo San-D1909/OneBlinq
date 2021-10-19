@@ -61,3 +61,23 @@ body {
   background-color: #efa9ae;
   border-color: #efa9ae;
 }
+
+/**
+    TODO: replace theming
+    oxford blue: #02021e
+    pastel pink: #efa9ae
+    slate blue: #6e44ff
+    iceberg blue: #deeff4
+    pure white: #ffffff
+    magnolia blue: #edeffc
+*/
+
+.btn.btn-outline-pastel {
+    border-color: #efa9ae;
+    color: #efa9ae;
+}
+.btn.btn-outline-pastel:hover {
+    border-color: #efa9ae;
+    background-color: #efa9ae;
+    color: #ffffff;
+}
