@@ -6,6 +6,7 @@ import { Plugins } from './components/Plugins';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
 import { AdminDash } from './components/AdminDash';
+import lb4provider from 'react-admin-lb4';
 
 import './custom.css'
 
