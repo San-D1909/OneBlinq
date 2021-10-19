@@ -24,12 +24,12 @@ export class Login extends Component {
                 <div className="col-12 col-lg-6 p-1">
                     <Card className="h-100">
                         <CardBody>
-                            <CardImg className="loginlogo" src="./images/logo_black_name_only.svg" />
+                            <h1 className="text-center">Login</h1>
                             <div className="col-12">
                                 <Form>
                                     <div className="py-2">
-                                        <Label for="username">Username</Label>
-                                        <Input type="text" name="username"/>
+                                        <Label for="email">Email</Label>
+                                        <Input type="text" name="email"/>
                                     </div>
                                     <div className="py-2">
                                         <Label for="password">Password</Label>
