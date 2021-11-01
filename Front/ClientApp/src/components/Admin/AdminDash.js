@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
-import { NavMenu } from './NavMenu';
+import AdminNavMenu from './AdminNavMenu';
+//import { AdminNavMenu } from './AdminNavMenu';
 //import { List, Datagrid, Textfield, Filter, SearchInput } from 'react-admin';
 //import { Admin, resource } from 'react-admin';
 //import lb4provider from 'react-admin-lb4';
@@ -58,7 +59,7 @@ export class AdminDash extends Component {
     render() {
         return (
             <>
-                <NavMenu />
+                <AdminNavMenu />
             </>
             );
     }
