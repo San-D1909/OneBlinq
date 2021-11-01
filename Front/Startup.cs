@@ -38,9 +38,10 @@ namespace Front
 				app.UseExceptionHandler("/Error");
 			}
 
+			
+
 			app.UseStaticFiles();
 			app.UseSpaStaticFiles();
-
 
 			app.UseSpa(spa =>
 			{
