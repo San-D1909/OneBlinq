@@ -73,9 +73,7 @@ export class Plugins extends Component {
                 <div className="container">
                     <PluginList plugins={this.state.plugins} />
                     <div className="row justify-content-center">
-                        <div className="col-2">
-                            <button onClick={this.addPlugin} className="btn btn-outline-pastel"><span>show more</span></button>
-                        </div>
+                        <button onClick={this.addPlugin} className="btn btn-outline-pastel w-25 m-2"><span>show more</span></button>
                     </div>
                 </div>
                 <Footer />

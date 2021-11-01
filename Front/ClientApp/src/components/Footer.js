@@ -6,7 +6,7 @@ export class Footer extends Component {
 
     render() {
         return (
-            <footer>
+            <footer className="container">
                 <h1 className="pt-5 pb-5">
                     Drop us a line.<br />
                     We know you want to.
