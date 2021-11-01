@@ -1,2 +1,4 @@
 .vs
 *.cache
+/Front/.vscode
+node_modules

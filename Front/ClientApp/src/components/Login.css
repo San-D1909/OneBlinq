@@ -2,7 +2,7 @@
     background-color: #5E5BFF;
 }
 
-.registerlink {
+.loginlink {
     color: #5E5BFF;
 }
 
@@ -24,4 +24,43 @@
 .loginformcard {
     border: none;
     background-color: #efa9ae;
+}
+
+
+
+@media (min-width: 0px) {
+    .logincontainer {
+        margin-top: 0;
+        width: 100vw;
+    }
+}
+@media (min-width: 576px) {
+    .logincontainer {
+        margin-top: 0;
+        width: 90vw;
+    }
+}
+@media (min-width: 768px) {
+    .logincontainer {
+        margin-top: 0;
+        width: 85vw;
+    }
+}
+@media (min-width: 992px) {
+    .logincontainer {
+        margin-top: 10em;
+        width: 80vw;
+    }
+}
+@media (min-width: 1200px) {
+    .logincontainer {
+        margin-top: 10em;
+        width: 70vw;
+    }
+}
+@media (min-width: 1400px) {
+    .logincontainer {
+        margin-top: 10em;
+        width: 60vw;
+    }
 }

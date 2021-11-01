@@ -1,0 +1,76 @@
+.homeheader {
+    color: white;
+    text-align: center;
+    margin-top: 2em;
+}
+
+.btnwatchvideo {
+    border: white 1px solid;
+    color: white !important;
+    border-radius: 0.2em;
+    padding: 0.5em 1em;
+    margin: 0.5em;
+    cursor: pointer;
+    user-select: none;
+}
+
+.btnwatchvideo:hover {
+    color: black !important;
+    background-color: white;
+}
+
+.btngetstarted {
+    background-color: #efa9ae;
+    border: efa9ae 1px solid;
+    color: black !important;
+    border-radius: 0.2em;
+    padding: 0.5em 1em;
+    margin: 0.5em;
+    cursor: pointer;
+    user-select: none;
+}
+
+.btngetstarted:hover {
+    color: white !important;
+}
+
+.btnholder {
+    text-align: center;
+    margin: 2em;
+}
+
+@media (min-width: 0px) {
+    .homeheader {
+        font-size: 2em;
+    }
+}
+@media (min-width: 576px) {
+    .homeheader {
+        font-size: 3em;
+    }
+}
+@media (min-width: 768px) {
+    .homeheader {
+        font-size: 4em;
+    }
+}
+@media (min-width: 992px) {
+    .homeheader {
+        font-size: 5em;
+    }
+}
+@media (min-width: 1200px) {
+    .homeheader {
+        font-size: 6em;
+    }
+}
+@media (min-width: 1400px) {
+    .homeheader {
+        font-size: 7em;
+    }
+}
+
+.homeheader .headerpurple {
+    color: #efa9ae;
+    display: inline-block;
+}
