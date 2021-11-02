@@ -11,14 +11,26 @@ export const newOptions: ThemeOptions = {
     palette: {
         type: 'dark',
         primary: {
-            main: '#b53f41',
+            main: '#6e44ff',
+            contrastText: '#deeff4',
+            light: '#efa9ae',
+            dark: '#efa9ae',
         },
         secondary: {
-            main: '#f50057',
+            main: '#efa9ae',
         },
         background: {
-            default: '#000000',
-            paper: '#2f2f2f',
+            default: '#02021e',
+            paper: '#1b1d33',
+        },
+        text: {
+            primary: '#edeffc',
+            secondary: '#d6d8e5',
+            disabled: '#c1c3d0',
+            hint: '#9ea0ac',
+        },
+        info: {
+            main: '#efa9ae',
         },
     },
 };

@@ -159,16 +159,16 @@ export class Plugins extends Component {
         return (
             <>
                 <NavMenu />
-                <h1 className="row justify-content-center" style={{ color: '#edeffc' }} >Plugin Bundles</h1>
+                <h1 className="row m-0 justify-content-center" style={{ color: '#edeffc' }} >Plugin Bundles</h1>
                 <hr style={this.hrStyling} className="container" />
                 <div className="container">
                     <PluginBundleList bundles={this.state.bundles} />
                 </div>
-                <h1 className="row justify-content-center" style={{ color: '#edeffc' }} >Plugins</h1>
+                <h1 className="row m-0 justify-content-center" style={{ color: '#edeffc' }} >Plugins</h1>
                 <hr style={this.hrStyling} className="container"  />
                 <div className="container">
                     <PluginList plugins={this.state.plugins} />
-                    <div className="row justify-content-center">
+                    <div className="row m-0 justify-content-center">
                         <button style={btnStyle} onClick={this.addPlugin} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover} className="btn btn-outline-pastel w-25 m-2"><span>show more</span></button>
                     </div>
                 </div>
