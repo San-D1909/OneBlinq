@@ -18,6 +18,11 @@ export class NavMenu extends Component {
         };
     }
 
+    navbarStyle = {
+        paddingLeft: "1rem",
+        paddingRight: "1rem"
+    }
+
     toggleNavbar() {
         this.setState({
             collapsed: !this.state.collapsed
@@ -26,9 +31,9 @@ export class NavMenu extends Component {
 
   render () {
     return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3" dark>
-            <NavbarBrand tag={Link} to="/" className="p-3"><img src="./images/logo_white_name_only.svg" /></NavbarBrand>
+        <header>
+            <Navbar style={this.navbarStyle} className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3" dark>
+                <NavbarBrand style={this.navbarBrandStyle} tag={Link} to="/" className="p-3"><img src="./images/logo_white_name_only.svg" /></NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2"/>
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">

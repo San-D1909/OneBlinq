@@ -15,6 +15,9 @@ export class Home extends Component {
         bottom: 0,
         backgroundPosition: 'bottom',
     }
+    buttonFontSize = {
+        fontSize: '1.5rem'
+    }
   render () {
     return (
         <>
@@ -23,8 +26,8 @@ export class Home extends Component {
                 <div>
                     <h1 className="homeheader">Design just got a hell <br/> of a lot <div className="headerpurple">faster</div></h1>
                     <div className="btnholder">
-                    <Button className="m-1 btn-oneblinq-roze" href="/login">Get started for free</Button>
-                    <Button className="m-1" variant="outline-light" href="">Watch video</Button>
+                        <Button style={this.buttonFontSize} className="m-1 px-4 py-3 btn-oneblinq-roze" href="/plugins">Get started for free</Button>
+                        <Button style={this.buttonFontSize} className="m-1 px-4 py-3" variant="outline-light" href="">Watch video</Button>
                     {/* <a className="btngetstarted" href="/register">Get started for free</a>
                     <a className="btnwatchvideo" href="/">Watch video</a> */}
                     </div>
