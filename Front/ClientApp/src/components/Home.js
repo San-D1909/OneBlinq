@@ -20,8 +20,8 @@ export class Home extends Component {
   render () {
     return (
         <>
-            <NavMenu />
             <div style={this.backgroundImage} className="bg-homepage-image">
+                <NavMenu />
                 <div>
                     <h1 className="homeheader">Design just got a hell <br/> of a lot <div className="headerpurple">faster</div></h1>
                     <div className="btnholder">
