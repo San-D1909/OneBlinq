@@ -6,19 +6,22 @@ export class PluginCard extends Component {
 
     render() {
         const { id, title } = this.props.data
+        const textDecoNone = {
+            textDecoration: "none"
+        }
         return (
-            <div className="card plugin">
+            <a style={textDecoNone} className="card plugin" href={id}>
                 <div className="card-body">
                     <img src="https://via.placeholder.com/344x216.png" alt={title} />
                 </div>
                 <div className="card-footer">
-                    <a href={id}>{title}</a>
+                    <span>{title}</span>
                     <span className="float-end">
                         <span><i className="far fa-sm fa-comment"></i> 123</span>
                         <span className="pl-2"><i className="fas fa-sm fa-arrow-down"></i> $2,99</span>
                     </span>
                 </div>
-            </div>
+            </a>
         );
     }
 }

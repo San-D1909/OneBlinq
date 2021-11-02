@@ -18,20 +18,30 @@ function PluginList(props) {
 }
 
 function BundleCard(props) {
+    const bundleCardTitleStyle = {
+        backgroundColor: "#deeff4",
+        color: "#02021E"
+    }
+    const textStyle = {
+        color: "inherit"
+    }
+    const textDecoNone = {
+        textDecoration: "none"
+    }
     const { bundle } = props
     return (
-         <div className = "card plugin" >
+        <a style={textDecoNone} className="card plugin" href={bundle.id}>
             <div className="card-body">
                 <img src="https://via.placeholder.com/344x216.png" alt={bundle.title} />
             </div>
-            <div className="card-footer">
-                <a href={bundle.id}>{bundle.title}</a>
-                <span className="float-end">
-                    <span><i className="far fa-sm fa-comment"></i> 123</span>
-                    <span className="pl-2"><i className="fas fa-sm fa-arrow-down"></i> 1.7k</span>
+            <div style={bundleCardTitleStyle} className="card-footer">
+                <span style={textStyle}>{bundle.title}</span>
+                <span style={textStyle} className="float-end">
+                    <span style={textStyle}><i className="far fa-sm fa-comment"></i> 123</span>
+                    <span style={textStyle} className="pl-2"><i className="fas fa-sm fa-arrow-down"></i> 1.7k</span>
                 </span>
             </div>
-        </div >
+        </a >
      )
 }
 
@@ -56,7 +66,8 @@ export class Plugins extends Component {
         super(props)
         this.state = {
             plugins: [],
-            bundles: []
+            bundles: [],
+            hover: false
         }
         this.addPlugin = this.addPlugin.bind(this)
         this.fetchPlugins = this.fetchPlugins.bind(this)
@@ -64,7 +75,7 @@ export class Plugins extends Component {
     }
 
     componentDidMount() {
-        this.setState({ plugins: this.fetchPlugins(), bundles: this.fetchBundles() })
+        this.setState({ plugins: this.fetchPlugins(), bundles: this.fetchBundles(), hover: false})
     }
 
     fetchBundles() {
@@ -114,20 +125,51 @@ export class Plugins extends Component {
         this.setState({ plugins: this.state.plugins.concat(p).concat(p).concat(p)})
     }
 
+    hrStyling = {
+        height: "2px",
+        opacity: 0.80,
+        color: "#edeffc"
+    }
+
+
+    showMoreHoverStyling = {
+
+    }
+
+    toggleHover = () => {
+        this.setState({ hover: !this.state.hover })
+    }
+
 
     render() {
+        var btnStyle;
+        if (this.state.hover) {
+            btnStyle = {
+                color: "#edeffc",
+                borderColor: "#edeffc",
+                backgroundColor: "#efa9ae"
+            }
+        } else {
+            btnStyle = {
+                color: "#edeffc",
+                borderColor: "#edeffc",
+                backgroundColor: "transparent"
+            }
+        }
         return (
             <>
                 <NavMenu />
                 <h1 className="row justify-content-center" style={{ color: '#edeffc' }} >Plugin Bundles</h1>
+                <hr style={this.hrStyling} className="container" />
                 <div className="container">
                     <PluginBundleList bundles={this.state.bundles} />
                 </div>
                 <h1 className="row justify-content-center" style={{ color: '#edeffc' }} >Plugins</h1>
+                <hr style={this.hrStyling} className="container"  />
                 <div className="container">
                     <PluginList plugins={this.state.plugins} />
                     <div className="row justify-content-center">
-                        <button onClick={this.addPlugin} className="btn btn-outline-pastel w-25 m-2"><span>show more</span></button>
+                        <button style={btnStyle} onClick={this.addPlugin} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover} className="btn btn-outline-pastel w-25 m-2"><span>show more</span></button>
                     </div>
                 </div>
                 <Footer />
