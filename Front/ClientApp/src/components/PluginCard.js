@@ -15,7 +15,7 @@ export class PluginCard extends Component {
                     <a href={id}>{title}</a>
                     <span className="float-end">
                         <span><i className="far fa-sm fa-comment"></i> 123</span>
-                        <span className="pl-2"><i className="fas fa-sm fa-arrow-down"></i> 1.7k</span>
+                        <span className="pl-2"><i className="fas fa-sm fa-arrow-down"></i> $2,99</span>
                     </span>
                 </div>
             </div>

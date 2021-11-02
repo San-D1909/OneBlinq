@@ -19,7 +19,7 @@ export class Home extends Component {
         fontSize: '1.5rem'
     }
     headerTextStyle = {
-        marginTop: "25vh"
+        marginTop: "15vh"
     }
   render () {
     return (

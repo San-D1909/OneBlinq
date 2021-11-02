@@ -119,6 +119,8 @@ export class Plugins extends Component {
         return (
             <>
                 <NavMenu />
+                <h1 className="row justify-content-center" style={{ color: '#edeffc' }} >Plugin Bundles</h1>
+                <h1 className="row justify-content-center" style={{ color: '#edeffc' }} >Plugins</h1>
                 <div className="container">
                     <PluginBundleList bundles={this.state.bundles} />
                     <PluginList plugins={this.state.plugins} />
