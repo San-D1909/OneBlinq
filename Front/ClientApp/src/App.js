@@ -7,6 +7,7 @@ import { Login } from './components/Login';
 import { Register } from './components/Register';
 
 import './custom.css'
+import AdminDash from './components/Admin/AdminDash';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -18,6 +19,7 @@ export default class App extends Component {
                 <Route exact path='/plugins' component={Plugins} />
                 <Route exact path='/login' component={Login} />
                 <Route exact path='/register' component={Register} />
+                <Route exact path='/admin/dashboard' component={AdminDash} />
             </Layout>
         );
     }
