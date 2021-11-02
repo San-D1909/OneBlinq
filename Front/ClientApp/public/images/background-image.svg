@@ -1,0 +1,14 @@
+<svg width="1920" height="1024" viewBox="0 0 1920 1024" preserveAspectRatio="xMidYMin meet" xmlns="http://www.w3.org/2000/svg">
+	<g id="svg_left">
+		<ellipse ry="72" rx="72" id="svg_13" cy="408.7154" cx="72" stroke="#000" fill="#6e44ff"/>
+		<rect transform="rotate(64, 134.999, 707.287)" id="svg_14" height="70.45" width="468" y="672.05" x="-99.15" stroke="#000" fill="#efa9ae"/>
+	</g>
+
+	<g id="svg_right">
+		<ellipse ry="128" rx="129" id="svg_3" cy="805.15" cx="1745.715" stroke="#000" fill="#6e44ff"/>
+		<path transform="rotate(-36, 1829, 608)" id="svg_11" d="m1765.7157,543.71556l127.99994,0l0,128l-127.99994,0l0,-128z" stroke="#000" fill="#edeffc"/>
+	</g>
+	<svg preserveAspectRatio="none">
+		<rect id="svg_b" height="70" width="1780.00226" y="933.71603" x="80.28583" stroke="#000" fill="#edeffc"/>
+	</svg>
+</svg>
