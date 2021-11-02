@@ -5,9 +5,9 @@ import { Home } from './components/Home';
 import { Plugins } from './components/Plugins';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
-
 import './custom.css'
 import AdminDash from './components/Admin/AdminDash';
+import UserDashboard from './components/UserDashboard';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -20,6 +20,7 @@ export default class App extends Component {
                 <Route exact path='/login' component={Login} />
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/admin/dashboard' component={AdminDash} />
+                <Route exact path='/user/dashboard' component={UserDashboard} />
             </Layout>
         );
     }

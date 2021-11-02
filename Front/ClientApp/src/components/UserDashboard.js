@@ -1,5 +1,5 @@
 ﻿import * as React from "react";
-import { Admin, Resource, ListGuesser,EditGuesser} from 'react-admin';
+import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeOptions } from '@material-ui/core';
@@ -45,7 +45,7 @@ const theme = createMuiTheme({
     },
 });
 
-const AdminDash = () => (
+const UserDashboard = () => (
     <Admin theme={newOptions} dataProvider={dataProvider}>
         <Resource name="users"
             list={ListGuesser}
@@ -54,4 +54,4 @@ const AdminDash = () => (
     </Admin>
 );
 
-export default AdminDash;
+export default UserDashboard;
