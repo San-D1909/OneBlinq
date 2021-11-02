@@ -18,12 +18,15 @@ export class Home extends Component {
     buttonFontSize = {
         fontSize: '1.5rem'
     }
+    headerTextStyle = {
+        marginTop: "25vh"
+    }
   render () {
     return (
         <>
             <div style={this.backgroundImage} className="bg-homepage-image">
                 <NavMenu />
-                <div>
+                <div style={this.headerTextStyle}>
                     <h1 className="homeheader">Design just got a hell <br/> of a lot <div className="headerpurple">faster</div></h1>
                     <div className="btnholder">
                         <Button style={this.buttonFontSize} className="m-1 px-4 py-3 btn-oneblinq-roze" href="/plugins">Get started for free</Button>
