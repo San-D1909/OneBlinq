@@ -120,9 +120,11 @@ export class Plugins extends Component {
             <>
                 <NavMenu />
                 <h1 className="row justify-content-center" style={{ color: '#edeffc' }} >Plugin Bundles</h1>
-                <h1 className="row justify-content-center" style={{ color: '#edeffc' }} >Plugins</h1>
                 <div className="container">
                     <PluginBundleList bundles={this.state.bundles} />
+                </div>
+                <h1 className="row justify-content-center" style={{ color: '#edeffc' }} >Plugins</h1>
+                <div className="container">
                     <PluginList plugins={this.state.plugins} />
                     <div className="row justify-content-center">
                         <button onClick={this.addPlugin} className="btn btn-outline-pastel w-25 m-2"><span>show more</span></button>
