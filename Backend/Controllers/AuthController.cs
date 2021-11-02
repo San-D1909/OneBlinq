@@ -65,9 +65,36 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Register")]
-        public IActionResult Register()
+        public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
         {
-           return Ok();
+            var findUser = await _context.User
+                    .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
+                    .FirstOrDefaultAsync();
+
+            if(findUser != null)
+			{
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
+            if(credentials.Password == credentials.PasswordConfirmation)
+			{
+                var newUser = await _context.User
+                    .AddAsync(new User { 
+                        Email = credentials.Mail, 
+                        FullName = credentials.FullName,
+                        Password = credentials.Password,
+                        UserName = credentials.UserName      
+                    });
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+			else
+			{
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+              
         }
     }
 }
