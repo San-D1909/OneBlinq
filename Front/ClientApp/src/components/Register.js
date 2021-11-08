@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Input } from 'reactstrap';
 import Button from 'reactstrap/lib/Button';
-import ButtonGroup from 'reactstrap/lib/ButtonGroup';
 import Card from 'reactstrap/lib/Card';
 import CardBody from 'reactstrap/lib/CardBody';
-import CardFooter from 'reactstrap/lib/CardFooter';
 import CardImg from 'reactstrap/lib/CardImg';
-import CardTitle from 'reactstrap/lib/CardTitle';
 import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
 import { NavMenu } from './NavMenu';
@@ -20,7 +17,7 @@ export class Register extends Component {
     return (
         <>
             <NavMenu />
-            <div className="row p-0 mx-auto registercontainer d-sm-none d-flex">
+            <div className="row p-0 mx-auto registercontainer d-lg-none d-flex">
                 <div className="col-12 col-lg-6 p-1">
                     <Card className="h-100">
                         <CardBody>
@@ -56,7 +53,7 @@ export class Register extends Component {
                     </Card>
                 </div>
             </div>
-            <div className="row p-0 mx-auto registercontainer d-none d-sm-flex">
+            <div className="row p-0 mx-auto registercontainer d-none d-lg-flex">
                 <div className="col-12 col-lg-6 p-1">
                     <Card className="registerformcard h-100 order-last">
                         <CardBody className="p-0">
