@@ -4,12 +4,16 @@ import CardBody from 'reactstrap/lib/CardBody';
 import CardImg from 'reactstrap/lib/CardImg';
 import { NavMenu } from '../components/NavMenu';
 
+import { useParams } from "react-router-dom";
+
 export default function PluginInfo() {
+    const params = useParams()
+    console.log(params)
     return (
         <>
             <NavMenu />
             
-            <h1>test</h1>
+            <h1>test {params.pluginId }</h1>
 
             <div className="row p-0 mx-auto logincontainer">
                 <div className="col-12 col-lg-6 p-1">

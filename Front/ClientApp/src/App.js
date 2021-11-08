@@ -18,9 +18,7 @@ export default class App extends Component {
             <Layout>
                 <Route exact path='/' component={Home} />
                 <Route exact path='/plugins' component={Plugins} />
-                <Route path="/plugins" element={PluginInfo}>
-                    <Route path=":pluginId" element={PluginInfo} />
-                </Route>
+                <Route path="/plugins/:pluginId" component={PluginInfo} />
                 <Route exact path='/login' component={Login} />
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/admin/dashboard' component={AdminDash} />
