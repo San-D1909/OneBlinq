@@ -3,6 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Plugins } from './components/Plugins';
+import { PluginInfo } from './pages/PluginInfo'
 import { Login } from './components/Login';
 import { Register } from './components/Register';
 import './custom.css'
@@ -17,6 +18,9 @@ export default class App extends Component {
             <Layout>
                 <Route exact path='/' component={Home} />
                 <Route exact path='/plugins' component={Plugins} />
+                <Route path="/plugins" element={}>
+                    <Route path=":pluginId" element={PluginInfo} />
+                </Route>
                 <Route exact path='/login' component={Login} />
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/admin/dashboard' component={AdminDash} />

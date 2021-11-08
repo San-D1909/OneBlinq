@@ -99,7 +99,7 @@ export class Plugins extends Component {
             id: "1",
             title: "forms"
         }, {
-            id: "1",
+            id: "2",
             title: "forms"
         }, {
             id: "1",
