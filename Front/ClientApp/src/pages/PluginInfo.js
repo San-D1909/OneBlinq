@@ -1,4 +1,8 @@
 ﻿import React from 'react';
+import Card from 'reactstrap/lib/Card';
+import CardBody from 'reactstrap/lib/CardBody';
+import CardImg from 'reactstrap/lib/CardImg';
+import { NavMenu } from '../components/NavMenu';
 
 export default function PluginInfo() {
     return (
