@@ -100,7 +100,7 @@ export class Plugins extends Component {
             title: "forms"
         }, {
             id: "2",
-            title: "forms"
+            title: "squares"
         }, {
             id: "1",
             title: "forms"
@@ -169,7 +169,7 @@ export class Plugins extends Component {
                 <div className="container">
                     <PluginList plugins={this.state.plugins} />
                     <div className="row m-0 justify-content-center">
-                        <button style={btnStyle} onClick={this.addPlugin} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover} className="btn btn-outline-pastel w-25 m-2"><span>show more</span></button>
+                        <button style={btnStyle} onClick={this.addPlugin} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover} className="btn btn-outline-pastel w-25 m-2"><span>Show More</span></button>
                     </div>
                 </div>
                 <Footer />

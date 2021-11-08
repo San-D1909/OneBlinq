@@ -17,7 +17,7 @@ export class Home extends Component {
     }
     buttonFontSize = {
         fontSize: '1.5rem'
-    }
+    } 
     headerTextStyle = {
         marginTop: "15vh"
     }
