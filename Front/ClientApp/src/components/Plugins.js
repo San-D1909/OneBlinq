@@ -30,7 +30,7 @@ function BundleCard(props) {
     }
     const { bundle } = props
     return (
-        <a style={textDecoNone} className="card plugin" href={bundle.id}>
+        <a style={textDecoNone} className="card plugin" href={ "/plugins/"+bundle.id }>
             <div className="card-body">
                 <img src="https://via.placeholder.com/344x216.png" alt={bundle.title} />
             </div>
