@@ -39,9 +39,11 @@ export const newOptions: ThemeOptions = {
 /*const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');*/
 
 const dataProvider = fakeDataProvider({
-    users: [
-        { id: 0, userid: 1, licensename: 'Forms', connecteddevices: 'LAPTOP-FHVM, DESKTOP-ZXZJ', licensetype: 'Single', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 1, userid: 2, licensename: 'Line Height', connecteddevices: 'LAPTOP-FHVM, DESKTOP-ZXZJ', licensetype: 'Single', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+    licenses: [
+        { id: 0, devicename: 'LAPTOP-FHVM', licensename: 'Forms',  creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 1, devicename: 'DESKTOP-FHVM', licensename: 'Forms', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 2, devicename: 'LAPTOP-FHVM', licensename: 'Line Height', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 3, devicename: 'DESKTOP-FHVM', licensename: 'Line Height', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
 
     ],
 })
@@ -56,7 +58,7 @@ const theme = createMuiTheme({
 
 const UserDashboard = () => (
     <Admin theme={newOptions} dataProvider={dataProvider}>
-        <Resource name="users"
+        <Resource name="licenses"
             list={ListGuesser}
             edit={EditGuesser}
         />
