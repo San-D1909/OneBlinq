@@ -39,14 +39,17 @@ export const newOptions: ThemeOptions = {
 /*const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');*/
 
 const dataProvider = fakeDataProvider({
+    devices: [
+        { id: 1, devicename: 'LAPTOP-FHVM', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '1-6-2021' },
+        { id: 2, devicename: 'DESKTOP-FHVM', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '1-6-2021'},
+        { id: 3, devicename: 'DESKTOP-XJXJ', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '8-11-2021'},
+        { id: 4, devicename: 'LAPTOP-FHVM', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '1-6-2021' },
+        { id: 5, devicename: 'DESKTOP-FHVM', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '1-6-2021' },
+        { id: 6, devicename: 'DESKTOP-OXIK', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '8-11-2021' },
+    ],
     licenses: [
-        { id: 0, devicename: 'LAPTOP-FHVM', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '1-6-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 1, devicename: 'DESKTOP-FHVM', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '1-6-2021',creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 2, devicename: 'DESKTOP-XJXJ', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '8-11-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 3, devicename: 'LAPTOP-FHVM', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '1-6-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 4, devicename: 'DESKTOP-FHVM', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '1-6-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 5, devicename: 'DESKTOP-OXIK', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '8-11-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-
+        { id: 1, licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', amountactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 2, licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', amountactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
     ],
 })
 
@@ -60,6 +63,10 @@ const theme = createMuiTheme({
 
 const UserDashboard = () => (
     <Admin theme={newOptions} dataProvider={dataProvider}>
+        <Resource name="devices"
+            list={ListGuesser}
+            edit={EditGuesser}
+        />
         <Resource name="licenses"
             list={ListGuesser}
             edit={EditGuesser}
