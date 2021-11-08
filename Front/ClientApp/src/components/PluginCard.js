@@ -10,7 +10,7 @@ export class PluginCard extends Component {
             textDecoration: "none"
         }
         return (
-            <a style={textDecoNone} className="card plugin" href={id}>
+            <a style={textDecoNone} className="card plugin" href={"/plugins/" + id }>
                 <div className="card-body">
                     <img src="https://via.placeholder.com/344x216.png" alt={title} />
                 </div>
