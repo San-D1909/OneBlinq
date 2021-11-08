@@ -3,6 +3,7 @@ import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeOptions } from '@material-ui/core';
+import fakeDataProvider from 'ra-data-fakerest';
 
 export const newOptions: ThemeOptions = {
 
@@ -35,7 +36,15 @@ export const newOptions: ThemeOptions = {
     },
 };
 
-const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
+/*const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');*/
+
+const dataProvider = fakeDataProvider({
+    users: [
+        { id: 0, userid: 1, licensename: 'Forms', connecteddevices: 'LAPTOP-FHVM, DESKTOP-ZXZJ', licensetype: 'Single', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 1, userid: 2, licensename: 'Line Height', connecteddevices: 'LAPTOP-FHVM, DESKTOP-ZXZJ', licensetype: 'Single', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+
+    ],
+})
 
 
 // This is an option to enable dark mode.
