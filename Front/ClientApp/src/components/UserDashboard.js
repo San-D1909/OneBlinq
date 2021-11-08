@@ -40,10 +40,12 @@ export const newOptions: ThemeOptions = {
 
 const dataProvider = fakeDataProvider({
     licenses: [
-        { id: 0, devicename: 'LAPTOP-FHVM', licensename: 'Forms',  creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 1, devicename: 'DESKTOP-FHVM', licensename: 'Forms', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 2, devicename: 'LAPTOP-FHVM', licensename: 'Line Height', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 3, devicename: 'DESKTOP-FHVM', licensename: 'Line Height', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 0, devicename: 'LAPTOP-FHVM', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '1-6-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 1, devicename: 'DESKTOP-FHVM', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '1-6-2021',creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 2, devicename: 'DESKTOP-XJXJ', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '8-11-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 3, devicename: 'LAPTOP-FHVM', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '1-6-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 4, devicename: 'DESKTOP-FHVM', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '1-6-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 5, devicename: 'DESKTOP-OXIK', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '8-11-2021', creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
 
     ],
 })
