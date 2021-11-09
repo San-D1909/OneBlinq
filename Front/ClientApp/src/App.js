@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { Plugins } from './components/Plugins';
+import { Home } from './pages/Home';
+import { Plugins } from './pages/Plugins';
 import PluginInfo from './pages/PluginInfo'
-import { Login } from './components/Login';
-import { Logout } from './components/Logout';
-import { Register } from './components/Register';
+import { Login } from './pages/Login';
+import { Logout } from './pages/Logout';
+import { Register } from './pages/Register';
 import './custom.css'
 import AdminDash from './components/Admin/AdminDash';
-import UserDashboard from './components/UserDashboard';
-import { CheckLoggedIn, HandleAuthenticate } from './Authenticator';
 import ReactSession from 'react-client-session/dist/ReactSession';
-
+import UserDashboard from './pages/UserDashboard';
 
 export default class App extends Component {
     static displayName = App.name;
