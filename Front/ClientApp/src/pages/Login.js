@@ -10,8 +10,8 @@ import CardImg from 'reactstrap/lib/CardImg';
 import CardTitle from 'reactstrap/lib/CardTitle';
 import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
-import { NavMenu } from './NavMenu';
-import "./Login.css";
+import { NavMenu } from '../components/NavMenu';
+import "./CSS/Login.css";
 import axios from 'axios'
 
 
