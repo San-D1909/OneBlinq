@@ -5,9 +5,7 @@ import './NavMenu.css';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import { Button, NavDropdown } from 'react-bootstrap';
-import { CheckLoggedIn, HandleAuthenticate, HandleLogout } from '../Authenticator';
 import ReactSession from 'react-client-session/dist/ReactSession';
-import { useLocation } from 'react-router-dom';
 
 export class NavMenu extends Component {
     static displayName = NavMenu.name;

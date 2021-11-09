@@ -13,6 +13,8 @@ import Label from 'reactstrap/lib/Label';
 import { NavMenu } from '../components/NavMenu';
 import "./CSS/Login.css";
 import axios from 'axios'
+import ReactSession from 'react-client-session/dist/ReactSession';
+import { Redirect } from 'react-router-dom';
 
 
 export class Login extends Component {
