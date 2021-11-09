@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -67,6 +68,8 @@ namespace Backend.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
         {
+            //RegisterModel credentials = data["credentials"].ToObject<RegisterModel>();
+            //CompanyModel company = data["company"].ToObject<CompanyModel>();
             var findUser = await _context.User
                     .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
                     .FirstOrDefaultAsync();
@@ -82,8 +85,8 @@ namespace Backend.Controllers
                     .AddAsync(new User { 
                         Email = credentials.Mail, 
                         FullName = credentials.FullName,
-                        Password = credentials.Password,
-                        UserName = credentials.UserName      
+                        Password = credentials.Password
+                        
                     });
 
                 await _context.SaveChangesAsync();

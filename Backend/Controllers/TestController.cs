@@ -72,7 +72,6 @@ namespace Backend.Controllers
 				user.Email = response.Email;
 				user.FullName = response.Full_Name;
 				user.Password = "";
-				user.UserName = "";;
 
 				_context.User.Add(user);
 				_context.SaveChanges();
