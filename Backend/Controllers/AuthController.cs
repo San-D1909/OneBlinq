@@ -23,18 +23,18 @@ namespace Backend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-		private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-		public AuthController(ApplicationDbContext context)
-		{
+        public AuthController(ApplicationDbContext context)
+        {
             _context = context;
-		}
+        }
 
 
-		[HttpPost("LogIn")]
+        [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] LoginModel credentials)
         {
-            var user =  await _context.User
+            var user = await _context.User
                     .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
                     .FirstOrDefaultAsync();
 
@@ -60,44 +60,50 @@ namespace Backend.Controllers
                 return Ok(tokenHandler.WriteToken(token));
             }
             else
-			{
+            {
                 return StatusCode(StatusCodes.Status401Unauthorized);
-			}
+            }
         }
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
         {
-            //RegisterModel credentials = data["credentials"].ToObject<RegisterModel>();
-            //CompanyModel company = data["company"].ToObject<CompanyModel>();
             var findUser = await _context.User
-                    .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
+                    .Where(u => u.Email == credentials.user.Mail && u.Password == credentials.user.Password)
                     .FirstOrDefaultAsync();
 
-            if(findUser != null)
-			{
+            if (findUser != null)
+            {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
-            if(credentials.Password == credentials.PasswordConfirmation)
-			{
+            if (credentials.user.Password == credentials.user.PasswordConfirmation)
+            {
+
                 var newUser = await _context.User
-                    .AddAsync(new User { 
-                        Email = credentials.Mail, 
-                        FullName = credentials.FullName,
-                        Password = credentials.Password
-                        
+                    .AddAsync(new User
+                    {
+                        Email = credentials.user.Mail,
+                        FullName = credentials.user.FullName,
+                        Password = credentials.user.Password,
+                        CompanyName = credentials.company.CompanyName,
+                        ZipCode = credentials.company.ZipCode,
+                        Street = credentials.company.Street,
+                        Country = credentials.company.Country,
+                        HouseNumber = credentials.company.HouseNumber,
+                        BTWNumber = credentials.company.BTWNumber,
+                        KVKNumber = credentials.company.KVKNumber,
+                        PhoneNumber = credentials.company.PhoneNumber,
+                        IsAdmin = false
                     });
-
                 await _context.SaveChangesAsync();
-
                 return Ok();
             }
-			else
-			{
+            else
+            {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-              
+
         }
     }
 }

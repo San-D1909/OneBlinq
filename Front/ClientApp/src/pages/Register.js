@@ -36,48 +36,30 @@ export class Register extends Component {
 
     handleRegister = event => {
         event.preventDefault();
-        /*        var company = {
-                    companyName: this.state.companyName,
-                    zipCode: this.state.zipCode,
-                    streetName: this.state.streetName,
-                    country: this.state.country,
-                    houseNumber: this.state.houseNumber,
-                    bTWNumber: this.state.bTWNumber,
-                    kVKNumber: this.state.kVKNumber,
-                    phoneNumber: this.state.phoneNumber,
-                }*/
-
-        /*        var user = {
-                    mail: this.state.mail,
-                    fullname: this.state.fullname,
-                    password: this.state.password,
-                    passwordConfirmation: this.state.passwordConfirmation,
-                    companyName: this.state.companyName,
-                    zipCode: this.state.zipCode,
-                    streetName: this.state.streetName,
-                    country: this.state.country,
-                    houseNumber: this.state.houseNumber,
-                    bTWNumber: this.state.bTWNumber,
-                    kVKNumber: this.state.kVKNumber,
-                    phoneNumber: this.state.phoneNumber
-                }*/
-        const mail = this.state.mail
-        const fullname = this.state.fullname
-        const password = this.state.password
-        const passwordConfirmation = this.state.passwordConfirmation
-        const companyName = this.state.companyName
-        const zipCode = this.state.zipCode
-        const street = this.state.street
-        const country = this.state.country
-        const houseNumber = this.state.houseNumber
-        const bTWNumber = this.state.bTWNumber
-        const kVKNumber = this.state.kVKNumber
-        const phoneNumber = this.state.phoneNumber
-        console.log(phoneNumber);
+        var company = {
+            companyName: this.state.companyName,
+            zipCode: this.state.zipCode,
+            street: this.state.street,
+            country: this.state.country,
+            houseNumber: this.state.houseNumber,
+            bTWNumber: this.state.bTWNumber,
+            kVKNumber: this.state.kVKNumber,
+            phoneNumber: this.state.phoneNumber,
+        };
+        var user = {
+            mail: this.state.mail,
+            fullname: this.state.fullname,
+            password: this.state.password,
+            passwordConfirmation: this.state.passwordConfirmation,
+        };
+        var userdata = {};
+        userdata.user = user;
+        userdata.company = company;
         axios({
             method: 'post',
             url: 'http://localhost:4388/api/v1/Auth/Register',
-            data: { mail, fullname, password, passwordConfirmation, companyName, zipCode, street, country, houseNumber, bTWNumber, kVKNumber, phoneNumber }
+            dataType: "json",
+            data: userdata
         }).then(data => console.log(data));
     }
 
