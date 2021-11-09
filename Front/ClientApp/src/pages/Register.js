@@ -7,8 +7,8 @@ import CardBody from 'reactstrap/lib/CardBody';
 import CardImg from 'reactstrap/lib/CardImg';
 import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
-import { NavMenu } from './NavMenu';
-import "./Register.css";
+import { NavMenu } from '../components/NavMenu';
+import "./CSS/Register.css";
 
 export class Register extends Component {
   static displayName = Register.name;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { NavMenu } from './NavMenu';
-import { PluginCard } from './PluginCard'
-import { Footer } from './Footer'
+import { NavMenu } from '../components/NavMenu';
+import { PluginCard } from '../components/PluginCard'
+import { Footer } from '../components/Footer'
 
 function PluginList(props) {
     const { plugins } = props
