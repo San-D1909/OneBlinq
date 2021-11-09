@@ -79,8 +79,6 @@ export class Plugins extends Component {
     }
 
     fetchBundles() {
-        // TODO: fetch bundles
-        console.log("fetch bundles")
         return [{
             id: 1,
             title: "figma-bundle",
@@ -93,8 +91,6 @@ export class Plugins extends Component {
     }
 
     fetchPlugins() {
-        // TODO: fetch plugins
-        console.log('fetch')
         return [{
             id: "1",
             title: "forms"

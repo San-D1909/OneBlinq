@@ -13,34 +13,82 @@ import Label from 'reactstrap/lib/Label';
 import { NavMenu } from './NavMenu';
 import "./Login.css";
 import axios from 'axios'
+import ReactSession from 'react-client-session/dist/ReactSession';
+import { Redirect } from 'react-router-dom';
 
 
 export class Login extends Component {
     static displayName = Login.name;
     constructor(props) {
         super(props)
+
+        console.log(props)
         this.state = {
             mail: '',
-            password: ''
+            password: '',
+            token: '',
+            hasError: false,
+            errorMessage: '',
+            loggedIn: false,
+            token: null
         }
         this.handleLogin = this.handleLogin.bind(this)
     }
 
-    handleLogin = event => {
+    componentDidUpdate()
+    {
+    }
+
+    setSession = (token) => {
+        ReactSession.set("loggedin", true);
+        ReactSession.set("token", token.data);
+
+        this.setState({ token: token.data, loggedIn: true });
+    }
+
+    handleLogin = (event) => {
         event.preventDefault();
         const mail = this.state.mail
         const password = this.state.password
+
+        this.setState({hasError: false, errorMessage: ''})
+
+        if (mail == '' || mail == null) {
+            this.setState({ hasError: true, errorMessage: "Email must be filled in!" })
+            return;
+        } else if (password == '' || password == null) {
+            this.setState({ hasError: true, errorMessage: "Password must be filled in!" })
+            return;
+        }
+
+        var self = this;
         axios({
             method: 'post',
             url: 'http://localhost:4388/api/v1/Auth/LogIn',
-            data: { mail,password }
-        }).then(data => console.log(data));
+            data: { mail, password }
+        }).then(token => this.setSession(token)).catch(function (error) {
+            console.log('Show error notification!')
+            console.log(error.message);
+            console.log(error);
+            if (error.message == "Request failed with status code 401") {
+                self.setState({ hasError: true, errorMessage: "Username or Password is incorrect."})
+            }
+            return Promise.reject(error)
+        });
     }
 
-  render () {
+    render() {
+
+        if (ReactSession.get("loggedin")) {
+            return (
+                <Redirect to="/user/dashboard/" />
+            )
+           
+        }
+
     return (
         <>
-            <NavMenu />
+            <NavMenu loggedIn={this.state.loggedIn} token={this.state.token} />
             <div className="row p-0 mx-auto logincontainer">
                 <div className="col-12 col-lg-6 p-1">
                     <Card className="h-100">
@@ -48,6 +96,12 @@ export class Login extends Component {
                             <h1 className="text-center">Login</h1>
                             <div className="col-12">
                                 <Form>
+                                    {this.state.hasError ? (
+                                        <div className="py-2 col-12">
+                                            <Label className="alert alert-danger col-12" role="alert">{this.state.errorMessage}</Label>
+                                        </div>
+                                        ) : (<></>)
+                                    }
                                     <div className="py-2">
                                         <Label for="email">Email</Label>
                                         <Input type="text" onChange={(e) => this.setState({mail: e.target.value})} name="email"/>
