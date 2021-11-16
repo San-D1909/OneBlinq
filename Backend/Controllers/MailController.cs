@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1")]
+    [ApiController]
     public class MailController : Controller
     {
 
@@ -18,16 +21,11 @@ namespace Backend.Controllers
             _mailClient = mailClient;
         }
 
-
-        //public async Task<IActionResult> SendMail(string from, string to, string subject, string body)
-        //{
-        //    var message = new MailModel();
-        //    message.From = from;
-        //    message.To = to;
-        //    message.Subject = subject;
-        //    message.Body = body;
-
-        //    await MailClient.SendEmailAsync(message);
-        //}
+        [HttpPost("sendMail")]
+        public async Task<IActionResult> SendMail(MailModel mailModel)
+        {
+            await _mailClient.SendEmailAsync(mailModel.From, mailModel.To, mailModel.Subject, mailModel.Body);
+            return Ok(mailModel);
+        }
     }
 }

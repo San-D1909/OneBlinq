@@ -3,23 +3,31 @@ using Backend.Models;
 using System;
 using Backend.Infrastructure.Data;
 using System.Linq;
+using Backend.Core.Logic;
+using Microsoft.Extensions.Configuration;
 
 namespace Backend.Controllers
 {
     [ApiController]
+    [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class GumroadController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _context;
+        private readonly LicenseGenerator _generator;
+        // TODO mail key
 
-        public GumroadController(ApplicationDbContext context)
+        public GumroadController(ApplicationDbContext context, LicenseGenerator generator)
         {
             _context = context;
+            _generator = generator;
         }
 
         [HttpPost("Ping")]
         public IActionResult Ping(GumroadResponse response)
         {
+            //TODO Check Domain
+
             User user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
             if (user == null)
             {
@@ -34,21 +42,20 @@ namespace Backend.Controllers
                 _context.SaveChanges();
             }
 
-            License license = new License()
+            LicenseModel license = new LicenseModel()
             {
-                ExpirationDate = new DateTime(2021, 11, 05),
+                ExpirationDate = DateTime.Now.AddYears(1),
                 LicenseType = "Test",
-                IfActive = true,
-                TimesActivated = 1,
-                LicenseId = response.License_Key
+                IsActive = true,
+                TimesActivated = 0,
+                LicenseId = _generator.CreateLicenseKey(response.Email, "Forms", response.Variants),
+                UserId = user.UserId
             };
-
-            license.UserId = user.UserId;
 
             _context.License.Add(license);
             _context.SaveChanges();
 
-            return Ok();
+            return Ok(license);
         }
     }
 }
