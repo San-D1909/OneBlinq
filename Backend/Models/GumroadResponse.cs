@@ -9,8 +9,6 @@ namespace Backend.Models
 	public class GumroadResponse
 	{
 	
-		[ModelBinder(Name = "license_key")]
-		public string License_Key { get; set; }
 
 		[ModelBinder(Name = "email")]
 		public string Email{ get; set; }
@@ -22,6 +20,6 @@ namespace Backend.Models
 		public string Variants { get; set; }
 
 		[ModelBinder(Name = "sale_timestamp")]
-		public string Creation_Time { get; set; }
+		public string Sale_Timestamp { get; set; }
 	}
 }

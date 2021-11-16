@@ -35,7 +35,7 @@ namespace Backend
             });
 
             services.AddSingleton(provider => Configuration);
-            services.AddSingleton<LicenseGeneration>();
+            services.AddSingleton<LicenseGenerator>();
 
             services.AddCors(c =>
             {

@@ -1,21 +1,22 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Backend.Core.Logic
 {
-	public class LicenseGeneration
+	public class LicenseGenerator
 	{
 		private IConfiguration _config;
 
-		public LicenseGeneration(IConfiguration config) 
+		public LicenseGenerator(IConfiguration config) 
 		{
 			_config = config;
 		}
 
 		public string CreateLicenseKey(string email, string plugin, string variant)
 		{
-    		var concat = email + plugin + variant + _config["Secret"];
+            var concat = email + plugin + variant + _config["Secret"] + Convert.ToString(DateTime.Now);
 			
             //TODO: Add time to md5 hash to always generate unique keys
 
