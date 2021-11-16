@@ -9,7 +9,9 @@ namespace Backend.Infrastructure.Data.Repositories
 {
     public class AdminRepository : IAdminRepository
     {
-        public AdminRepository(ApplicationDbContext context) : base(context) { }
+        //public AdminRepository(ApplicationDbContext context) : base(context) 
+        // { 
+        // }
 
 
     }

@@ -5,6 +5,10 @@ using Backend.Infrastructure.Data;
 using System.Linq;
 using Backend.Core.Logic;
 using Microsoft.Extensions.Configuration;
+using Backend.Models.MailModels;
+using System.Net.Mail;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Backend.Controllers
 {
@@ -15,20 +19,28 @@ namespace Backend.Controllers
     {
 		private readonly ApplicationDbContext _context;
         private readonly LicenseGenerator _generator;
-        // TODO mail key
+        private readonly MailClient _mailClient;
+        private readonly IWebHostEnvironment _env;
 
-        public GumroadController(ApplicationDbContext context, LicenseGenerator generator)
+        public GumroadController(ApplicationDbContext context, LicenseGenerator generator, MailClient mailClient, IWebHostEnvironment env)
         {
             _context = context;
             _generator = generator;
+            _mailClient = mailClient;
+            _env = env;
         }
 
         [HttpPost("Ping")]
         public IActionResult Ping(GumroadResponse response)
         {
-            //TODO Check Domain
+		    //TODO: check domain
 
-            User user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
+			var domain = HttpContext.Request.Host;
+			if (domain.Host == "www.gumroad.com" && (_env.IsDevelopment() || _env.IsEnvironment("local")))
+				return Ok(200);
+
+
+			User user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
             if (user == null)
             {
                 user = new User()
@@ -55,7 +67,22 @@ namespace Backend.Controllers
             _context.License.Add(license);
             _context.SaveChanges();
 
-            return Ok(license);
+            SendLicenseMail(user.Email, license.LicenseId);
+
+            return Ok();
         }
+
+        private async void SendLicenseMail(string receiver, string key)
+		{
+            MailMessage mail = new MailMessage
+            (
+                "stuurmen@stuur.men",
+                receiver,
+                "Thank you for your purchase!",
+                $"Here is your key to activate the plugin: {key}" 
+            );
+
+            await _mailClient.SendEmailAsync(mail);
+		}
     }
 }

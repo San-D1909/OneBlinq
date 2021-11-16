@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Infrastructure.Data.Repositories.Interfaces
 {
-    public interface IAdminRepostiry
+    public interface IAdminRepository
     {
 
     }
