@@ -2,8 +2,10 @@
 import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
+import AdminNavMenu from "../components/Admin/AdminNavMenu";
+import { PluginCreate, PluginEdit, PluginList, PluginShow } from "../components/Admin/Plugins";
 
-export const newOptions: ThemeOptions = {
+export const newOptions = {
 
     // theme customizable at https://bareynol.github.io/mui-theme-creator
 
@@ -59,6 +61,7 @@ const UserDashboard = () => (
             list={ListGuesser}
             edit={EditGuesser}
         />
+        <Resource name="plugins" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
     </Admin>
 );
 

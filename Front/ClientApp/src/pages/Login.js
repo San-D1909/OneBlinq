@@ -47,6 +47,7 @@ export class Login extends Component {
 
     handleLogin = (event) => {
         event.preventDefault();
+
         const mail = this.state.mail
         const password = this.state.password
 

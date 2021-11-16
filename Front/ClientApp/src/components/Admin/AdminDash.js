@@ -3,7 +3,7 @@ import { Admin, Resource, ListGuesser,EditGuesser} from 'react-admin';
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
 
-export const newOptions: ThemeOptions = {
+export const newOptions = {
 
     // theme customizable at https://bareynol.github.io/mui-theme-creator
 
