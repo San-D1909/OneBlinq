@@ -65,7 +65,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
+        public async Task<IActionResult> Register([FromBody] RegisterUserModel credentials)
         {
             var findUser = await _context.User
                     .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
@@ -82,8 +82,7 @@ namespace Backend.Controllers
                     .AddAsync(new User { 
                         Email = credentials.Mail, 
                         FullName = credentials.FullName,
-                        Password = credentials.Password,
-                        UserName = credentials.UserName      
+                        Password = credentials.Password   
                     });
 
                 await _context.SaveChangesAsync();
