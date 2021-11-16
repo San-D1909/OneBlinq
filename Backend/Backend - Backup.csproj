@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>816da115-9dc8-4032-a3c6-2183e90e0d1b</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Datalayer\**" />
+    <Compile Remove="Logiclayer\**" />
+    <Compile Remove="Persistence\**" />
+    <Content Remove="Datalayer\**" />
+    <Content Remove="Logiclayer\**" />
+    <Content Remove="Persistence\**" />
+    <EmbeddedResource Remove="Datalayer\**" />
+    <EmbeddedResource Remove="Logiclayer\**" />
+    <EmbeddedResource Remove="Persistence\**" />
+    <None Remove="Datalayer\**" />
+    <None Remove="Logiclayer\**" />
+    <None Remove="Persistence\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
+    <PackageReference Include="MySql.Data" Version="8.0.26" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Reo.Core.FluentEmail.RazorEngine" Version="5.0.17174" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.13.1" />
+  </ItemGroup>
+
+</Project>
