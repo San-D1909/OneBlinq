@@ -12,6 +12,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
+using Backend.Controllers;
 
 namespace Backend
 {
@@ -33,6 +34,9 @@ namespace Backend
                 return smtpConfiguration;
             });
             services.AddScoped<MailClient>();
+
+            services.AddSingleton(provider => Configuration);
+            services.AddSingleton<LicenseGeneration>();
 
             services.AddCors(c =>
             {

@@ -7,6 +7,7 @@ using Backend.Infrastructure.Data;
 using System.Text.Json;
 using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
+using Backend.Core.Logic;
 
 namespace Backend.Controllers
 {
@@ -55,13 +56,13 @@ namespace Backend.Controllers
 		[HttpPost("Ping")]
 		public IActionResult Ping(GumroadResponse response)
 		{
-			License license = new License()
+			LicenseModel license = new LicenseModel()
 			{
 				ExpirationDate = new DateTime(2021, 11, 05),
 				LicenseType = "Test",
-				IfActive = true,
+				IsActive = true,
 				TimesActivated = 1,
-				LicenseId = response.License_Key
+				LicenseId = ""
 			};
 
 			User user = new User();
@@ -88,7 +89,7 @@ namespace Backend.Controllers
 			_context.License.Add(license);
 			_context.SaveChanges();
 
-			return Ok();
+			return Ok(license);
 		}
 	}
 }
