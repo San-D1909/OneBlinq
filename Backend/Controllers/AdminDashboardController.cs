@@ -16,9 +16,11 @@ namespace Backend.Controllers
     public class AdminDashboardController : Controller
     {
         private readonly ILicenceRepository LicenceRepository;
-        public AdminDashboardController(ILicenceRepository licenceRepository)
+        private readonly IPluginRepository PluginRepository;
+        public AdminDashboardController(ILicenceRepository licenceRepository, IPluginRepository pluginRepository)
         {
             LicenceRepository = licenceRepository;
+            PluginRepository = pluginRepository;
         }
 
         [HttpGet("GetLicences")]
@@ -31,5 +33,25 @@ namespace Backend.Controllers
             }
             return StatusCode(StatusCodes.Status401Unauthorized);
         }
+        [HttpGet("GetPlugins")]
+        public async Task<IActionResult> GetPlugins(string searchString)
+        {
+            var plugins = await PluginRepository.GetPluginsByNameAsync(searchString);
+
+            return Ok(plugins);
+        }
+
+        [HttpPost("AddPlugin")]
+        public async Task<IActionResult> AddPlugin([Bind("PluginName","PluginDescription")] PluginModel plugin)
+        {
+            if (ModelState.IsValid)
+            {
+                PluginRepository.AddPlugin(plugin);
+                await PluginRepository.SaveAsync();
+                return Ok(plugin);
+            }
+            return Ok(plugin);
+        }
+
     }
 }

@@ -31,7 +31,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Ping")]
-        public IActionResult Ping(GumroadResponse response)
+        public IActionResult Ping(GumroadResponseModel response)
         {
 			var domain = HttpContext.Request.Host;
 			if (domain.Host == "www.gumroad.com" && (_env.IsDevelopment() || _env.IsEnvironment("local")))

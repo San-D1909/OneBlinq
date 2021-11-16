@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-	public class PluginLicenses
+	public class PluginModel
 	{
+
 		[Key]
-		public int Id { get; set; }
 		public int PluginId { get; set; }
-		public int LicenseId { get; set; }
+		public string PluginName { get; set; }
+		public string PluginDescription { get; set; }
+
 	}
 }
