@@ -16,7 +16,7 @@ namespace Backend.Infrastructure.Data
 			modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 		}
 
-		public DbSet<License> License { get; set; }
+		public DbSet<LicenseModel> License { get; set; }
 
 		public DbSet<User> User { get; set; }
 

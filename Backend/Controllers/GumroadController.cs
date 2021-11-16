@@ -40,11 +40,11 @@ namespace Backend.Controllers
                 _context.SaveChanges();
             }
 
-            License license = new License()
+            LicenseModel license = new LicenseModel()
             {
                 ExpirationDate = new DateTime(2021, 11, 05),
                 LicenseType = "Test",
-                IfActive = true,
+                IsActive = true,
                 TimesActivated = 1,
                 LicenseId = _generator.CreateLicenseKey(response.Email, "Forms", response.Variants),
                 UserId = user.UserId

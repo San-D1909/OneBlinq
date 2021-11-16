@@ -56,12 +56,11 @@ namespace Backend.Controllers
 		[HttpPost("Ping")]
 		public IActionResult Ping(GumroadResponse response)
 		{
-
-			License license = new License()
+			LicenseModel license = new LicenseModel()
 			{
 				ExpirationDate = new DateTime(2021, 11, 05),
 				LicenseType = "Test",
-				IfActive = true,
+				IsActive = true,
 				TimesActivated = 1,
 				LicenseId = ""
 			};
