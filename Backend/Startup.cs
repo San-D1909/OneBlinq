@@ -33,6 +33,7 @@ namespace Backend
                 Configuration.GetSection("Smtp").Bind(smtpConfiguration);
                 return smtpConfiguration;
             });
+            services.AddScoped<MailClient>();
 
             services.AddSingleton(provider => Configuration);
             services.AddSingleton<LicenseGenerator>();
