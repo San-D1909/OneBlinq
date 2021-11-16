@@ -173,6 +173,11 @@ export class Register extends Component {
                                         </div>
                                         <hr class="solid"></hr>
                                         <h3>OPTIONAL COMPANY INFO!</h3>
+                                        <label for="switch">I have a company:       </label>
+                                        <label id= "switch" class="switch">
+                                            <input type="checkbox"></input>
+                                            <span class="slider round"></span>
+                                        </label>
                                         <div className="py-2">
                                             <Label for="companyName">Company Name</Label>
                                             <Input type="text" onChange={(e) => this.setState({ companyName: e.target.value })} name="companyName" />
