@@ -33,14 +33,12 @@ namespace Backend.Controllers
         [HttpPost("Ping")]
         public IActionResult Ping(GumroadResponse response)
         {
-		    //TODO: check domain
-
 			var domain = HttpContext.Request.Host;
 			if (domain.Host == "www.gumroad.com" && (_env.IsDevelopment() || _env.IsEnvironment("local")))
 				return Ok(200);
 
 
-			User user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
+			UserModel user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
             if (user == null)
             {
                 user = new UserModel()
