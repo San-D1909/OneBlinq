@@ -26,6 +26,13 @@ namespace Backend
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton((x) =>
+            {
+                var smtpConfiguration = new SmtpConfiguration();
+                Configuration.GetSection("Smtp").Bind(smtpConfiguration);
+                return smtpConfiguration;
+            });
+
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
