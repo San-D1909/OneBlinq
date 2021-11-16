@@ -7,6 +7,7 @@ using Backend.Infrastructure.Data;
 using System.Text.Json;
 using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
+using Backend.Core.Logic;
 
 namespace Backend.Controllers
 {
@@ -61,7 +62,7 @@ namespace Backend.Controllers
 				LicenseType = "Test",
 				IsActive = true,
 				TimesActivated = 1,
-				LicenseId = response.License_Key
+				LicenseId = ""
 			};
 
 			User user = new User();
@@ -88,7 +89,7 @@ namespace Backend.Controllers
 			_context.License.Add(license);
 			_context.SaveChanges();
 
-			return Ok();
+			return Ok(license);
 		}
 	}
 }

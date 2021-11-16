@@ -3,18 +3,24 @@ using Backend.Models;
 using System;
 using Backend.Infrastructure.Data;
 using System.Linq;
+using Backend.Core.Logic;
+using Microsoft.Extensions.Configuration;
 
 namespace Backend.Controllers
 {
     [ApiController]
+    [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class GumroadController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+		private readonly IConfiguration _config;
+		private readonly ApplicationDbContext _context;
+        private readonly LicenseGeneration _generator;
 
-        public GumroadController(ApplicationDbContext context)
+        public GumroadController(ApplicationDbContext context, LicenseGeneration generator)
         {
             _context = context;
+            _generator = generator;
         }
 
         [HttpPost("Ping")]
@@ -40,15 +46,14 @@ namespace Backend.Controllers
                 LicenseType = "Test",
                 IsActive = true,
                 TimesActivated = 1,
-                LicenseId = response.License_Key
+                LicenseId = _generator.CreateLicenseKey(response.Email, "Forms", response.Variants),
+                UserId = user.UserId
             };
-
-            license.UserId = user.UserId;
 
             _context.License.Add(license);
             _context.SaveChanges();
 
-            return Ok();
+            return Ok(license);
         }
     }
 }
