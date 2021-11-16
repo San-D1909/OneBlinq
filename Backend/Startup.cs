@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 using Backend.Controllers;
+using Backend.Infrastructure.Data.Repositories.Interfaces;
+using Backend.Infrastructure.Data.Repositories;
 
 namespace Backend
 {
@@ -73,6 +75,7 @@ namespace Backend
 
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+            services.AddScoped<ILicenceRepository, LicenceRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -65,7 +65,7 @@ namespace Backend.Controllers
 				LicenseId = ""
 			};
 
-			User user = new User();
+			UserModel user = new UserModel();
 			var userFind = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
 
 			if(userFind == null)

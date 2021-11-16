@@ -81,7 +81,7 @@ namespace Backend.Controllers
             if(credentials.Password == credentials.PasswordConfirmation)
 			{
                 var newUser = await _context.User
-                    .AddAsync(new User { 
+                    .AddAsync(new UserModel { 
                         Email = credentials.Mail, 
                         FullName = credentials.FullName,
                         Password = credentials.Password   

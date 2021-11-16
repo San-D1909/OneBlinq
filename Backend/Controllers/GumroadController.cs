@@ -43,7 +43,7 @@ namespace Backend.Controllers
 			User user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
             if (user == null)
             {
-                user = new User()
+                user = new UserModel()
                 {
                     Email = response.Email,
                     FullName = response.Full_Name,

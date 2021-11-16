@@ -18,7 +18,7 @@ namespace Backend.Infrastructure.Data
 
 		public DbSet<LicenseModel> License { get; set; }
 
-		public DbSet<User> User { get; set; }
+		public DbSet<UserModel> User { get; set; }
 
 		public DbSet<Plugin> Plugin { get; set; }
 
