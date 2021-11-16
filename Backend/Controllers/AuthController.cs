@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,12 @@ namespace Backend.Controllers
     public class AuthController : ControllerBase
     {
 		private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
 
-		public AuthController(ApplicationDbContext context)
+        public AuthController(ApplicationDbContext context, IConfiguration config)
 		{
             _context = context;
+            _config = config;
 		}
 
 
@@ -39,8 +42,7 @@ namespace Backend.Controllers
 
             if (user != null)
             {
-                var mySecret = "asdv234234^&%&^%&^hjsdfb2%%%";
-                var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
+                var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
 
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -79,7 +81,7 @@ namespace Backend.Controllers
             if(credentials.Password == credentials.PasswordConfirmation)
 			{
                 var newUser = await _context.User
-                    .AddAsync(new User { 
+                    .AddAsync(new UserModel { 
                         Email = credentials.Mail, 
                         FullName = credentials.FullName,
                         Password = credentials.Password   

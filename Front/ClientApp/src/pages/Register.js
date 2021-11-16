@@ -109,8 +109,6 @@ export class Register extends Component {
         }).then(data => console.log(data));
     }
 
-
-
     render() {
         return (
             <>

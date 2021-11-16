@@ -12,6 +12,9 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
+using Backend.Controllers;
+using Backend.Infrastructure.Data.Repositories.Interfaces;
+using Backend.Infrastructure.Data.Repositories;
 
 namespace Backend
 {
@@ -32,6 +35,10 @@ namespace Backend
                 Configuration.GetSection("Smtp").Bind(smtpConfiguration);
                 return smtpConfiguration;
             });
+            services.AddScoped<MailClient>();
+
+            services.AddSingleton(provider => Configuration);
+            services.AddSingleton<LicenseGenerator>();
 
             services.AddCors(c =>
             {
@@ -68,6 +75,8 @@ namespace Backend
 
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+            services.AddScoped<ILicenceRepository, LicenceRepository>();
+            services.AddScoped<IPluginRepository, PluginRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
