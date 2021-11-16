@@ -59,7 +59,7 @@ namespace Backend.Controllers
 			{
 				ExpirationDate = new DateTime(2021, 11, 05),
 				LicenseType = "Test",
-				IfActive = true,
+				IsActive = true,
 				TimesActivated = 1,
 				LicenseId = response.License_Key
 			};
