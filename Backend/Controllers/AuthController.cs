@@ -1,4 +1,5 @@
-﻿using Backend.Infrastructure.Data;
+﻿using Backend.Core.Logic;
+using Backend.Infrastructure.Data;
 using Backend.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -11,10 +12,10 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Ubiety.Dns.Core;
 
 namespace Backend.Controllers
 {
@@ -25,12 +26,14 @@ namespace Backend.Controllers
     {
 		private readonly ApplicationDbContext _context;
         private readonly IConfiguration _config;
+		private readonly MailClient _mailClient;
 
-        public AuthController(ApplicationDbContext context, IConfiguration config)
+		public AuthController(ApplicationDbContext context, IConfiguration config, MailClient mailClient)
 		{
             _context = context;
             _config = config;
-		}
+            _mailClient = mailClient;
+        }
 
 
 		[HttpPost("LogIn")]
@@ -97,5 +100,21 @@ namespace Backend.Controllers
             }
               
         }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword()
+		{
+            MailMessage mail = new MailMessage
+                    (
+                        "stuurmen@stuur.men",
+                        "test@gmail.com",
+                        "Reset Password",
+                        $"Press this link to reset your password:"
+                    );
+
+            await _mailClient.SendEmailAsync(mail);
+
+            return Ok();
+		}
     }
 }

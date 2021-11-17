@@ -7,6 +7,7 @@ import PluginInfo from './pages/PluginInfo'
 import { Login } from './pages/Login';
 import { Logout } from './pages/Logout';
 import { Register } from './pages/Register';
+import { ForgotPassword } from './pages/ForgotPassword';
 import './custom.css'
 import AdminDash from './components/Admin/AdminDash';
 import ReactSession from 'react-client-session/dist/ReactSession';
@@ -31,6 +32,7 @@ export default class App extends Component {
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/admin/dashboard' component={AdminDash} />
                 <Route exact path='/user/dashboard' component={UserDashboard} />
+                <Route exact path='/forgotpassword' component={ForgotPassword} />
             </Layout>
         );
     }
