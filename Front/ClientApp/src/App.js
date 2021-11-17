@@ -12,6 +12,7 @@ import './custom.css'
 import AdminDash from './components/Admin/AdminDash';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import UserDashboard from './pages/UserDashboard';
+import { ResetPassword } from './pages/ResetPassword';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -32,6 +33,7 @@ export default class App extends Component {
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/admin/dashboard' component={AdminDash} />
                 <Route exact path='/user/dashboard' component={UserDashboard} />
+                <Route exact path='/resetpassword/:token' component={ResetPassword} />
                 <Route exact path='/forgotpassword' component={ForgotPassword} />
             </Layout>
         );

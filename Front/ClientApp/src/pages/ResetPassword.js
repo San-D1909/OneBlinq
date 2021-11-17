@@ -11,15 +11,17 @@ import axios from 'axios'
 import "./CSS/Login.css";
 
 
-export class ForgotPassword extends Component {
+export class ResetPassword extends Component {
 
-    static displayName = ForgotPassword.name;
+    static displayName = ResetPassword.name;
+
     constructor(props) {
         super(props)
 
         console.log(props)
         this.state = {
-            email: '',
+            token: this.props.match.params.token,
+            mail: '',
             hasError: false,
             errorMessage: '',
         }
@@ -33,19 +35,29 @@ export class ForgotPassword extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const email = this.state.email
+        const password = this.state.password
+        const passwordConfirmation = this.state.passwordConfirmation
+        const token = this.state.token
 
         this.setState({ hasError: false, errorMessage: '' })
 
-        if (email == '' || email == null) {
-            this.setState({ hasError: true, errorMessage: "Email must be filled in!" })
+        if (password == '' || password == null) {
+            this.setState({ hasError: true, errorMessage: "Password must be filled in!" })
+            return;
+        } else if (passwordConfirmation == '' || passwordConfirmation == null) {
+            this.setState({ hasError: true, errorMessage: "Password confirmation must be filled in!" })
+            return;
+        } else if (password != passwordConfirmation) {
+            this.setState({ hasError: true, errorMessage: "Password confirmation doesn't match!" })
             return;
         }
 
+        var self = this;
+
         axios({
             method: 'post',
-            url: 'http://localhost:4388/api/v1/Auth/ForgotPassword',
-            data: { email }
+            url: 'http://localhost:4388/api/v1/Auth/ResetPassword',
+            data: { password, token }
         }).then(response => {
             window.location.href = "/login"
         });
@@ -71,12 +83,16 @@ export class ForgotPassword extends Component {
                                         }
 
                                         <div className="py-2">
-                                            <Label for="email">Email</Label>
-                                            <Input type="text" onChange={(e) => this.setState({ email: e.target.value })} name="email" />
+                                            <Label for="email">Password</Label>
+                                            <Input type="text" onChange={(e) => this.setState({ password: e.target.value })} name="email" />
+                                        </div>
+                                        <div className="py-2">
+                                            <Label for="email">Confirm Password</Label>
+                                            <Input type="text" onChange={(e) => this.setState({ passwordConfirmation: e.target.value })} name="email" />
                                         </div>
 
                                         <div className="py-2">
-                                            <Button className="my-2 mr-2 ml-0 loginbutton" onClick={(e) => this.handleSubmit(e)}>Submit</Button>
+                                            <Button className="my-2 mr-2 ml-0 loginbutton" onClick={(e) => this.handleSubmit(e)}>Reset Password</Button>
                                         </div>
 
                                     </Form>
