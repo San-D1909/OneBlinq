@@ -112,6 +112,11 @@ export class Login extends Component {
                                             <Link className="m-2 registerlink" to="/register">No account yet? Register here!</Link>
                                         </div>
                                     </Form>
+
+                                    <div className="forgot-password">
+                                        <Link className="m-2 passwordlink" to="/forgotpassword">Forgot password?</Link>
+                                    </div>
+
                                 </div>
                             </CardBody>
                         </Card>

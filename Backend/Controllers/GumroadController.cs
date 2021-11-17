@@ -5,7 +5,6 @@ using Backend.Infrastructure.Data;
 using System.Linq;
 using Backend.Core.Logic;
 using Microsoft.Extensions.Configuration;
-using Backend.Models.MailModels;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
