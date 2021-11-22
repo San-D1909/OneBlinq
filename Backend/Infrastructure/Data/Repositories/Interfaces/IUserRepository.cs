@@ -6,6 +6,6 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
     public interface IUserRepository
     {
         Task<UserModel> GetUserById(int UserId);
-        Task<UserModel> UpdateUser(UserModel user);
+        Task<UserModel> UpdateFullName(string FullName, int UserId);
     }
 }

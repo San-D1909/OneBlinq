@@ -69,6 +69,7 @@ namespace Backend.Controllers
 			}
 			else
 			{
+				
 				return StatusCode(StatusCodes.Status401Unauthorized);
 			}
 		}

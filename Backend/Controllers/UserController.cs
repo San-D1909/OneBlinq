@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1")]
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -47,20 +50,20 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            var userbyid = await _userRepository.GetUserById(userId);
+            UserModel userbyid = await _userRepository.GetUserById(userId);
             if (userbyid is null)
             {
                 return NotFound();
             }
-
-            var userModel = new UserModel
+            if (userbyid.FullName != updateUserModel.FullName)
             {
-                UserId = userId,
-                FullName = updateUserModel.FullName,
-                Email = updateUserModel.Email,
-            };
+                await _userRepository.UpdateFullName(updateUserModel.FullName, userId);
+            }
 
-            var updatedUser = await _userRepository.UpdateUser(userModel);
+
+
+
+           // var updatedUser = await _userRepository.UpdateUser(userModel);
             return Ok();
         }
     }

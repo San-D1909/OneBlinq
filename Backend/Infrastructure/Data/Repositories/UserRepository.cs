@@ -15,6 +15,14 @@ namespace Backend.Infrastructure.Data.Repositories
             _context = context;
         }
 
+        public async Task<UserModel> UpdateFullName(string FullName, int userId)
+        {
+            _context.User.Where(x => x.UserId == userId).FirstOrDefault().FullName = FullName;
+            UserModel userModel = await _context.User.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            await _context.SaveChangesAsync();
+            return userModel;
+        }
+
         public async Task<UserModel> GetUserById(int UserId)
         {
             try
@@ -34,25 +42,6 @@ namespace Backend.Infrastructure.Data.Repositories
             catch (Exception ex)
             {
                 throw new Exception($"Couldn't retrieve entity with id={UserId}: {ex.Message}");
-            }
-        }
-
-        public async Task<UserModel> UpdateUser(UserModel user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            try
-            {
-                _context.Set<UserModel>().Update(user);
-                await _context.SaveChangesAsync();
-                return user;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"{nameof(user)} could not be updated: {ex.Message}");
             }
         }
     }
