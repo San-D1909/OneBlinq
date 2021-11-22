@@ -78,6 +78,7 @@ namespace Backend
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
             services.AddScoped<ILicenceRepository, LicenceRepository>();
             services.AddScoped<IPluginRepository, PluginRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
