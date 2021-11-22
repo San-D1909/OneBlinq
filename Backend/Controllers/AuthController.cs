@@ -70,10 +70,10 @@ namespace Backend.Controllers
 		}
 
 		[HttpPost("Register")]
-		public async Task<IActionResult> Register([FromBody] RegisterUserModel credentials)
+		public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
 		{
 			var findUser = await _context.User
-					.Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
+					.Where(u => u.Email == credentials.user.Mail && u.Password == credentials.user.Password)
 					.FirstOrDefaultAsync();
 
 			if (findUser != null)
@@ -81,14 +81,27 @@ namespace Backend.Controllers
 				return StatusCode(StatusCodes.Status401Unauthorized);
 			}
 
-			if (credentials.Password == credentials.PasswordConfirmation)
+			if (credentials.user.Password == credentials.user.PasswordConfirmation)
 			{
+				var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
+				{
+					CompanyName = credentials.company.CompanyName,
+					ZipCode = credentials.company.ZipCode,
+					Street = credentials.company.Street,
+					HouseNumber = credentials.company.HouseNumber,
+					Country = credentials.company.Country,
+					BTWNumber = credentials.company.BTWNumber,
+					KVKNumber = credentials.company.KVKNumber,
+					PhoneNumber = credentials.company.PhoneNumber
+				});
 				var newUser = await _context.User
 					.AddAsync(new UserModel
 					{
-						Email = credentials.Mail,
-						FullName = credentials.FullName,
-						Password = credentials.Password
+						Email = credentials.user.Mail,
+						Password = credentials.user.Password,
+						FullName = credentials.user.FullName,
+						IsAdmin = false,
+						Company = credentials.company.CompanyId	
 					});
 
 				await _context.SaveChangesAsync();

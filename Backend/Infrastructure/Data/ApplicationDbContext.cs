@@ -21,6 +21,7 @@ namespace Backend.Infrastructure.Data
 		public DbSet<UserModel> User { get; set; }
 
 		public DbSet<PluginModel> Plugin { get; set; }
+		public DbSet<RegisterCompanyModel> Company { get; set; }
 
 	}
 }
