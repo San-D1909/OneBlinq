@@ -89,11 +89,11 @@ export class Login extends Component {
                                 <h1 className="text-center">Login</h1>
                                 <div className="col-12">
                                     <Form>
-                                        {this.state.hasError ? (
+                                        {this.state.hasError ?? (
                                             <div className="py-2 col-12">
                                                 <Label className="alert alert-danger col-12" role="alert">{this.state.errorMessage}</Label>
                                             </div>
-                                        ) : (<></>)
+                                        )
                                         }
                                         <div className="py-2">
                                             <Label for="email">Email</Label>
@@ -110,7 +110,7 @@ export class Login extends Component {
                                     </Form>
 
                                     <div className="forgot-password">
-                                        <Link className="m-2 passwordlink" to="/forgotpassword">Forgot password?</Link>
+                                        <Link className="m-2 passwordlink" to="/forgotpassword">Forgot your password?</Link>
                                     </div>
 
                                 </div>

@@ -73,8 +73,8 @@ namespace Backend
                 c.DocInclusionPredicate(DocInclusionPredicates.FilterByApiVersion);
             });
 
-            services.AddAuthentication("BasicAuthentication")
-                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+            //services.AddAuthentication("BasicAuthentication")
+            //    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
             services.AddScoped<ILicenceRepository, LicenceRepository>();
             services.AddScoped<IPluginRepository, PluginRepository>();
         }
