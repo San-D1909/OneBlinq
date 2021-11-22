@@ -44,6 +44,7 @@ namespace Backend
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
+
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseMySQL(
                 Configuration.GetConnectionString("DefaultConnection")));

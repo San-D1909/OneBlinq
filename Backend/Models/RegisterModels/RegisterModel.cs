@@ -8,9 +8,9 @@ namespace Backend.Models
 {
 	public class RegisterModel
 	{
-        [Key]
-        public int ModelId { get; set; }
-        public RegisterUserModel user { get; set; }
-		public RegisterCompanyModel company { get; set; }
+
+        public RegisterUserModel User { get; set; }
+		public RegisterCompanyModel Company { get; set; }
+
     }
 }

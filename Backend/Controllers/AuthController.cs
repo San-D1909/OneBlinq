@@ -27,20 +27,24 @@ namespace Backend.Controllers
 		private readonly ApplicationDbContext _context;
 		private readonly IConfiguration _config;
 		private readonly MailClient _mailClient;
+		private PasswordEncrypter _encryptor;
 
 		public AuthController(ApplicationDbContext context, IConfiguration config, MailClient mailClient)
 		{
 			_context = context;
 			_config = config;
 			_mailClient = mailClient;
+			_encryptor = new PasswordEncrypter(config);
 		}
 
 
 		[HttpPost("LogIn")]
 		public async Task<IActionResult> LogIn([FromBody] LoginModel credentials)
 		{
+			var encryptedPassword = _encryptor.EncryptPassword(credentials.Password);
+
 			var user = await _context.User
-					.Where(u => u.Email == credentials.Email && u.Password == credentials.Password)
+					.Where(u => u.Email == credentials.Email && u.Password == encryptedPassword)
 					.FirstOrDefaultAsync();
 
 			if (user != null)
@@ -73,7 +77,7 @@ namespace Backend.Controllers
 		public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
 		{
 			var findUser = await _context.User
-					.Where(u => u.Email == credentials.user.Mail && u.Password == credentials.user.Password)
+					.Where(u => u.Email == credentials.User.Mail)
 					.FirstOrDefaultAsync();
 
 			if (findUser != null)
@@ -81,27 +85,46 @@ namespace Backend.Controllers
 				return StatusCode(StatusCodes.Status401Unauthorized);
 			}
 
-			if (credentials.user.Password == credentials.user.PasswordConfirmation)
+			if (credentials.User.Password == credentials.User.PasswordConfirmation)
 			{
-				var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
+				if(credentials.Company.CompanyName != "")
 				{
-					CompanyName = credentials.company.CompanyName,
-					ZipCode = credentials.company.ZipCode,
-					Street = credentials.company.Street,
-					HouseNumber = credentials.company.HouseNumber,
-					Country = credentials.company.Country,
-					BTWNumber = credentials.company.BTWNumber,
-					KVKNumber = credentials.company.KVKNumber,
-					PhoneNumber = credentials.company.PhoneNumber
-				});
+					var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
+					{
+						CompanyName = credentials.Company.CompanyName,
+						ZipCode = credentials.Company.ZipCode,
+						Street = credentials.Company.Street,
+						HouseNumber = credentials.Company.HouseNumber,
+						Country = credentials.Company.Country,
+						BTWNumber = credentials.Company.BTWNumber,
+						KVKNumber = credentials.Company.KVKNumber,
+						PhoneNumber = credentials.Company.PhoneNumber
+					});
+				}
+
+				var company = await _context.Company
+					.Where(c => c.CompanyName == credentials.Company.CompanyName)
+					.FirstOrDefaultAsync();
+
+				int? id = 0;
+
+				if(company == null || company.CompanyName == "") 
+				{
+					id = null;
+				}
+				else 
+				{
+					id = company.CompanyId;
+				}
+
 				var newUser = await _context.User
 					.AddAsync(new UserModel
 					{
-						Email = credentials.user.Mail,
-						Password = credentials.user.Password,
-						FullName = credentials.user.FullName,
+						Email = credentials.User.Mail,
+						Password = _encryptor.EncryptPassword(credentials.User.Password),
+						FullName = credentials.User.FullName,
 						IsAdmin = false,
-						Company = credentials.company.CompanyId	
+						Company = id
 					});
 
 				await _context.SaveChangesAsync();
