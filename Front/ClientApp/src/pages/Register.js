@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Input } from 'reactstrap';
@@ -9,7 +10,6 @@ import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
 import { NavMenu } from '../components/NavMenu';
 import "./CSS/Register.css";
-import axios from 'axios'
 
 export class Register extends Component {
     static displayName = Register.name
