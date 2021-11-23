@@ -18,8 +18,12 @@ namespace Backend.Infrastructure.Data.Repositories
             await _context.SaveChangesAsync();
             return userModel;
         }
-
-        public async Task<UserModel> GetUserById(int UserId)
+        public async Task<CompanyModel> GetCompanyById(int? companyId)
+        {
+            CompanyModel companyModel = await _context.Company.Where(x => x.CompanyId == companyId).FirstOrDefaultAsync();
+            return companyModel;
+        }
+            public async Task<UserModel> GetUserById(int UserId)
         {
             try
             {
