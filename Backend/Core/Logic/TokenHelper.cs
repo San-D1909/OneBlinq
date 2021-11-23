@@ -1,13 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Backend.Core.Logic
 {
@@ -40,19 +36,27 @@ namespace Backend.Core.Logic
 
 		public static JwtSecurityToken Verify(string jwt, IConfiguration config)
 		{
-			var tokenHandler = new JwtSecurityTokenHandler();
-			var key = Encoding.ASCII.GetBytes(config["Secret"]);
-
-			tokenHandler.ValidateToken(jwt, new TokenValidationParameters
+			try
 			{
-				IssuerSigningKey = new SymmetricSecurityKey(key),
-				ValidateIssuerSigningKey = true,
-				ValidateIssuer = false,
-				ValidateAudience = false
+				var tokenHandler = new JwtSecurityTokenHandler();
+				var key = Encoding.ASCII.GetBytes(config["Secret"]);
 
-			}, out SecurityToken validatedToken);
+				tokenHandler.ValidateToken(jwt, new TokenValidationParameters
+				{
+					IssuerSigningKey = new SymmetricSecurityKey(key),
+					ValidateIssuerSigningKey = true,
+					ValidateIssuer = false,
+					ValidateAudience = false
 
-			return (JwtSecurityToken)validatedToken;
+				}, out SecurityToken validatedToken);
+
+				return (JwtSecurityToken)validatedToken;
+			}
+
+			catch(Exception ex)
+            {
+				throw new Exception($"Couldn't validate the token. {ex.Message}");
+			}
 		}
 
 	}
