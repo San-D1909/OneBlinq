@@ -40,6 +40,7 @@ namespace Front
 
 			
 
+
 			app.UseStaticFiles();
 			app.UseSpaStaticFiles();
 
