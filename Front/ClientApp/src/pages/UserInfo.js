@@ -42,12 +42,12 @@ export class UserInfo extends Component {
 
     render() {
         console.log(config);
-/*        if (!localStorage.get("loggedin")) {
+        if (!localStorage.getItem("loggedin")) {
             return (
                 <Redirect to="/user/dashboard/" />
             )
 
-        }*/
+        }
         return (
             <body>
                 <h1>User</h1>

@@ -35,8 +35,8 @@ export class Login extends Component {
     }
 
     setSession = (token) => {
-        localStorage.set("loggedin", true);
-        localStorage.set("token", token.data);
+        localStorage.setItem("loggedin", true);
+        localStorage.setItem("token", token.data);
 
         this.setState({ token: token.data, loggedIn: true });
     }
@@ -72,7 +72,7 @@ export class Login extends Component {
 
 
     render() {
-        if (localStorage.get("loggedin")) {
+        if (localStorage.getItem("loggedin")) {
             return (
                 <Redirect to="/user/dashboard/" />
             )
