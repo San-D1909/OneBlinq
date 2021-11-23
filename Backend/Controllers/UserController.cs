@@ -26,7 +26,7 @@ namespace Backend.Controllers
         [ActionName("GetTodoAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<UserModel>> GetUserById(int UserId)
+        public async Task<ActionResult<User>> GetUserById(int UserId)
         {
             var user = await _userRepository.GetUserById(UserId);
 
@@ -43,14 +43,14 @@ namespace Backend.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateUserData(int userId, UserModel updateUserModel)
+        public async Task<ActionResult> UpdateUserData(int userId, User updateUserModel)
         {
             if (userId != updateUserModel.UserId)
             {
                 return BadRequest();
             }
 
-            UserModel userbyid = await _userRepository.GetUserById(userId);
+            User userbyid = await _userRepository.GetUserById(userId);
             if (userbyid is null)
             {
                 return NotFound();
