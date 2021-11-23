@@ -52,6 +52,7 @@ export class Register extends Component {
             password: this.state.password,
             passwordConfirmation: this.state.passwordConfirmation
         };
+
         var userdata = {};
         userdata.user = user;
         userdata.company = company;
@@ -60,7 +61,8 @@ export class Register extends Component {
             url: 'http://localhost:4388/api/v1/Auth/Register',
             dataType: "json",
             data: userdata
-        }).then(data => console.log(data));
+        }).then(data => console.log(data))
+        
     }
 
     render() {
