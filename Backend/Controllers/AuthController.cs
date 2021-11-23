@@ -159,6 +159,13 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpPost("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail()
+        {
+            return Ok();
+        }
+
+
         [HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] LoginModel credentials)
         {
