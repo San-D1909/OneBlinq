@@ -1,9 +1,14 @@
 ﻿using Backend.Infrastructure.Data.Repositories.Interfaces;
+﻿using Backend.Core.Logic;
+using Backend.Infrastructure.Data.Repositories;
 using Backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
+using System;
+using System.Linq;
 
 namespace Backend.Controllers
 {
@@ -12,25 +17,26 @@ namespace Backend.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository; 
+        private IConfiguration _config;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, IConfiguration config)
         {
             _userRepository = userRepository;
+            _config = config;
         }
 
-        [HttpGet("GetUserById")]
-        public async Task<ActionResult<User>> GetUserById(SecurityToken jtoken)
+        [HttpGet("GetUserByToken")]
+        public async Task<ActionResult<User>> GetUserByToken([FromQuery] string jtoken)
         {
-            User user= new User();
-            user = await _userRepository.GetUserById(user.UserId);
-
+            var user = TokenHelper.Verify(jtoken, _config);
             if (user is null)
             {
                 return NotFound();
             }
-
-            return Ok(user);
+            int id = Convert.ToInt32(user.Claims.First().Value);
+            User userbyid = await _userRepository.GetUserById(id);
+            return Ok(userbyid);
         }
 
 

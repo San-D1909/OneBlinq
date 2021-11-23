@@ -6,62 +6,73 @@ import Label from 'reactstrap/lib/Label';
 import axios from 'axios';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import { Link, Redirect } from 'react-router-dom';
+import { data } from "jquery";
 
-const config = {
-    headers: {
-        Authorization: localStorage.getItem('token')
-    }
-}
 
 export class UserInfo extends Component {
     static displayName = UserInfo.name;
 
     constructor(props) {
         super(props);
+
         this.state = {
             fullname: '',
             mail: '',
             password: '',
             companyname: '',
+            userData: [],
             loggedIn: false,
-            token: null
+            jtoken: localStorage.getItem("token")
         }
+        this.OnLoad = this.OnLoad.bind(this)
+    }
+    componentDidMount() {
+        this.OnLoad();
     }
 
-    populateData = async () => {
+
+    OnLoad = (e) => {
         var self = this;
         axios({
-            method: 'GET',
-            url: 'http://localhost:4388/api/v1/user/GetUserById',
-            data: { config }
+            method: 'get',
+            url: 'http://localhost:4388/api/v1/user/GetUserByToken',
+            params: {
+                jtoken: localStorage.getItem("token"),
+            }
         }).then(function (data) {
             console.log(data);
-            self.setState(data);
+            console.log(data.data);
+            self.setState({ userData: data.data });
         });
     }
 
+
     render() {
-        console.log(config);
+        var self = this;
+        console.log(self.userData);
         if (!localStorage.getItem("loggedin")) {
             return (
-                <Redirect to="/user/dashboard/" />
+                <Redirect to="/login" />
             )
-
         }
         return (
+
             <body>
-                <h1>User</h1>
-                <div className="py-2">
-                    <Label for="fullname">Full name</Label>
-                    {/*      <Input type="text" name="fullname"/>*/}
-                </div>
-                <div className="py-2">
-                    <Label for="email">Email</Label>
-                    {/*         <Input type="text" name="email"/>*/}
-                </div>
-                <div className="py-2">
-                    <Label for="password">Password</Label>
-                    {/*          <Input type="password" name="password"/>*/}
+                <div>
+                    <div class="col-sm-4 mt-4">
+                        <div class="card" style={{ backgroundColor: "white", minHeight: "520px", maxHeight: "520px", borderColor: "#FF1801" }}>
+                            <div class="card-body">
+                                {/*                                    <img class="card-img-top" style={{ maxHeight: "200px" }} src={Race.imageUrl} alt="Card image cap" width="auto" height="auto" ></img>*/}
+                                <h4 style={{ textAlign: "center", fontWeight: "bold" }} class="card-title">FullName: {data.fullname}</h4>
+                                <hr class="solid"></hr>
+                                <p style={{ textAlign: "center" }} class="card-text">Email: {data.email}</p>
+                                <p style={{ textAlign: "center" }} class="card-text">Admin: {data.isAdmin}</p>
+                                <p style={{ textAlign: "center" }} class="card-text">UserId: {data.UserId}</p>
+                            </div>
+                            <div class="card-footer" style={{ backgroundColor: "darkgray", Height: "auto", maxHeight: "auto" }} >
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </body>
         )
