@@ -188,8 +188,7 @@ namespace Backend.Controllers
                 // token is verified
                 //TODO: repo hier
                 var user = _context.User.Where(u => u.Email == dto.Email).FirstOrDefault();
-                // TODO: encrypt new password
-                user.Password = dto.Password;
+                user.Password = _encryptor.EncryptPassword(dto.Password);
                 _context.SaveChanges();
             }
             catch
