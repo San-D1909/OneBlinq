@@ -7,13 +7,9 @@ using System.Threading.Tasks;
 
 namespace Backend.Infrastructure.Data.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
-        private readonly ApplicationDbContext _context;
-        public UserRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        public UserRepository(ApplicationDbContext context) : base(context) { }
 
         public async Task<User> UpdateFullName(string FullName, int userId)
         {
