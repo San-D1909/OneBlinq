@@ -1,13 +1,8 @@
-﻿using Backend.Infrastructure.Data.Repositories;
-using Backend.Infrastructure.Data.Repositories.Interfaces;
+﻿using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Backend.Controllers
@@ -59,10 +54,6 @@ namespace Backend.Controllers
             {
                 await _userRepository.UpdateFullName(updateUserModel.FullName, userId);
             }
-
-
-
-
            // var updatedUser = await _userRepository.UpdateUser(userModel);
             return Ok();
         }

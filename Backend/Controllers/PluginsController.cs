@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Infrastructure.Data;
 using Backend.Models;
 using Backend.Infrastructure.Data.Repositories.Interfaces;
-using Swashbuckle.AspNetCore.Annotations;
-using System.Net.Http;
-using Newtonsoft.Json;
-using Nancy.Responses;
 using Backend.DTO.Out;
 
 namespace Backend.Controllers
