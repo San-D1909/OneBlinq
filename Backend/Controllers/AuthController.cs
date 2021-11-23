@@ -35,6 +35,34 @@ namespace Backend.Controllers
             _encryptor = new PasswordEncrypter(config);
         }
 
+        private async void SendVerificationMail(string Email )
+        {
+            var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                       new Claim(ClaimTypes.Email, Email.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            // TODO: change site url from localhost to config["SITE_URL"] || env SITE_URL
+            MailMessage mail = new MailMessage
+             (
+                 "stuurmen@stuur.men",
+                 "test@gmail.com",
+                 "Reset Password",
+                 $"Press this link to reset your password: localhost:29616/verify?email={Email}&token={tokenHandler.WriteToken(token)}"
+             );
+
+            await _mailClient.SendEmailAsync(mail);
+        }
 
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] Login credentials)
@@ -117,6 +145,8 @@ namespace Backend.Controllers
                         IsAdmin = false,
                         Company = id
                     });
+
+                SendVerificationMail(credentials.User.Mail);
 
                 await _context.SaveChangesAsync();
 
