@@ -237,45 +237,5 @@ namespace Backend.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> ConfirmationMail([FromForm] Login credentials)
-        {
-            //FIXME email wordt niet verzonden wanneer request wordt gemaakt via frontend ??
-
-            //Check if user exists with given email
-            var user = await _context.User
-                    .Where(u => u.Email == credentials.Email)
-                    .FirstOrDefaultAsync();
-
-            if (user != null)
-            {
-                var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                       new Claim(ClaimTypes.Email, user.Email.ToString())
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
-                };
-
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-
-                // TODO: change site url from localhost to config["SITE_URL"] || env SITE_URL
-                MailMessage mail = new MailMessage
-                 (
-                     "stuurmen@stuur.men",
-                     "test@gmail.com",
-                     "Account Creation Confirmation",
-                     $"You have created an account, click on this link to activate: localhost:29616/resetpassword?email={credentials.Email}&token={tokenHandler.WriteToken(token)}"
-                 );
-
-                await _mailClient.SendEmailAsync(mail);
-            }
-
-            return Ok();
-        }
     }
 }

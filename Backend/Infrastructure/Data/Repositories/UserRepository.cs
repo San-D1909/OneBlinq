@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Infrastructure.Data.Repositories
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    public class UserRepository : GenericRepository<UserModel>, IUserRepository
     {
         public UserRepository(ApplicationDbContext context) : base(context) { }
 

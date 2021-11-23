@@ -9,7 +9,7 @@ using Backend.Core.Logic;
 
 namespace Backend.Infrastructure.Data.Repositories
 {
-    public class PluginRepository : GenericRepository<Plugin>, IPluginRepository
+    public class PluginRepository : GenericRepository<PluginModel>, IPluginRepository
     {
         public PluginRepository(ApplicationDbContext context) : base(context) { }
 

@@ -7,7 +7,6 @@ import axios from 'axios';
 export default function VerifyEmail() {
 
     useEffect(() => {
-        axios.post(localhost:)
         console.log("hi")
     });
 

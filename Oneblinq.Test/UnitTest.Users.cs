@@ -11,7 +11,7 @@ namespace Oneblinq.Test
     [TestClass]
     public class UnitTest1
     {
-        UserRepository userrepository;
+        UserRepository userRepository;
 
         [TestInitialize]
         public void TestInit()
@@ -22,13 +22,13 @@ namespace Oneblinq.Test
 
             var context = new ApplicationDbContext(options);
 
-            userrepository = new UserRepository(context);
+            userRepository = new UserRepository(context);
         }
 
         [TestMethod]
         public async Task User_UpdateFullName_TrueIsNewNameAsync()
         {
-            User user = new User()
+            UserModel user = new UserModel()
             {
                 UserId = 1,
                 FullName = "Ronaldo",
@@ -36,7 +36,7 @@ namespace Oneblinq.Test
                 Email = "t@t.nl",
                 IsAdmin = false,
             };
-            userrepository.
+            userRepository.Add(user);
         }
     }
 }
