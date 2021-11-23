@@ -6,7 +6,6 @@ import AdminNavMenu from "../components/Admin/AdminNavMenu";
 import { PluginCreate, PluginEdit, PluginList, PluginShow } from "../components/Admin/Plugins";
 import { LicenseList, LicenseShow } from "../components/Admin/License";
 import simpleRestProvider from 'ra-data-simple-rest';
-import CustomDataProvider from "../components/CustomDataProvider";
 
 export const newOptions = {
 
