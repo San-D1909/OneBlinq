@@ -49,23 +49,15 @@ namespace Backend.Controllers
 
 			if (user != null)
 			{
-				var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
-
-				var tokenHandler = new JwtSecurityTokenHandler();
-				var tokenDescriptor = new SecurityTokenDescriptor
+				Claim[] claims = new Claim[]
 				{
-					Subject = new ClaimsIdentity(new Claim[]
-					{
-					   new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-					   new Claim(ClaimTypes.Name, user.FullName),
-					}),
-					Expires = DateTime.UtcNow.AddDays(7),
-					SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
+					 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+					  new Claim(ClaimTypes.Name, user.FullName)
 				};
 
-				var token = tokenHandler.CreateToken(tokenDescriptor);
+				var token = TokenHelper.CreateToken(claims, _config);
 
-				return Ok(tokenHandler.WriteToken(token));
+				return Ok(TokenHelper.WriteToken(token));
 			}
 			else
 			{
@@ -150,27 +142,19 @@ namespace Backend.Controllers
 
 			if (user != null)
 			{
-				var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
-
-				var tokenHandler = new JwtSecurityTokenHandler();
-				var tokenDescriptor = new SecurityTokenDescriptor
+				Claim[] claims = new Claim[]
 				{
-					Subject = new ClaimsIdentity(new Claim[]
-					{
-					   new Claim(ClaimTypes.Email, user.Email.ToString())
-					}),
-					Expires = DateTime.UtcNow.AddDays(7),
-					SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
+					 new Claim(ClaimTypes.Email, user.Email.ToString())
 				};
 
-				var token = tokenHandler.CreateToken(tokenDescriptor);
+				var token = TokenHelper.CreateToken(claims, _config);
 
 				MailMessage mail = new MailMessage
 				 (
 					 "stuurmen@stuur.men",
 					 "test@gmail.com",
 					 "Reset Password",
-					 $"Press this link to reset your password: " + "localhost:29616/resetpassword/" + tokenHandler.WriteToken(token)
+					 $"Press this link to reset your password: " + "localhost:29616/resetpassword/" + TokenHelper.WriteToken(token)
 				 );
 
 				await _mailClient.SendEmailAsync(mail);
