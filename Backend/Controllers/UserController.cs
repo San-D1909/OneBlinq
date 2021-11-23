@@ -49,21 +49,14 @@ namespace Backend.Controllers
             {
                 return BadRequest();
             }
-
             User userbyid = await _userRepository.GetUserById(userId);
             if (userbyid is null)
             {
                 return NotFound();
             }
-            if (userbyid.FullName != updateUserModel.FullName)
-            {
-                await _userRepository.UpdateFullName(updateUserModel.FullName, userId);
-            }
+            if (userbyid.FullName != updateUserModel.FullName){await _userRepository.UpdateFullName(updateUserModel.FullName, userId);}
+            if (userbyid.Email != updateUserModel.Email) { await _userRepository.UpdateEmail(updateUserModel.Email, userId); }
 
-
-
-
-           // var updatedUser = await _userRepository.UpdateUser(userModel);
             return Ok();
         }
     }
