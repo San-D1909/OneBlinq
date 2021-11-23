@@ -159,7 +159,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword([FromForm] Login credentials)
+        public async Task<IActionResult> ForgotPassword([FromBody] Login credentials)
         {
             //FIXME email wordt niet verzonden wanneer request wordt gemaakt via frontend ??
 
