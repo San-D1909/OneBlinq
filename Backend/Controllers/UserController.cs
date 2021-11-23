@@ -35,13 +35,13 @@ namespace Backend.Controllers
                 return NotFound();
             }
             int id = Convert.ToInt32(user.Claims.First().Value);
-            UserModel userbyid = await _userRepository.GetUserById(id);
+            UserModel userById = await _userRepository.GetUserById(id);
             CompanyModel userCompany = new CompanyModel();
-            if (userbyid.Company != 0 && userbyid != null)
+            if (userById.Company != 0 && userById != null)
             {
-                userCompany = await _userRepository.GetCompanyById(userbyid.Company);
+                userCompany = await _userRepository.GetCompanyById(userById.Company);
             }           
-            return Ok(new {userbyid,userCompany});
+            return Ok(new {userById,userCompany});
         }
 
 
