@@ -79,6 +79,7 @@ namespace Backend.Controllers
                 {
                      new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                       new Claim(ClaimTypes.Name, user.FullName)
+
                 };
 
                 var token = TokenHelper.CreateToken(claims, _config);
