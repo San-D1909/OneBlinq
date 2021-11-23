@@ -45,13 +45,15 @@ const dataProvider = fakeDataProvider({
     ],
 })
 
-const AdminDash = () => (
-    <Admin theme={newOptions} dataProvider={dataProvider}>
-        <Resource name="licenses"
-            list={ListGuesser}
-            edit={EditGuesser}
-        />
-    </Admin>
-);
+const AdminDash = () => {
+    return (
+        <Admin theme={newOptions} dataProvider={dataProvider}>
+            <Resource name="licenses"
+                list={ListGuesser}
+                edit={EditGuesser}
+            />
+        </Admin>
+    );
+};
 
 export default AdminDash;

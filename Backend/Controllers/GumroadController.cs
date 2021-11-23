@@ -5,7 +5,6 @@ using Backend.Infrastructure.Data;
 using System.Linq;
 using Backend.Core.Logic;
 using Microsoft.Extensions.Configuration;
-using Backend.Models.MailModels;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -31,17 +30,17 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Ping")]
-        public IActionResult Ping(GumroadResponseModel response)
+        public IActionResult Ping(GumroadResponse response)
         {
 			var domain = HttpContext.Request.Host;
 			if (domain.Host == "www.gumroad.com" && (_env.IsDevelopment() || _env.IsEnvironment("local")))
 				return Ok(200);
 
 
-			UserModel user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
+			User user = _context.User.Where(u => u.Email == response.Email).FirstOrDefault();
             if (user == null)
             {
-                user = new UserModel()
+                user = new User()
                 {
                     Email = response.Email,
                     FullName = response.Full_Name,
@@ -52,7 +51,7 @@ namespace Backend.Controllers
                 _context.SaveChanges();
             }
 
-            LicenseModel license = new LicenseModel()
+            License license = new License()
             {
                 ExpirationDate = DateTime.Now.AddYears(1),
                 LicenseType = "Test",

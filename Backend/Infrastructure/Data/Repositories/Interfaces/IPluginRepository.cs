@@ -8,9 +8,10 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
 {
     public interface IPluginRepository
     {
-        Task<IEnumerable<PluginModel>> GetPluginsByNameAsync(string searchString);
+        Task<IEnumerable<Plugin>> GetPlugins(string filter, string sort);
+        Task<IEnumerable<Plugin>> GetPluginsByNameAsync(string searchString);
 
-        void AddPlugin(PluginModel plugin);
+        void AddPlugin(Plugin plugin);
 
         Task<int> SaveAsync();
     }

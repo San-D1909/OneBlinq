@@ -15,6 +15,8 @@ using System.Linq;
 using Backend.Controllers;
 using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.Infrastructure.Data.Repositories;
+using System.Reflection;
+using System.IO;
 
 namespace Backend
 {
@@ -43,6 +45,7 @@ namespace Backend
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+                c.AddPolicy("AllowExposedXTotalCount", options => options.AllowAnyHeader().WithExposedHeaders("Access-Control-Expose-Headers"));
             });
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseMySQL(
@@ -71,6 +74,9 @@ namespace Backend
                 c.OperationFilter<RemoveVersionFromParameter>();
                 c.DocumentFilter<ReplaceVersionWithExactValueInPath>();
                 c.DocInclusionPredicate(DocInclusionPredicates.FilterByApiVersion);
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddAuthentication("BasicAuthentication")

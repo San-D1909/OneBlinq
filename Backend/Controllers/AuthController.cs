@@ -34,7 +34,7 @@ namespace Backend.Controllers
 
 
 		[HttpPost("LogIn")]
-        public async Task<IActionResult> LogIn([FromBody] LoginModel credentials)
+        public async Task<IActionResult> LogIn([FromBody] Login credentials)
         {
             var user =  await _context.User
                     .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
@@ -81,7 +81,7 @@ namespace Backend.Controllers
             if(credentials.Password == credentials.PasswordConfirmation)
 			{
                 var newUser = await _context.User
-                    .AddAsync(new UserModel { 
+                    .AddAsync(new User { 
                         Email = credentials.Mail, 
                         FullName = credentials.FullName,
                         Password = credentials.Password   
