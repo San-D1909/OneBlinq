@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Infrastructure.Data;
 using Backend.Models;
 using Backend.Infrastructure.Data.Repositories.Interfaces;
-using Swashbuckle.AspNetCore.Annotations;
-using System.Net.Http;
-using Newtonsoft.Json;
-using Nancy.Responses;
 using Backend.DTO.Out;
 
 namespace Backend.Controllers
@@ -37,10 +31,10 @@ namespace Backend.Controllers
         /// </summary>
         /// <param name="filter" example='"pluginIds": [1,21321, 2312]'>The filter for the plugins</param>
         [Produces("application/json")]
-        public async Task<ActionResult<IEnumerable<Plugin>>> GetPlugin([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
+        public async Task<ActionResult<IEnumerable<PluginModel>>> GetPlugin([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
 
-          IEnumerable<Plugin> plugins = await _pluginRepository.GetPlugins(filter, sort);
+          IEnumerable<PluginModel> plugins = await _pluginRepository.GetPlugins(filter, sort);
 
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
             Request.HttpContext.Response.Headers.Add("Content-Range", "plugins 0-5/1");
@@ -66,7 +60,7 @@ namespace Backend.Controllers
         // PUT: api/Plugins/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlugin(int id, Plugin plugin)
+        public async Task<IActionResult> PutPlugin(int id, PluginModel plugin)
         {
             if (id != plugin.Id)
             {
@@ -97,7 +91,7 @@ namespace Backend.Controllers
         // POST: api/Plugins
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Plugin>> PostPlugin(Plugin plugin)
+        public async Task<ActionResult<PluginModel>> PostPlugin(PluginModel plugin)
         {
             _context.Plugin.Add(plugin);
             await _context.SaveChangesAsync();
@@ -126,7 +120,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> DeletePlugins([FromQuery( Name = "filter" )] string filter)
         {
             //"{\"id\":[4]}"
-            List<Plugin> plugins = (await _pluginRepository.GetPlugins(filter, "")).ToList();
+            List<PluginModel> plugins = (await _pluginRepository.GetPlugins(filter, "")).ToList();
 
             int[] deletedPlugins = new int[plugins.Count()];
             for (int i = 0; i < plugins.Count(); i++)

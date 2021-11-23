@@ -28,31 +28,32 @@ namespace Backend.Controllers
         {
             if (userID != 0)
             {
-                List<License> licenceList = await LicenceRepository.GetLicencesDb(2);
+                List<LicenseModel> licenceList = await LicenceRepository.GetLicencesDb(2);
                 return Ok(licenceList);
             }
             return StatusCode(StatusCodes.Status401Unauthorized);
         }
-        /**
-        [HttpGet("plugins/")]
-        public async Task<IActionResult> GetPlugins(string searchString)
-        {
-            var plugins = await PluginRepository.GetPluginsByNameAsync(searchString);
-
-            return Ok(plugins);
-        }
-
-        [HttpPost("plugins/")]
-        public async Task<IActionResult> AddPlugin([Bind("PluginName","PluginDescription")] Plugin plugin)
-        {
-            if (ModelState.IsValid)
-            {
-                PluginRepository.AddPlugin(plugin);
-                await PluginRepository.SaveAsync();
-                return Ok(plugin);
-            }
-            return Ok(plugin);
-        }
-        */
     }
 }
+/*
+[HttpGet("plugins/")]
+public async Task<IActionResult> GetPlugins(string searchString)
+{
+    var plugins = await PluginRepository.GetPluginsByNameAsync(searchString);
+
+    return Ok(plugins);
+}
+
+[HttpPost("plugins/")]
+public async Task<IActionResult> AddPlugin([Bind("PluginName","PluginDescription")] Plugin plugin)
+{
+    if (ModelState.IsValid)
+    {
+        PluginRepository.AddPlugin(plugin);
+        await PluginRepository.SaveAsync();
+        return Ok(plugin);
+    }
+    return Ok(plugin);
+}
+*/
+

@@ -1,47 +1,75 @@
 ﻿import * as React from "react";
 import { Component } from "react";
 import { email } from "react-admin";
-
+import Form from 'reactstrap/lib/Form';
+import Label from 'reactstrap/lib/Label';
+import axios from 'axios';
+import ReactSession from 'react-client-session/dist/ReactSession';
+import { Link, Redirect } from 'react-router-dom';
 
 export class UserInfo extends Component {
     static displayName = UserInfo.name;
 
     constructor(props) {
         super(props);
+
         this.state = {
             fullname: '',
             mail: '',
             password: '',
             companyname: '',
+            userData: '',
+            loggedIn: false,
+            jtoken: localStorage.getItem("token")
         }
+        this.OnLoad = this.OnLoad.bind(this)
+    }
+    componentDidMount() {
+        this.OnLoad();
     }
 
-    populateData = async () => {
+
+    OnLoad = (e) => {
         var self = this;
         axios({
-            method: 'GET',
-            url: 'http://localhost:4388/api/v1/user/UserId'
-        }).then(function (data) {
+            method: 'get',
+            url: 'http://localhost:4388/api/v1/user/GetUserByToken',
+            params: {
+                jtoken: localStorage.getItem("token"),
+            }
+        }).then((data)=>{
+            self.setState({ userData: data.data });
             console.log(data);
-            self.setState(data);
         });
     }
 
+
     render() {
-        <body>
-            <h1>User</h1>
-            <div className="py-2">
-                <Label for="fullname">Full name</Label>
-                <Input type="text" name="fullname" value={full_name}/>
-            </div>
-            <div className="py-2">
-                <Label for="email">Email</Label>
-                <Input type="text" name="email" value={mail} />
-            </div>
-            <div className="py-2">
-                <Label for="password">Password</Label>
-                <Input type="password" name="password" value={password}/>
-            </div>
-        </body>
+        var self = this;
+        console.log(self.userData);
+        if (!localStorage.getItem("loggedin")) {
+            return (
+                <Redirect to="/login" />
+            )
+        }
+        return (
+
+            <body>
+                <div>
+                    <div class="col-sm-4 mt-4">
+                        <div class="card" style={{ backgroundColor: "white", minHeight: "520px", maxHeight: "520px", borderColor: "#FF1801" }}>
+                            <div class="card-body">
+                                <h4 style={{ textAlign: "center", fontWeight: "bold" }} class="card-title">FullName: {this.state.userData.fullName}</h4>
+                                <hr class="solid"></hr>
+                                <p style={{ textAlign: "center" }} class="card-text">CompanyID: {this.state.userData.company}</p>
+                                <p style={{ textAlign: "center" }} class="card-text">UserId: {this.state.userData.userId}</p>
+                            </div>
+                            <div class="card-footer" style={{ backgroundColor: "darkgray", Height: "auto", maxHeight: "auto" }} >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        )
     }
 }

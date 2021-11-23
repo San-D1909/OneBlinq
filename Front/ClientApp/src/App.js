@@ -13,6 +13,8 @@ import { Plugins } from './pages/Plugins';
 import { Register } from './pages/Register';
 import { ResetPassword } from './pages/ResetPassword';
 import UserDashboard from './pages/UserDashboard';
+import { UserInfo } from './pages/UserInfo';
+import  VerifyEmail  from './pages/VerifyEmail';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -35,6 +37,8 @@ export default class App extends Component {
                 <Route exact path='/user/dashboard' component={UserDashboard} />
                 <Route exact path='/resetpassword' component={ResetPassword} />
                 <Route exact path='/forgotpassword' component={ForgotPassword} />
+                <Route path="/verify/:token" component={VerifyEmail} /> 
+                <Route exact path='/UserInfo' component={UserInfo} />
             </Layout>
         );
     }

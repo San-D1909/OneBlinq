@@ -35,9 +35,37 @@ namespace Backend.Controllers
             _encryptor = new PasswordEncrypter(config);
         }
 
+        private async void SendVerificationMail(string Email )
+        {
+            var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                       new Claim(ClaimTypes.Email, Email.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            // TODO: change site url from localhost to config["SITE_URL"] || env SITE_URL
+            MailMessage mail = new MailMessage
+             (
+                 "stuurmen@stuur.men",
+                 "test@gmail.com",
+                 "Reset Password",
+                 $"Press this link to confirm your account: localhost:29616/verify?email={Email}&token={tokenHandler.WriteToken(token)}"
+             );
+
+            await _mailClient.SendEmailAsync(mail);
+        }
 
         [HttpPost("LogIn")]
-        public async Task<IActionResult> LogIn([FromBody] Login credentials)
+        public async Task<IActionResult> LogIn([FromBody] LoginModel credentials)
         {
             var encryptedPassword = _encryptor.EncryptPassword(credentials.Password);
 
@@ -51,6 +79,7 @@ namespace Backend.Controllers
                 {
                      new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                       new Claim(ClaimTypes.Name, user.FullName)
+
                 };
 
                 var token = TokenHelper.CreateToken(claims, _config);
@@ -80,7 +109,7 @@ namespace Backend.Controllers
             {
                 if (credentials.Company.CompanyName != "")
                 {
-                    var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
+                    var newCompany = await _context.Company.AddAsync(new CompanyModel
                     {
                         CompanyName = credentials.Company.CompanyName,
                         ZipCode = credentials.Company.ZipCode,
@@ -109,7 +138,7 @@ namespace Backend.Controllers
                 }
 
                 var newUser = await _context.User
-                    .AddAsync(new User
+                    .AddAsync(new UserModel
                     {
                         Email = credentials.User.Mail,
                         Password = _encryptor.EncryptPassword(credentials.User.Password),
@@ -117,6 +146,8 @@ namespace Backend.Controllers
                         IsAdmin = false,
                         Company = id
                     });
+
+                SendVerificationMail(credentials.User.Mail);
 
                 await _context.SaveChangesAsync();
 
@@ -128,8 +159,15 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpPost("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail()
+        {
+            return Ok();
+        }
+
+
         [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword([FromForm] Login credentials)
+        public async Task<IActionResult> ForgotPassword([FromBody] LoginModel credentials)
         {
             //FIXME email wordt niet verzonden wanneer request wordt gemaakt via frontend ??
 
@@ -188,8 +226,7 @@ namespace Backend.Controllers
                 // token is verified
                 //TODO: repo hier
                 var user = _context.User.Where(u => u.Email == dto.Email).FirstOrDefault();
-                // TODO: encrypt new password
-                user.Password = dto.Password;
+                user.Password = _encryptor.EncryptPassword(dto.Password);
                 _context.SaveChanges();
             }
             catch

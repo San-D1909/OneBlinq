@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-    public class RegisterCompanyModel
+    public class CompanyModel
     {
 		[Key]
 		public int CompanyId { get; set; }

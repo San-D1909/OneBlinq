@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-	public class User
+	public class UserModel
 	{
 		[Key]
 		public int UserId { get; set; }
