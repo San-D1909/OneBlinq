@@ -9,13 +9,9 @@ using Backend.Core.Logic;
 
 namespace Backend.Infrastructure.Data.Repositories
 {
-    public class PluginRepository : IPluginRepository
+    public class PluginRepository : GenericRepository<PluginModel>, IPluginRepository
     {
-        private readonly ApplicationDbContext _context;
-        public PluginRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        public PluginRepository(ApplicationDbContext context) : base(context) { }
 
         public async Task<IEnumerable<PluginModel>> GetPlugins(string filter, string sort)
         {
@@ -38,9 +34,5 @@ namespace Backend.Infrastructure.Data.Repositories
             _context.Plugin.Add(plugin);
         }
 
-        public virtual async Task<int> SaveAsync()
-        {
-            return await _context.SaveChangesAsync();
-        }
     }
 }

@@ -8,14 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infrastructure.Data.Repositories
 {
-    public class LicenceRepository : ILicenceRepository
+    public class LicenceRepository : GenericRepository<LicenseModel>, ILicenceRepository
     {
-        private readonly ApplicationDbContext _context;
-        public LicenceRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        public LicenceRepository(ApplicationDbContext context) : base(context) { }
+
         public Task<List<LicenseModel>> GetLicencesDb(int userID)
+
         {
             bool admin = _context.User.Select(s => s.UserId == userID).FirstOrDefault();
             List<LicenseModel> results = new();
