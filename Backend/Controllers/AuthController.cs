@@ -1,4 +1,5 @@
-﻿using Backend.Infrastructure.Data;
+﻿using Backend.Core.Logic;
+using Backend.Infrastructure.Data;
 using Backend.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -11,91 +12,182 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Ubiety.Dns.Core;
 
 namespace Backend.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1")]
-    [ApiController]
-    public class AuthController : ControllerBase
-    {
+	[Route("api/v{version:apiVersion}/[controller]")]
+	[ApiVersion("1")]
+	[ApiController]
+	public class AuthController : ControllerBase
+	{
 		private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _config;
+		private readonly IConfiguration _config;
+		private readonly MailClient _mailClient;
+		private PasswordEncrypter _encryptor;
 
-        public AuthController(ApplicationDbContext context, IConfiguration config)
+		public AuthController(ApplicationDbContext context, IConfiguration config, MailClient mailClient)
 		{
-            _context = context;
-            _config = config;
+			_context = context;
+			_config = config;
+			_mailClient = mailClient;
+			_encryptor = new PasswordEncrypter(config);
 		}
 
 
 		[HttpPost("LogIn")]
-        public async Task<IActionResult> LogIn([FromBody] Login credentials)
-        {
-            var user =  await _context.User
-                    .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
-                    .FirstOrDefaultAsync();
+		public async Task<IActionResult> LogIn([FromBody] LoginModel credentials)
+		{
+			var encryptedPassword = _encryptor.EncryptPassword(credentials.Password);
 
-            if (user != null)
-            {
-                var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
+			var user = await _context.User
+					.Where(u => u.Email == credentials.Email && u.Password == encryptedPassword)
+					.FirstOrDefaultAsync();
 
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                       new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                       new Claim(ClaimTypes.Name, user.FullName),
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
-                };
-
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-
-                return Ok(tokenHandler.WriteToken(token));
-            }
-            else
+			if (user != null)
 			{
-                return StatusCode(StatusCodes.Status401Unauthorized);
+				var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
+
+				var tokenHandler = new JwtSecurityTokenHandler();
+				var tokenDescriptor = new SecurityTokenDescriptor
+				{
+					Subject = new ClaimsIdentity(new Claim[]
+					{
+					   new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+					   new Claim(ClaimTypes.Name, user.FullName),
+					}),
+					Expires = DateTime.UtcNow.AddDays(7),
+					SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
+				};
+
+				var token = tokenHandler.CreateToken(tokenDescriptor);
+
+				return Ok(tokenHandler.WriteToken(token));
 			}
-        }
-
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserModel credentials)
-        {
-            var findUser = await _context.User
-                    .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
-                    .FirstOrDefaultAsync();
-
-            if(findUser != null)
-			{
-                return StatusCode(StatusCodes.Status401Unauthorized);
-            }
-
-            if(credentials.Password == credentials.PasswordConfirmation)
-			{
-                var newUser = await _context.User
-                    .AddAsync(new User { 
-                        Email = credentials.Mail, 
-                        FullName = credentials.FullName,
-                        Password = credentials.Password   
-                    });
-
-                await _context.SaveChangesAsync();
-
-                return Ok();
-            }
 			else
 			{
-                return StatusCode(StatusCodes.Status401Unauthorized);
-            }
-              
-        }
-    }
+				
+				return StatusCode(StatusCodes.Status401Unauthorized);
+			}
+		}
+
+		[HttpPost("Register")]
+		public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
+		{
+			var findUser = await _context.User
+					.Where(u => u.Email == credentials.User.Mail)
+					.FirstOrDefaultAsync();
+
+			if (findUser != null)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized);
+			}
+
+			if (credentials.User.Password == credentials.User.PasswordConfirmation)
+			{
+				if(credentials.Company.CompanyName != "")
+				{
+					var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
+					{
+						CompanyName = credentials.Company.CompanyName,
+						ZipCode = credentials.Company.ZipCode,
+						Street = credentials.Company.Street,
+						HouseNumber = credentials.Company.HouseNumber,
+						Country = credentials.Company.Country,
+						BTWNumber = credentials.Company.BTWNumber,
+						KVKNumber = credentials.Company.KVKNumber,
+						PhoneNumber = credentials.Company.PhoneNumber
+					});
+				}
+
+				var company = await _context.Company
+					.Where(c => c.CompanyName == credentials.Company.CompanyName)
+					.FirstOrDefaultAsync();
+
+				int? id = 0;
+
+				if(company == null || company.CompanyName == "") 
+				{
+					id = null;
+				}
+				else 
+				{
+					id = company.CompanyId;
+				}
+
+				var newUser = await _context.User
+					.AddAsync(new UserModel
+					{
+						Email = credentials.User.Mail,
+						Password = _encryptor.EncryptPassword(credentials.User.Password),
+						FullName = credentials.User.FullName,
+						IsAdmin = false,
+						Company = id
+					});
+
+				await _context.SaveChangesAsync();
+
+				return Ok();
+			}
+			else
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized);
+			}
+
+		}
+
+		[HttpPost("ForgotPassword")]
+		public async Task<IActionResult> ForgotPassword([FromBody] LoginModel credentials)
+		{
+
+			//Check if user exists with given email
+			var user = await _context.User
+					.Where(u => u.Email == credentials.Email)
+					.FirstOrDefaultAsync();
+
+			if (user != null)
+			{
+				var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
+
+				var tokenHandler = new JwtSecurityTokenHandler();
+				var tokenDescriptor = new SecurityTokenDescriptor
+				{
+					Subject = new ClaimsIdentity(new Claim[]
+					{
+					   new Claim(ClaimTypes.Email, user.Email.ToString())
+					}),
+					Expires = DateTime.UtcNow.AddDays(7),
+					SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
+				};
+
+				var token = tokenHandler.CreateToken(tokenDescriptor);
+
+				MailMessage mail = new MailMessage
+				 (
+					 "stuurmen@stuur.men",
+					 "test@gmail.com",
+					 "Reset Password",
+					 $"Press this link to reset your password: " + "localhost:29616/resetpassword/" + tokenHandler.WriteToken(token)
+				 );
+
+				await _mailClient.SendEmailAsync(mail);
+
+				//TODO add token to database
+			}
+
+			return Ok();
+		}
+
+		[HttpPost("ResetPassword")]
+		public async Task<IActionResult> ResetPassword()
+		{
+			//TODO create model for resetting password
+			//TODO verify token
+
+			return Ok();
+		}
+	}
 }

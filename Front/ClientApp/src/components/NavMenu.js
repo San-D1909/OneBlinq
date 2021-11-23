@@ -61,7 +61,7 @@ export class NavMenu extends Component {
         } else {
             LoginLogoutButton = (
                 <NavItem>
-                    <NavLink to="/login">Login</NavLink>
+                    <NavLink style={{color:"white"}} href="/login">Login</NavLink>
                 </NavItem>
             );
         }
@@ -84,9 +84,6 @@ export class NavMenu extends Component {
                 </NavDropdown>
                 {LoginLogoutButton}
                 <Button variant="outline-light" href="/login">Get Started</Button>
-                {/* <NavItem>
-                  <NavLink tag={Link} to="/login">Get started</NavLink>
-                </NavItem> */}
               </ul>
             </Collapse>
         </Navbar>

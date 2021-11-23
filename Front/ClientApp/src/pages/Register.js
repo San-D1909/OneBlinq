@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Input } from 'reactstrap';
@@ -9,53 +10,6 @@ import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
 import { NavMenu } from '../components/NavMenu';
 import "./CSS/Register.css";
-import axios from 'axios'
-
-function ShowCompanyInfo(props) {
-    let checked = props.checked;
-    return (
-        <>
-            {checked == true &&
-                <>
-                    <div className="py-2">
-                        <Label for="companyName">Company Name</Label>
-                        <Input type="text" onChange={(e) => this.setState({ companyName: e.target.value })} name="companyName" />
-                    </div>
-                    <div className="py-2">
-                        <Label for="zipCode">Zip Code</Label>
-                        <Input type="text" onChange={(e) => this.setState({ zipCode: e.target.value })} name="zipCode" />
-                    </div>
-                    <div className="py-2">
-                        <Label for="street">Street Name</Label>
-                        <Input type="text" onChange={(e) => this.setState({ street: e.target.value })} name="street" />
-                    </div>
-                    <div className="py-2">
-                        <Label for="houseNumber">House Number</Label>
-                        <Label for="houseNumber">House Number</Label>
-                        <Input type="text" onChange={(e) => this.setState({ houseNumber: e.target.value })} name="houseNumber" />
-                    </div>
-                    <div className="py-2">
-                        <Label for="country">Country</Label>
-                        <Input type="text" onChange={(e) => this.setState({ country: e.target.value })} name="country" />
-                    </div>
-                    <div className="py-2">
-                        <Label for="bTWNumber">BTW Number</Label>
-                        <Input type="text" onChange={(e) => this.setState({ bTWNumber: e.target.value })} name="bTWNumber" />
-                    </div>
-                    <div className="py-2">
-                        <Label for="kVKNumber">KVK Number</Label>
-                        <Input type="text" onChange={(e) => this.setState({ kVKNumber: e.target.value })} name="kVKNumber" />
-                    </div>
-                    <div className="py-2">
-                        <Label for="phoneNumber">PhoneNumber</Label>
-                        <Input type="text" onChange={(e) => this.setState({ phoneNumber: e.target.value })} name="phoneNumber" />
-                    </div>
-                </>
-            }
-        </>
-    )
-
-}
 
 export class Register extends Component {
     static displayName = Register.name
@@ -139,7 +93,42 @@ export class Register extends Component {
                                         <hr class="solid"></hr>
                                         <label for="myCheck">I have a company:</label>
                                         <input type="checkbox" id="myCheck" onChange={(e) => this.setState({ hasCompany: e.target.checked })} />
-                                        <ShowCompanyInfo checked={this.state.hasCompany} />
+                                        {this.state.hasCompany &&
+                                            <>
+                                                <div className="py-2">
+                                                    <Label for="companyName">Company Name</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ companyName: e.target.value })} name="companyName" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="zipCode">Zip Code</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ zipCode: e.target.value })} name="zipCode" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="street">Street Name</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ street: e.target.value })} name="street" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="houseNumber">House Number</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ houseNumber: e.target.value })} name="houseNumber" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="country">Country</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ country: e.target.value })} name="country" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="bTWNumber">BTW Number</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ bTWNumber: e.target.value })} name="bTWNumber" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="kVKNumber">KVK Number</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ kVKNumber: e.target.value })} name="kVKNumber" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="phoneNumber">PhoneNumber</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ phoneNumber: e.target.value })} name="phoneNumber" />
+                                                </div>
+                                            </>
+                                        }
                                         <div className="py-2">
                                             <Button className="my-2 mr-2 ml-0 registerbutton" onClick={(e) => this.handleRegister(e)}>Register</Button>
                                             <Link className="m-2 loginlink" to="/login">Already have an account? Login here!</Link>
@@ -191,7 +180,42 @@ export class Register extends Component {
                                         <hr class="solid"></hr>
                                         <label for="myCheck">I have a company:</label>
                                         <input type="checkbox" id="myCheck" onChange={(e) => this.setState({ hasCompany: e.target.checked })} />
-                                        <ShowCompanyInfo checked={this.state.hasCompany} />
+                                        {this.state.hasCompany &&
+                                            <>
+                                                <div className="py-2">
+                                                    <Label for="companyName">Company Name</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ companyName: e.target.value })} name="companyName" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="zipCode">Zip Code</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ zipCode: e.target.value })} name="zipCode" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="street">Street Name</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ street: e.target.value })} name="street" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="houseNumber">House Number</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ houseNumber: e.target.value })} name="houseNumber" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="country">Country</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ country: e.target.value })} name="country" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="bTWNumber">BTW Number</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ bTWNumber: e.target.value })} name="bTWNumber" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="kVKNumber">KVK Number</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ kVKNumber: e.target.value })} name="kVKNumber" />
+                                                </div>
+                                                <div className="py-2">
+                                                    <Label for="phoneNumber">PhoneNumber</Label>
+                                                    <Input type="text" onChange={(e) => this.setState({ phoneNumber: e.target.value })} name="phoneNumber" />
+                                                </div>
+                                            </>
+                                        }
                                         <div className="py-2">
                                             <Button className="my-2 mr-2 ml-0 registerbutton" onClick={(e) => this.handleRegister(e)}>Register</Button>
                                             <Link className="m-2 loginlink" to="/login">Already have an account? Login here!</Link>

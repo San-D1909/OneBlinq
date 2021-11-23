@@ -1,20 +1,16 @@
-import React, { Component, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { Component } from 'react';
+import ReactSession from 'react-client-session/dist/ReactSession';
+import { Link, Redirect } from 'react-router-dom';
 import { Input } from 'reactstrap';
 import Button from 'reactstrap/lib/Button';
-import ButtonGroup from 'reactstrap/lib/ButtonGroup';
 import Card from 'reactstrap/lib/Card';
 import CardBody from 'reactstrap/lib/CardBody';
-import CardFooter from 'reactstrap/lib/CardFooter';
 import CardImg from 'reactstrap/lib/CardImg';
-import CardTitle from 'reactstrap/lib/CardTitle';
 import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
 import { NavMenu } from '../components/NavMenu';
 import "./CSS/Login.css";
-import axios from 'axios'
-import ReactSession from 'react-client-session/dist/ReactSession';
-import { Redirect } from 'react-router-dom';
 
 
 export class Login extends Component {
@@ -24,7 +20,7 @@ export class Login extends Component {
 
         console.log(props)
         this.state = {
-            mail: '',
+            email: '',
             password: '',
             token: '',
             hasError: false,
@@ -48,12 +44,12 @@ export class Login extends Component {
     handleLogin = (event) => {
         event.preventDefault();
 
-        const mail = this.state.mail
+        const email = this.state.email
         const password = this.state.password
 
         this.setState({ hasError: false, errorMessage: '' })
 
-        if (mail == '' || mail == null) {
+        if (email == '' || email == null) {
             this.setState({ hasError: true, errorMessage: "Email must be filled in!" })
             return;
         } else if (password == '' || password == null) {
@@ -65,7 +61,7 @@ export class Login extends Component {
         axios({
             method: 'post',
             url: 'http://localhost:4388/api/v1/Auth/LogIn',
-            data: { mail, password }
+            data: { email, password }
         }).then(token => this.setSession(token)).catch(function (error) {
             if (error.message == "Request failed with status code 401") {
                 self.setState({ hasError: true, errorMessage: "Username or Password is incorrect." })
@@ -101,7 +97,7 @@ export class Login extends Component {
                                         }
                                         <div className="py-2">
                                             <Label for="email">Email</Label>
-                                            <Input type="text" onChange={(e) => this.setState({ mail: e.target.value })} name="email" />
+                                            <Input type="text" onChange={(e) => this.setState({ email: e.target.value })} name="email" />
                                         </div>
                                         <div className="py-2">
                                             <Label for="password">Password</Label>
@@ -112,6 +108,11 @@ export class Login extends Component {
                                             <Link className="m-2 registerlink" to="/register">No account yet? Register here!</Link>
                                         </div>
                                     </Form>
+
+                                    <div className="forgot-password">
+                                        <Link className="m-2 passwordlink" to="/forgotpassword">Forgot password?</Link>
+                                    </div>
+
                                 </div>
                             </CardBody>
                         </Card>
