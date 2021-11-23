@@ -35,8 +35,8 @@ export class Login extends Component {
     }
 
     setSession = (token) => {
-        ReactSession.set("loggedin", true);
-        ReactSession.set("token", token.data);
+        localStorage.set("loggedin", true);
+        localStorage.set("token", token.data);
 
         this.setState({ token: token.data, loggedIn: true });
     }
@@ -72,7 +72,7 @@ export class Login extends Component {
 
 
     render() {
-        if (ReactSession.get("loggedin")) {
+        if (localStorage.get("loggedin")) {
             return (
                 <Redirect to="/user/dashboard/" />
             )

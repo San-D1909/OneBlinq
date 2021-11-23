@@ -3,6 +3,8 @@ using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,13 +24,11 @@ namespace Backend.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet("UserId")]
-        [ActionName("GetTodoAsync")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<User>> GetUserById(int UserId)
+        [HttpGet("GetUserById")]
+        public async Task<ActionResult<User>> GetUserById(SecurityToken jtoken)
         {
-            var user = await _userRepository.GetUserById(UserId);
+            User user= new User();
+            user = await _userRepository.GetUserById(user.UserId);
 
             if (user is null)
             {
