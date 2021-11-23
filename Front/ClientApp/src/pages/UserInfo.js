@@ -16,11 +16,18 @@ export class UserInfo extends Component {
         }
     }
 
+    const config = {
+        ReactSession.get("token", token.data);
+
+        this.setState({ token: token.data, loggedIn: true });
+    }
+
     populateData = async () => {
         var self = this;
         axios({
             method: 'GET',
-            url: 'http://localhost:4388/api/v1/user/UserId'
+            url: 'http://localhost:4388/api/v1/user/UserId',
+            data: { , password }
         }).then(function (data) {
             console.log(data);
             self.setState(data);

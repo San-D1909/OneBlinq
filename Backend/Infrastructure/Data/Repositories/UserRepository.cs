@@ -22,6 +22,13 @@ namespace Backend.Infrastructure.Data.Repositories
             await _context.SaveChangesAsync();
             return userModel;
         }
+        public async Task<User> UpdateEmail(string email, int userId)
+        {
+            _context.User.Where(x => x.UserId == userId).FirstOrDefault().Email = email;
+            User userModel = await _context.User.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            await _context.SaveChangesAsync();
+            return userModel;
+        }
 
         public async Task<User> GetUserById(int UserId)
         {

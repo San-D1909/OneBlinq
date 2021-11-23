@@ -7,5 +7,6 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
     {
         Task<User> GetUserById(int UserId);
         Task<User> UpdateFullName(string FullName, int UserId);
+        Task<User> UpdateEmail(string FullName, int UserId);
     }
 }

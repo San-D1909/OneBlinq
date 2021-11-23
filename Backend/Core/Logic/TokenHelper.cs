@@ -51,7 +51,7 @@ namespace Backend.Core.Logic
 				ValidateAudience = false
 
 			}, out SecurityToken validatedToken);
-
+			
 			return (JwtSecurityToken)validatedToken;
 		}
 
