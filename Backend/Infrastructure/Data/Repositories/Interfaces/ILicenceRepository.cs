@@ -8,6 +8,6 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
 {
     public interface ILicenceRepository
     {
-        public Task<List<LicenseModel>> GetLicencesDb(int userID);
+        public Task<List<License>> GetLicencesDb(int userID);
     }
 }

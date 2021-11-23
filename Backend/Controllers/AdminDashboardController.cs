@@ -23,17 +23,18 @@ namespace Backend.Controllers
             PluginRepository = pluginRepository;
         }
 
-        [HttpGet("GetLicences")]
+        [HttpGet("licenses/")]
         public async Task<IActionResult> GetLicences(int userID)
         {
             if (userID != 0)
             {
-                List<LicenseModel> licenceList = await LicenceRepository.GetLicencesDb(2);
+                List<License> licenceList = await LicenceRepository.GetLicencesDb(2);
                 return Ok(licenceList);
             }
             return StatusCode(StatusCodes.Status401Unauthorized);
         }
-        [HttpGet("GetPlugins")]
+        /**
+        [HttpGet("plugins/")]
         public async Task<IActionResult> GetPlugins(string searchString)
         {
             var plugins = await PluginRepository.GetPluginsByNameAsync(searchString);
@@ -41,8 +42,8 @@ namespace Backend.Controllers
             return Ok(plugins);
         }
 
-        [HttpPost("AddPlugin")]
-        public async Task<IActionResult> AddPlugin([Bind("PluginName","PluginDescription")] PluginModel plugin)
+        [HttpPost("plugins/")]
+        public async Task<IActionResult> AddPlugin([Bind("PluginName","PluginDescription")] Plugin plugin)
         {
             if (ModelState.IsValid)
             {
@@ -52,6 +53,6 @@ namespace Backend.Controllers
             }
             return Ok(plugin);
         }
-
+        */
     }
 }

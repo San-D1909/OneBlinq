@@ -25,44 +25,41 @@ namespace Backend.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _config;
         private readonly MailClient _mailClient;
+        private PasswordEncrypter _encryptor;
 
         public AuthController(ApplicationDbContext context, IConfiguration config, MailClient mailClient)
         {
             _context = context;
             _config = config;
             _mailClient = mailClient;
+            _encryptor = new PasswordEncrypter(config);
         }
 
 
         [HttpPost("LogIn")]
-        public async Task<IActionResult> LogIn([FromBody] LoginModel credentials)
+        public async Task<IActionResult> LogIn([FromBody] Login credentials)
         {
+            var encryptedPassword = _encryptor.EncryptPassword(credentials.Password);
+
             var user = await _context.User
-                    .Where(u => u.Email == credentials.Email && u.Password == credentials.Password)
+                    .Where(u => u.Email == credentials.Email && u.Password == encryptedPassword)
                     .FirstOrDefaultAsync();
 
             if (user != null)
             {
-                var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var tokenDescriptor = new SecurityTokenDescriptor
+                Claim[] claims = new Claim[]
                 {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                       new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                       new Claim(ClaimTypes.Name, user.FullName),
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
+                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                      new Claim(ClaimTypes.Name, user.FullName)
                 };
 
-                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var token = TokenHelper.CreateToken(claims, _config);
 
-                return Ok(tokenHandler.WriteToken(token));
+                return Ok(TokenHelper.WriteToken(token));
             }
             else
             {
+
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
         }
@@ -71,7 +68,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
         {
             var findUser = await _context.User
-                    .Where(u => u.Email == credentials.User.Mail && u.Password == credentials.User.Password)
+                    .Where(u => u.Email == credentials.User.Mail)
                     .FirstOrDefaultAsync();
 
             if (findUser != null)
@@ -81,25 +78,44 @@ namespace Backend.Controllers
 
             if (credentials.User.Password == credentials.User.PasswordConfirmation)
             {
-                var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
+                if (credentials.Company.CompanyName != "")
                 {
-                    CompanyName = credentials.Company.CompanyName,
-                    ZipCode = credentials.Company.ZipCode,
-                    Street = credentials.Company.Street,
-                    HouseNumber = credentials.Company.HouseNumber,
-                    Country = credentials.Company.Country,
-                    BTWNumber = credentials.Company.BTWNumber,
-                    KVKNumber = credentials.Company.KVKNumber,
-                    PhoneNumber = credentials.Company.PhoneNumber
-                });
+                    var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
+                    {
+                        CompanyName = credentials.Company.CompanyName,
+                        ZipCode = credentials.Company.ZipCode,
+                        Street = credentials.Company.Street,
+                        HouseNumber = credentials.Company.HouseNumber,
+                        Country = credentials.Company.Country,
+                        BTWNumber = credentials.Company.BTWNumber,
+                        KVKNumber = credentials.Company.KVKNumber,
+                        PhoneNumber = credentials.Company.PhoneNumber
+                    });
+                }
+
+                var company = await _context.Company
+                    .Where(c => c.CompanyName == credentials.Company.CompanyName)
+                    .FirstOrDefaultAsync();
+
+                int? id = 0;
+
+                if (company == null || company.CompanyName == "")
+                {
+                    id = null;
+                }
+                else
+                {
+                    id = company.CompanyId;
+                }
+
                 var newUser = await _context.User
-                    .AddAsync(new UserModel
+                    .AddAsync(new User
                     {
                         Email = credentials.User.Mail,
-                        Password = credentials.User.Password,
+                        Password = _encryptor.EncryptPassword(credentials.User.Password),
                         FullName = credentials.User.FullName,
                         IsAdmin = false,
-                        Company = credentials.Company.CompanyId
+                        Company = id
                     });
 
                 await _context.SaveChangesAsync();
@@ -110,11 +126,10 @@ namespace Backend.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-
         }
 
         [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword([FromForm] LoginModel credentials)
+        public async Task<IActionResult> ForgotPassword([FromForm] Login credentials)
         {
             //FIXME email wordt niet verzonden wanneer request wordt gemaakt via frontend ??
 

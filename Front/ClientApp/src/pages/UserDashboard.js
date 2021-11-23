@@ -4,8 +4,12 @@ import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
 import AdminNavMenu from "../components/Admin/AdminNavMenu";
 import { PluginCreate, PluginEdit, PluginList, PluginShow } from "../components/Admin/Plugins";
+import { LicenseList, LicenseShow } from "../components/Admin/License";
+import simpleRestProvider from 'ra-data-simple-rest';
 
 export const newOptions = {
+
+
 
     // theme customizable at https://bareynol.github.io/mui-theme-creator
 
@@ -46,23 +50,31 @@ const dataProvider = fakeDataProvider({
         { id: 6, devicename: 'DESKTOP-OXIK', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '8-11-2021' },
     ],
     licenses: [
-        { id: 1, licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', amountactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
-        { id: 2, licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', amountactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 1, plugin: {id: 1, pluginname: 'Testing'}, licensekey: 'DFGA-FDAF-ASDEF-QWERQ', limit: 5, amountactivated: 3, creationtime: '1-1-2020', expirationdate: '1-1-2022' },
+        { id: 2, plugin: { id: 1, pluginname: 'Testing' }, licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', limit: 3, amountactivated: 3, creationtime: '1-1-2020', expirationdate: '1-1-2022' },
     ],
+    plugins: [
+        { id: 1, pluginname: { en: 'Testing', nl: 'Testen' }, plugindescription: {en: '<p>This is a test</p>', nl: '<p>Dit is een test</p>'}, price: 12.00, pictures: null}
+    ]
 })
 
-const UserDashboard = () => (
-    <Admin theme={newOptions} dataProvider={dataProvider}>
-        <Resource name="devices"
-            list={ListGuesser}
-            edit={EditGuesser}
-        />
-        <Resource name="licenses"
-            list={ListGuesser}
-            edit={EditGuesser}
-        />
-        <Resource name="plugins" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
-    </Admin>
-);
+const UserDashboard = () => {
+
+    let protocol = window.location.protocol;
+    console.log(protocol);
+    return (
+        <Admin theme={newOptions} dataProvider={simpleRestProvider("http://localhost:4388/api/v1")}>
+            <Resource name="devices"
+                list={ListGuesser}
+                edit={EditGuesser}
+            />
+            <Resource name="licenses"
+                list={LicenseList}
+                show={LicenseShow}
+            />
+            <Resource name="plugins" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
+        </Admin>
+    );
+}
 
 export default UserDashboard;
