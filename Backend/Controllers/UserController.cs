@@ -36,7 +36,7 @@ namespace Backend.Controllers
             }
             int id = Convert.ToInt32(user.Claims.First().Value);
             UserModel userbyid = await _userRepository.GetUserById(id);
-            Company userCompany = await _userRepository.GetUserById(id);
+/*            CompanyModel userCompany = await _userRepository.GetUserById(id);*/
             return Ok(userbyid);
         }
 
