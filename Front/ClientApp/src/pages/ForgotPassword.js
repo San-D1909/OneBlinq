@@ -37,6 +37,8 @@ export class ForgotPassword extends Component {
 
         const { email } = this.state
 
+        console.log(email)
+
         if (!validateEmail.test(email)) {
             this.setState({ errorMessage: "Email must be filled in!" })
             return;
@@ -45,7 +47,7 @@ export class ForgotPassword extends Component {
         axios({
             method: 'post',
             url: 'http://localhost:4388/api/v1/Auth/ForgotPassword',
-            data: { email, password:'' }
+            data: { email, password: '' }
         }).then(() => {
             this.setState({
                 submitResult: `An Email has been sent to ${email}, please check your email`,
