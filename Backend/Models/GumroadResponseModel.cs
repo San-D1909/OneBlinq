@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-	public class GumroadResponse
+	public class GumroadResponseModel
 	{
 	
 

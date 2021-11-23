@@ -15,10 +15,10 @@ namespace Backend.Infrastructure.Data.Repositories
         {
             _context = context;
         }
-        public Task<List<License>> GetLicencesDb(int userID)
+        public Task<List<LicenseModel>> GetLicencesDb(int userID)
         {
             bool admin = _context.User.Select(s => s.UserId == userID).FirstOrDefault();
-            List<License> results = new();
+            List<LicenseModel> results = new();
             if (admin == true)
             {
                 results = _context.License.Where(s => s.IsActive == true).ToList();

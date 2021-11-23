@@ -27,7 +27,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("GetUserByToken")]
-        public async Task<ActionResult<User>> GetUserByToken([FromQuery] string jtoken)
+        public async Task<ActionResult<UserModel>> GetUserByToken([FromQuery] string jtoken)
         {
             var user = TokenHelper.Verify(jtoken, _config);
             if (user is null)
@@ -35,7 +35,8 @@ namespace Backend.Controllers
                 return NotFound();
             }
             int id = Convert.ToInt32(user.Claims.First().Value);
-            User userbyid = await _userRepository.GetUserById(id);
+            UserModel userbyid = await _userRepository.GetUserById(id);
+            Company userCompany = await _userRepository.GetUserById(id);
             return Ok(userbyid);
         }
 
@@ -44,14 +45,14 @@ namespace Backend.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateUserData(int userId, User updateUserModel)
+        public async Task<ActionResult> UpdateUserData(int userId, UserModel updateUserModel)
         {
             if (userId != updateUserModel.UserId)
             {
                 return BadRequest();
             }
 
-            User userbyid = await _userRepository.GetUserById(userId);
+            UserModel userbyid = await _userRepository.GetUserById(userId);
             if (userbyid is null)
             {
                 return NotFound();

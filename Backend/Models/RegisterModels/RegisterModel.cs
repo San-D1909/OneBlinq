@@ -10,7 +10,7 @@ namespace Backend.Models
 	{
 
         public RegisterUserModel User { get; set; }
-		public RegisterCompanyModel Company { get; set; }
+		public CompanyModel Company { get; set; }
 
     }
 }

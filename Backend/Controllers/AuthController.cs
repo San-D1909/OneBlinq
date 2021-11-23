@@ -109,7 +109,7 @@ namespace Backend.Controllers
             {
                 if (credentials.Company.CompanyName != "")
                 {
-                    var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
+                    var newCompany = await _context.Company.AddAsync(new CompanyModel
                     {
                         CompanyName = credentials.Company.CompanyName,
                         ZipCode = credentials.Company.ZipCode,
@@ -138,7 +138,7 @@ namespace Backend.Controllers
                 }
 
                 var newUser = await _context.User
-                    .AddAsync(new User
+                    .AddAsync(new UserModel
                     {
                         Email = credentials.User.Mail,
                         Password = _encryptor.EncryptPassword(credentials.User.Password),

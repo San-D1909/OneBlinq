@@ -15,19 +15,19 @@ namespace Backend.Infrastructure.Data.Repositories
             _context = context;
         }
 
-        public async Task<User> UpdateFullName(string FullName, int userId)
+        public async Task<UserModel> UpdateFullName(string FullName, int userId)
         {
             _context.User.Where(x => x.UserId == userId).FirstOrDefault().FullName = FullName;
-            User userModel = await _context.User.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            UserModel userModel = await _context.User.Where(x => x.UserId == userId).FirstOrDefaultAsync();
             await _context.SaveChangesAsync();
             return userModel;
         }
 
-        public async Task<User> GetUserById(int UserId)
+        public async Task<UserModel> GetUserById(int UserId)
         {
             try
             {
-                var item = await _context.Set<User>()
+                var item = await _context.Set<UserModel>()
                     .Where(x => x.UserId == UserId)
                     .AsNoTracking()
                     .FirstOrDefaultAsync();

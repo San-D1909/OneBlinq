@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-	public class Plugin
+	public class PluginModel
 	{
 
 		[Key]
