@@ -6,8 +6,6 @@ import Label from 'reactstrap/lib/Label';
 import axios from 'axios';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import { Link, Redirect } from 'react-router-dom';
-import { data } from "jquery";
-
 
 export class UserInfo extends Component {
     static displayName = UserInfo.name;
@@ -20,7 +18,8 @@ export class UserInfo extends Component {
             mail: '',
             password: '',
             companyname: '',
-            userData: [],
+            userData: '',
+            companyData: '',
             loggedIn: false,
             jtoken: localStorage.getItem("token")
         }
@@ -39,35 +38,31 @@ export class UserInfo extends Component {
             params: {
                 jtoken: localStorage.getItem("token"),
             }
-        }).then(function (data) {
+        }).then((data) => {
             console.log(data);
-            console.log(data.data);
-            self.setState({ userData: data.data });
+            self.setState({ userData: data.data.userById, companyData: data.data.userCompany });
+            console.log(this.userData);
         });
     }
 
 
     render() {
-        var self = this;
-        console.log(self.userData);
         if (!localStorage.getItem("loggedin")) {
             return (
                 <Redirect to="/login" />
             )
         }
+        console.log(this.userData);
         return (
-
             <body>
                 <div>
                     <div class="col-sm-4 mt-4">
                         <div class="card" style={{ backgroundColor: "white", minHeight: "520px", maxHeight: "520px", borderColor: "#FF1801" }}>
                             <div class="card-body">
-                                {/*                                    <img class="card-img-top" style={{ maxHeight: "200px" }} src={Race.imageUrl} alt="Card image cap" width="auto" height="auto" ></img>*/}
-                                <h4 style={{ textAlign: "center", fontWeight: "bold" }} class="card-title">FullName: {data.fullname}</h4>
+                                <h4 style={{ textAlign: "center", fontWeight: "bold" }} class="card-title">FullName: {/*{this.state.userData.userbyid.fullName}*/}</h4>
                                 <hr class="solid"></hr>
-                                <p style={{ textAlign: "center" }} class="card-text">Email: {data.email}</p>
-                                <p style={{ textAlign: "center" }} class="card-text">Admin: {data.isAdmin}</p>
-                                <p style={{ textAlign: "center" }} class="card-text">UserId: {data.UserId}</p>
+{/*                                <p style={{ textAlign: "center" }} class="card-text">CompanyID: {this.state.userData.company}</p>
+                                <p style={{ textAlign: "center" }} class="card-text">UserId: {this.state.userData.userId}</p>*/}
                             </div>
                             <div class="card-footer" style={{ backgroundColor: "darkgray", Height: "auto", maxHeight: "auto" }} >
                             </div>

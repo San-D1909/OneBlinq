@@ -1,5 +1,5 @@
-﻿using Backend.Infrastructure.Data.Repositories.Interfaces;
-﻿using Backend.Core.Logic;
+using Backend.Infrastructure.Data.Repositories.Interfaces;
+using Backend.Core.Logic;
 using Backend.Infrastructure.Data.Repositories;
 using Backend.Models;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +17,7 @@ namespace Backend.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository; 
+        private readonly IUserRepository _userRepository;
         private IConfiguration _config;
 
         public UserController(IUserRepository userRepository, IConfiguration config)
@@ -27,7 +27,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("GetUserByToken")]
-        public async Task<ActionResult<User>> GetUserByToken([FromQuery] string jtoken)
+        public async Task<ActionResult> GetUserByToken([FromQuery] string jtoken)
         {
             var user = TokenHelper.Verify(jtoken, _config);
             if (user is null)
@@ -35,8 +35,13 @@ namespace Backend.Controllers
                 return NotFound();
             }
             int id = Convert.ToInt32(user.Claims.First().Value);
-            User userbyid = await _userRepository.GetUserById(id);
-            return Ok(userbyid);
+            UserModel userById = await _userRepository.GetUserById(id);
+            CompanyModel userCompany = new CompanyModel();
+            if (userById.Company != 0 && userById != null)
+            {
+                userCompany = await _userRepository.GetCompanyById(userById.Company);
+            }           
+            return Ok(new {userById,userCompany});
         }
 
 
@@ -44,14 +49,14 @@ namespace Backend.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateUserData(int userId, User updateUserModel)
+        public async Task<ActionResult> UpdateUserData(int userId, UserModel updateUserModel)
         {
             if (userId != updateUserModel.UserId)
             {
                 return BadRequest();
             }
 
-            User userbyid = await _userRepository.GetUserById(userId);
+            UserModel userbyid = await _userRepository.GetUserById(userId);
             if (userbyid is null)
             {
                 return NotFound();
@@ -60,7 +65,7 @@ namespace Backend.Controllers
             {
                 await _userRepository.UpdateFullName(updateUserModel.FullName, userId);
             }
-           // var updatedUser = await _userRepository.UpdateUser(userModel);
+            // var updatedUser = await _userRepository.UpdateUser(userModel);
             return Ok();
         }
     }

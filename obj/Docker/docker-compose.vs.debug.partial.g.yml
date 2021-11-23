@@ -12,19 +12,19 @@ services:
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
       - ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS=true
-      - NUGET_FALLBACK_PACKAGES=
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_backend$
     volumes:
-      - C:\Users\jorri\OneDrive\Documents\OneBlinq\Backend:/app
-      - C:\Users\jorri\OneDrive\Documents\OneBlinq:/src
-      - C:\Users\jorri\vsdbg\vs2017u5:/remote_debugger:rw
-      - C:\Users\jorri\.nuget\packages\:/root/.nuget/packages:ro
+      - C:\Users\td10\OneDrive\Documents\Oneblinq\Backend:/app
+      - C:\Users\td10\OneDrive\Documents\Oneblinq:/src
+      - C:\Users\td10\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_backend$
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
 
     entrypoint: tail -f /dev/null
     labels:
       com.microsoft.visualstudio.debuggee.program: "dotnet"
-      com.microsoft.visualstudio.debuggee.arguments: " --additionalProbingPath /root/.nuget/packages  \"/app/bin/Debug/net5.0/Backend.dll\""
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_backend$ \"\""
       com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
       com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
     tty: true

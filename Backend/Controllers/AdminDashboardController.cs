@@ -28,7 +28,7 @@ namespace Backend.Controllers
         {
             if (userID != 0)
             {
-                List<License> licenceList = await LicenceRepository.GetLicencesDb(2);
+                List<LicenseModel> licenceList = await LicenceRepository.GetLicencesDb(2);
                 return Ok(licenceList);
             }
             return StatusCode(StatusCodes.Status401Unauthorized);

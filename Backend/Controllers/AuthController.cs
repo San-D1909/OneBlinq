@@ -65,7 +65,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("LogIn")]
-        public async Task<IActionResult> LogIn([FromBody] Login credentials)
+        public async Task<IActionResult> LogIn([FromBody] LoginModel credentials)
         {
             var encryptedPassword = _encryptor.EncryptPassword(credentials.Password);
 
@@ -109,7 +109,7 @@ namespace Backend.Controllers
             {
                 if (credentials.Company.CompanyName != "")
                 {
-                    var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
+                    var newCompany = await _context.Company.AddAsync(new CompanyModel
                     {
                         CompanyName = credentials.Company.CompanyName,
                         ZipCode = credentials.Company.ZipCode,
@@ -138,7 +138,7 @@ namespace Backend.Controllers
                 }
 
                 var newUser = await _context.User
-                    .AddAsync(new User
+                    .AddAsync(new UserModel
                     {
                         Email = credentials.User.Mail,
                         Password = _encryptor.EncryptPassword(credentials.User.Password),
@@ -159,8 +159,15 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpPost("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail()
+        {
+            return Ok();
+        }
+
+
         [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword([FromBody] Login credentials)
+        public async Task<IActionResult> ForgotPassword([FromBody] LoginModel credentials)
         {
             //FIXME email wordt niet verzonden wanneer request wordt gemaakt via frontend ??
 
@@ -229,5 +236,6 @@ namespace Backend.Controllers
 
             return Ok();
         }
+
     }
 }
