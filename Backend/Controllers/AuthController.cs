@@ -71,7 +71,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
         {
             var findUser = await _context.User
-                    .Where(u => u.Email == credentials.user.Mail && u.Password == credentials.user.Password)
+                    .Where(u => u.Email == credentials.User.Mail && u.Password == credentials.User.Password)
                     .FirstOrDefaultAsync();
 
             if (findUser != null)
@@ -79,27 +79,27 @@ namespace Backend.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
-            if (credentials.user.Password == credentials.user.PasswordConfirmation)
+            if (credentials.User.Password == credentials.User.PasswordConfirmation)
             {
                 var newCompany = await _context.Company.AddAsync(new RegisterCompanyModel
                 {
-                    CompanyName = credentials.company.CompanyName,
-                    ZipCode = credentials.company.ZipCode,
-                    Street = credentials.company.Street,
-                    HouseNumber = credentials.company.HouseNumber,
-                    Country = credentials.company.Country,
-                    BTWNumber = credentials.company.BTWNumber,
-                    KVKNumber = credentials.company.KVKNumber,
-                    PhoneNumber = credentials.company.PhoneNumber
+                    CompanyName = credentials.Company.CompanyName,
+                    ZipCode = credentials.Company.ZipCode,
+                    Street = credentials.Company.Street,
+                    HouseNumber = credentials.Company.HouseNumber,
+                    Country = credentials.Company.Country,
+                    BTWNumber = credentials.Company.BTWNumber,
+                    KVKNumber = credentials.Company.KVKNumber,
+                    PhoneNumber = credentials.Company.PhoneNumber
                 });
                 var newUser = await _context.User
                     .AddAsync(new UserModel
                     {
-                        Email = credentials.user.Mail,
-                        Password = credentials.user.Password,
-                        FullName = credentials.user.FullName,
+                        Email = credentials.User.Mail,
+                        Password = credentials.User.Password,
+                        FullName = credentials.User.FullName,
                         IsAdmin = false,
-                        Company = credentials.company.CompanyId
+                        Company = credentials.Company.CompanyId
                     });
 
                 await _context.SaveChangesAsync();

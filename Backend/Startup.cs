@@ -44,6 +44,7 @@ namespace Backend
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
+
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseMySQL(
                 Configuration.GetConnectionString("DefaultConnection")));
@@ -77,6 +78,7 @@ namespace Backend
             //    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
             services.AddScoped<ILicenceRepository, LicenceRepository>();
             services.AddScoped<IPluginRepository, PluginRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

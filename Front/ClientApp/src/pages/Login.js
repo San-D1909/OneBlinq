@@ -20,7 +20,7 @@ export class Login extends Component {
 
         console.log(props)
         this.state = {
-            mail: '',
+            email: '',
             password: '',
             token: '',
             hasError: false,
@@ -44,12 +44,12 @@ export class Login extends Component {
     handleLogin = (event) => {
         event.preventDefault();
 
-        const mail = this.state.mail
+        const email = this.state.email
         const password = this.state.password
 
         this.setState({ hasError: false, errorMessage: '' })
 
-        if (mail == '' || mail == null) {
+        if (email == '' || email == null) {
             this.setState({ hasError: true, errorMessage: "Email must be filled in!" })
             return;
         } else if (password == '' || password == null) {
@@ -61,7 +61,7 @@ export class Login extends Component {
         axios({
             method: 'post',
             url: 'http://localhost:4388/api/v1/Auth/LogIn',
-            data: { mail, password }
+            data: { email, password }
         }).then(token => this.setSession(token)).catch(function (error) {
             if (error.message == "Request failed with status code 401") {
                 self.setState({ hasError: true, errorMessage: "Username or Password is incorrect." })
@@ -97,7 +97,7 @@ export class Login extends Component {
                                         }
                                         <div className="py-2">
                                             <Label for="email">Email</Label>
-                                            <Input type="text" onChange={(e) => this.setState({ mail: e.target.value })} name="email" />
+                                            <Input type="text" onChange={(e) => this.setState({ email: e.target.value })} name="email" />
                                         </div>
                                         <div className="py-2">
                                             <Label for="password">Password</Label>
