@@ -58,7 +58,7 @@ namespace Backend.Controllers
                  "stuurmen@stuur.men",
                  "test@gmail.com",
                  "Reset Password",
-                 $"Press this link to reset your password: localhost:29616/verify?email={Email}&token={tokenHandler.WriteToken(token)}"
+                 $"Press this link to confirm your account: localhost:29616/verify?email={Email}&token={tokenHandler.WriteToken(token)}"
              );
 
             await _mailClient.SendEmailAsync(mail);
