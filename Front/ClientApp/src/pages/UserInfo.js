@@ -20,7 +20,7 @@ export class UserInfo extends Component {
         var self = this;
         axios({
             method: 'GET',
-            url: 'http://localhost:4388/api/v1/user'
+            url: 'http://localhost:4388/api/v1/user/UserId'
         }).then(function (data) {
             console.log(data);
             self.setState(data);

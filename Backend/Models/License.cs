@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-	public class LicenseModel
+	public class License
 	{
 		[Key]
 		public string LicenseId { get; set; }

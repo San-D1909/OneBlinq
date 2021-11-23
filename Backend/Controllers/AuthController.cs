@@ -39,7 +39,7 @@ namespace Backend.Controllers
 
 
 		[HttpPost("LogIn")]
-		public async Task<IActionResult> LogIn([FromBody] LoginModel credentials)
+		public async Task<IActionResult> LogIn([FromBody] Login credentials)
 		{
 			var encryptedPassword = _encryptor.EncryptPassword(credentials.Password);
 
@@ -111,7 +111,7 @@ namespace Backend.Controllers
 				}
 
 				var newUser = await _context.User
-					.AddAsync(new UserModel
+					.AddAsync(new User
 					{
 						Email = credentials.User.Mail,
 						Password = _encryptor.EncryptPassword(credentials.User.Password),
@@ -132,7 +132,7 @@ namespace Backend.Controllers
 		}
 
 		[HttpPost("ForgotPassword")]
-		public async Task<IActionResult> ForgotPassword([FromBody] LoginModel credentials)
+		public async Task<IActionResult> ForgotPassword([FromBody] Login credentials)
 		{
 
 			//Check if user exists with given email

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-	public class PluginLicensesModel
+	public class PluginLicenses
 	{
 		[Key]
 		public int Id { get; set; }

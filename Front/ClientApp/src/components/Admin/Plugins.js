@@ -4,12 +4,23 @@ import { List, Datagrid, TextField, DateField, BooleanField, ImageInput, Transla
 import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, EditButton, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
+const PluginFilters = [
+    <TextInput label="Plugin name" source="pluginName"/>,
+    <TextInput label="Plugin description" source="pluginDescription"/>,
+];
+
+const PluginPanel = ({ id, record, resource }) => {
+    return (<div dangerouslySetInnerHTML={{
+        __html: record.pluginDescription
+    }}
+    />)
+}
+
 export const PluginList = (props) => (
-    <List {...props}>
-        <Datagrid>
-            <TextField source="pluginname.nl" label="Plugin Name (NL)"/>
-            <TextField source="pluginname.en" label="Plugin Name (EN)"/>
-            <TextField source="price" />
+    <List {...props} filters={PluginFilters}>
+        <Datagrid expand={<PluginPanel />}>
+            <TextField source="pluginName" label="Plugin name" />
+            <NumberField source="price" options={{ style: 'currency', currency: 'EUR' }}/>
             <PluginShowButton {...props}/>
         </Datagrid>
     </List>
@@ -19,13 +30,8 @@ export const PluginList = (props) => (
 export const PluginCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TranslatableInputs locales={['en', 'nl']} required>
-                <TextInput source="pluginname" label="Plugin Name" validate={required()} />
-                <RichTextInput source="plugindescription" label="Plugin Description" validate={required()} />
-            </TranslatableInputs>
-            <ImageInput source="pictures" label="Picture" accept="image/*" placeholder={<p>Drop your file here</p>} validate={required()} >
-                <ImageField source="src" title="title" />
-            </ImageInput>
+            <TextInput source="pluginName" label="Plugin name" validate={required()} />
+            <RichTextInput source="pluginDescription" label="Plugin description" validate={required()} />
             <NumberInput source="price" validate={required()} />
         </SimpleForm>
     </Create>
@@ -34,13 +40,8 @@ export const PluginCreate = (props) => (
 export const PluginEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
-            <TranslatableInputs locales={['en', 'nl']}>
-                <TextInput source="pluginname" label="Plugin Name" validate={required()} />
-                <RichTextInput source="plugindescription" label="Plugin Description" validate={required()} />
-            </TranslatableInputs>
-            <ImageInput source="pictures" label="Picture" accept="image/*" placeholder={<p>Drop your file here</p>} validate={required()}>
-                <ImageField source="src" title="title" />
-            </ImageInput>
+            <TextInput source="pluginName" label="Plugin name" validate={required()} />
+            <RichTextInput source="pluginDescription" label="Plugin description" validate={required()} />
             <NumberInput source="price" label="Price" validate={required()} />
         </SimpleForm>
     </Edit>
@@ -56,11 +57,8 @@ const PluginShowButton = ({ record }) => {
 export const PluginShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout>
-            <TranslatableFields locales={['en', 'nl']}>
-                <TextField source="pluginname" />
-                <RichTextField source="plugindescription" />
-            </TranslatableFields>
-            <ImageField source="pictures.src" label="Picture" title="title" />
+            <TextField source="pluginName" label="Plugin name"/>
+            <RichTextField source="pluginDescription" label="Plugin description" />
             <NumberField source="price" label="Price" />
         </SimpleShowLayout>
     </Show>
