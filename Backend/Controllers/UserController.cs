@@ -43,7 +43,7 @@ namespace Backend.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateTodoAsync(int userId, UserModel updateUserModel)
+        public async Task<ActionResult> UpdateUserData(int userId, UserModel updateUserModel)
         {
             if (userId != updateUserModel.UserId)
             {
