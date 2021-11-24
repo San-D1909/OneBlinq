@@ -15,7 +15,7 @@ namespace Backend.Infrastructure.Data.Repositories
         public Task<List<LicenseModel>> GetLicencesDb(int userID)
 
         {
-            bool admin = _context.User.Select(s => s.UserId == userID).FirstOrDefault();
+            bool admin = _context.User.Select(s => s.Id == userID).FirstOrDefault();
             List<LicenseModel> results = new();
             if (admin == true)
             {
@@ -23,7 +23,7 @@ namespace Backend.Infrastructure.Data.Repositories
             }
             else
             {
-                results = _context.License.Where(s => s.IsActive == true && s.UserId == userID).ToList();
+                results = _context.License.Where(s => s.IsActive == true && s.User.Id == userID).ToList();
             }
             return Task.FromResult(results);
         }

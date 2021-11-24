@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Logic;
 using Backend.DTO;
+using Backend.DTO.In;
 using Backend.Infrastructure.Data;
 using Backend.Models;
 using Microsoft.AspNetCore.Http;
@@ -65,7 +66,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("LogIn")]
-        public async Task<IActionResult> LogIn([FromBody] LoginModel credentials)
+        public async Task<IActionResult> LogIn([FromBody] LoginInput credentials)
         {
             var encryptedPassword = _encryptor.EncryptPassword(credentials.Password);
 
@@ -77,7 +78,7 @@ namespace Backend.Controllers
             {
                 Claim[] claims = new Claim[]
                 {
-                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                       new Claim(ClaimTypes.Name, user.FullName)
 
                 };
@@ -94,7 +95,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel credentials)
+        public async Task<IActionResult> Register([FromBody] RegisterInput credentials)
         {
             var findUser = await _context.User
                     .Where(u => u.Email == credentials.User.Mail)
@@ -134,7 +135,7 @@ namespace Backend.Controllers
                 }
                 else
                 {
-                    id = company.CompanyId;
+                    id = company.Id;
                 }
 
                 var newUser = await _context.User
@@ -144,7 +145,7 @@ namespace Backend.Controllers
                         Password = _encryptor.EncryptPassword(credentials.User.Password),
                         FullName = credentials.User.FullName,
                         IsAdmin = false,
-                        Company = id
+                        Company = company
                     });
 
                 SendVerificationMail(credentials.User.Mail);
@@ -167,7 +168,7 @@ namespace Backend.Controllers
 
 
         [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword([FromBody] LoginModel credentials)
+        public async Task<IActionResult> ForgotPassword([FromBody] LoginInput credentials)
         {
             //FIXME email wordt niet verzonden wanneer request wordt gemaakt via frontend ??
 

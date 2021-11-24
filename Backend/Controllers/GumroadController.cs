@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Backend.DTO.In;
 
 namespace Backend.Controllers
 {
@@ -30,7 +31,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Ping")]
-        public IActionResult Ping(GumroadResponseModel response)
+        public IActionResult Ping(GumroadResponseInput response)
         {
 			var domain = HttpContext.Request.Host;
 			if (domain.Host == "www.gumroad.com" && (_env.IsDevelopment() || _env.IsEnvironment("local")))
@@ -52,18 +53,18 @@ namespace Backend.Controllers
 
             LicenseModel license = new LicenseModel()
             {
-                ExpirationDate = DateTime.Now.AddYears(1),
+                ExpirationTime = DateTime.Now.AddYears(1),
                 LicenseType = "Test",
                 IsActive = true,
                 TimesActivated = 0,
-                LicenseId = _generator.CreateLicenseKey(response.Email, "Forms", response.Variants),
-                UserId = user.UserId
+                Id = _generator.CreateLicenseKey(response.Email, "Forms", response.Variants),
+                User = user
             };
 
             _context.License.Add(license);
             _context.SaveChanges();
 
-            SendLicenseMail(user.Email, license.LicenseId);
+            SendLicenseMail(user.Email, license.Id);
 
             return Ok();
         }

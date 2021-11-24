@@ -13,14 +13,14 @@ namespace Backend.Infrastructure.Data.Repositories
 
         public async Task<UserModel> UpdateFullName(string FullName, int userId)
         {
-            _context.User.Where(x => x.UserId == userId).FirstOrDefault().FullName = FullName;
-            UserModel userModel = await _context.User.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            _context.User.Where(x => x.Id == userId).FirstOrDefault().FullName = FullName;
+            UserModel userModel = await _context.User.Where(x => x.Id == userId).FirstOrDefaultAsync();
             await _context.SaveChangesAsync();
             return userModel;
         }
         public async Task<CompanyModel> GetCompanyById(int? companyId)
         {
-            CompanyModel companyModel = await _context.Company.Where(x => x.CompanyId == companyId).FirstOrDefaultAsync();
+            CompanyModel companyModel = await _context.Company.Where(x => x.Id == companyId).FirstOrDefaultAsync();
             return companyModel;
         }
             public async Task<UserModel> GetUserById(int UserId)
@@ -28,7 +28,7 @@ namespace Backend.Infrastructure.Data.Repositories
             try
             {
                 var item = await _context.Set<UserModel>()
-                    .Where(x => x.UserId == UserId)
+                    .Where(x => x.Id == UserId)
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
 

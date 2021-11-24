@@ -2,3 +2,9 @@
 *.cache
 /Front/.vscode
 node_modules
+
+bin/Debug/
+
+obj/Debug/
+
+obj/Docker/

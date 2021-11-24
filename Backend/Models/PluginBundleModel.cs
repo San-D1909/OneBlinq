@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-	public class PluginModel
+	public class PluginBundleModel
 	{
 
 		[Key]
 		public int Id { get; set; }
-		public string PluginName { get; set; }
-		public string PluginDescription { get; set; }
-
-		[Column("price")]
+		[Required]
+		public string BundleName { get; set; }
+		[Required]
+		public string BundleDescription { get; set; }
+		[Required]
 		public decimal Price { get; set; }
-
 	}
 }

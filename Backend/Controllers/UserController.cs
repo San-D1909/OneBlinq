@@ -37,12 +37,13 @@ namespace Backend.Controllers
             int id = Convert.ToInt32(user.Claims.First().Value);
             UserModel userById = await _userRepository.GetUserById(id);
             CompanyModel userCompany = new CompanyModel();
-            if (userById.Company != 0 && userById != null)
+            if (userById.Company != null && userById != null)
             {
-                userCompany = await _userRepository.GetCompanyById(userById.Company);
-            }           
-            return Ok(new {userById,userCompany});
+                userCompany = await _userRepository.GetCompanyById(userById.Company.Id);
+            }
+            return Ok(new { userById, userCompany });
         }
+        
 
 
         [HttpPut("{userId}")]
@@ -51,7 +52,7 @@ namespace Backend.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> UpdateUserData(int userId, UserModel updateUserModel)
         {
-            if (userId != updateUserModel.UserId)
+            if (userId != updateUserModel.Id)
             {
                 return BadRequest();
             }

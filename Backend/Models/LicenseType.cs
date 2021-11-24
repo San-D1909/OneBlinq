@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-	public class LicenseModel
-	{
-		[Key]
-		public string Id { get; set; }
-		[Required]
-		public UserModel User { get; set; }
-		[Required]
-		public string LicenseType { get; set; }
-		[Required]
-		public bool IsActive { get; set; }
+    public class LicenseType
+    {
+        [Key]
+        public int Id { get; set; }
+        [Required]
+        public string TypeName { get; set; }
+        [Required]
+        public string MaxAmount { get; set; }
         private DateTime? _creationTime = null;
         [Required]
         public DateTime CreationTime
@@ -33,7 +32,5 @@ namespace Backend.Models
         }
         [Required]
         public DateTime ExpirationTime { get; set; }
-        [Required]
-		public int TimesActivated { get; set; }
-	}
+    }
 }

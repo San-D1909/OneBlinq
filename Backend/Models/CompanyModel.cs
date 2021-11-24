@@ -9,11 +9,16 @@ namespace Backend.Models
     public class CompanyModel
     {
 		[Key]
-		public int CompanyId { get; set; }
+		public int Id { get; set; }
+		[Required]
 		public string CompanyName { get; set; }
+		[Required]
 		public string ZipCode { get; set; }
+		[Required]
 		public string Street { get; set; }
+		[Required]
 		public string HouseNumber { get; set; }
+		[Required]
 		public string Country { get; set; }
 		public string BTWNumber { get; set; }
 		public string KVKNumber { get; set; }

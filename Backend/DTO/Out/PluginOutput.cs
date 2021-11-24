@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.DTO.Out
 {
-    public class PluginOut
+    public class PluginOutput
     {
 		public int Id { get; set; }
 		public string PluginName { get; set; }

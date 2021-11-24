@@ -45,7 +45,7 @@ namespace Backend.Controllers
 
         // GET: api/Plugins/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PluginOut>> GetPlugin(int id)
+        public async Task<ActionResult<PluginOutput>> GetPlugin(int id)
         {
             var plugin = await _context.Plugin.FindAsync(id);
 
