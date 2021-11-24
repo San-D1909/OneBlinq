@@ -42,7 +42,7 @@
     "extends": "react-app"
   },
   "scripts": {
-    "start": "rimraf ./build && set PORT=3000 && react-scripts start",
+    "start": "rimraf ./build && react-scripts start",
     "build": "react-scripts build",
     "test": "cypress open",
     "eject": "react-scripts eject",

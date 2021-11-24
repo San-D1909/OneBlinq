@@ -58,7 +58,7 @@ export class Register extends Component {
         userdata.company = company;
         axios({
             method: 'post',
-            url: 'http://localhost:4388/api/v1/Auth/Register',
+            url: 'http://localhost:5000/api/v1/Auth/Register',
             dataType: "json",
             data: userdata
         }).then(data => console.log(data))

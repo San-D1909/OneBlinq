@@ -63,7 +63,7 @@ const UserDashboard = () => {
     let protocol = window.location.protocol;
     console.log(protocol);
     return (
-        <Admin theme={newOptions} dataProvider={simpleRestProvider("http://localhost:4388/api/v1")}>
+        <Admin theme={newOptions} dataProvider={simpleRestProvider("http://localhost:5000/api/v1")}>
             <Resource name="devices"
                 list={ListGuesser}
                 edit={EditGuesser}
