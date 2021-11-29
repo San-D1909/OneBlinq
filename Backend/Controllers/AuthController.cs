@@ -102,7 +102,7 @@ namespace Backend.Controllers
         {
             /**
             var findUser = await _context.User
-                    .Where(u => u.Email == credentials.User.Mail)
+                    .Where(u => u.Email == credentials.User.Email)
                     .FirstOrDefaultAsync();
 
             if (findUser != null)
@@ -141,8 +141,13 @@ namespace Backend.Controllers
                 var newUser = await _context.User
                     .AddAsync(new UserModel
                     {
+<<<<<<< Updated upstream
                         Email = credentials.User.Mail,
                         Password = _encryptor.EncryptPassword(credentials.User.Password + salt),
+=======
+                        Email = credentials.User.Email,
+                        Password = _encryptor.EncryptPassword(credentials.User.Password),
+>>>>>>> Stashed changes
                         FullName = credentials.User.FullName,
                         IsAdmin = false,
                         Salt = salt,
@@ -150,7 +155,7 @@ namespace Backend.Controllers
 
                     });
 
-                SendVerificationMail(credentials.User.Mail);
+                SendVerificationMail(credentials.User.Email);
 
                 await _context.SaveChangesAsync();
 
