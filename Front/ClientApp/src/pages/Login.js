@@ -10,6 +10,7 @@ import CardImg from 'reactstrap/lib/CardImg';
 import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
 import { NavMenu } from '../components/NavMenu';
+import jwt from 'jwt-decode'
 import "./CSS/Login.css";
 
 
@@ -35,9 +36,10 @@ export class Login extends Component {
     }
 
     setSession = (token) => {
+        const user = jwt(token.data);
         localStorage.setItem("loggedin", true);
         localStorage.setItem("token", token.data);
-
+        localStorage.setItem("isAdmin", user.role);
         this.setState({ token: token.data, loggedIn: true });
     }
 
@@ -60,7 +62,7 @@ export class Login extends Component {
         var self = this;
         axios({
             method: 'post',
-            url: 'http://localhost:5000/api/v1/Auth/LogIn',
+            url: process.env.REACT_APP_API_BACKEND + '/api/v1/Auth/LogIn',
             data: { email, password }
         }).then(token => this.setSession(token)).catch(function (error) {
             if (error.message == "Request failed with status code 401") {
@@ -73,10 +75,15 @@ export class Login extends Component {
 
     render() {
         if (localStorage.getItem("loggedin")) {
-            return (
-                <Redirect to="/user/dashboard/" />
-            )
-
+            if (localStorage.getItem("isAdmin") === false)
+                return (
+                    <Redirect to="/user/dashboard/" />
+                )
+            else {
+                return (
+                    <Redirect to="/admin/dashboard/" />
+                )
+            }
         }
 
         return (

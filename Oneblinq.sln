@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Front", "Front\Front.csproj
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{96794B68-C877-4E1F-BCEF-C265C48017EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oneblinq.Test", "Oneblinq.Test\Oneblinq.Test.csproj", "{241144FB-EEE6-4AA7-9927-A035135DDD29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oneblinq.Test", "Oneblinq.Test\Oneblinq.Test.csproj", "{65AD2337-1273-42B0-9A37-9C7FCA100323}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{96794B68-C877-4E1F-BCEF-C265C48017EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96794B68-C877-4E1F-BCEF-C265C48017EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96794B68-C877-4E1F-BCEF-C265C48017EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{241144FB-EEE6-4AA7-9927-A035135DDD29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{241144FB-EEE6-4AA7-9927-A035135DDD29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{241144FB-EEE6-4AA7-9927-A035135DDD29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{241144FB-EEE6-4AA7-9927-A035135DDD29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65AD2337-1273-42B0-9A37-9C7FCA100323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65AD2337-1273-42B0-9A37-9C7FCA100323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65AD2337-1273-42B0-9A37-9C7FCA100323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65AD2337-1273-42B0-9A37-9C7FCA100323}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

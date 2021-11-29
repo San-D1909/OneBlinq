@@ -4,6 +4,7 @@ import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
 import AdminNavMenu from "../components/Admin/AdminNavMenu";
 import { PluginCreate, PluginEdit, PluginList, PluginShow } from "../components/Admin/Plugins";
+import { UserCreate, UserEdit, UserList, UserShow } from "../components/Admin/Users";
 import { LicenseList, LicenseShow } from "../components/Admin/License";
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -63,7 +64,7 @@ const UserDashboard = () => {
     let protocol = window.location.protocol;
     console.log(protocol);
     return (
-        <Admin theme={newOptions} dataProvider={simpleRestProvider("http://localhost:5000/api/v1")}>
+        <Admin theme={newOptions} dataProvider={simpleRestProvider(process.env.REACT_APP_API_BACKEND + "/api/v1")}>
             <Resource name="devices"
                 list={ListGuesser}
                 edit={EditGuesser}
@@ -73,6 +74,7 @@ const UserDashboard = () => {
                 show={LicenseShow}
             />
             <Resource name="plugins" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
+            <Resource name="users" list={UserList} create={UserCreate} edit={UserEdit} show={UserShow} />
         </Admin>
     );
 }

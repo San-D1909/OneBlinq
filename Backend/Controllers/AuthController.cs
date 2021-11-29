@@ -81,11 +81,11 @@ namespace Backend.Controllers
             if (_encryptor.EncryptPassword(credentials.Password + user.Salt) == user.Password)
             {
                 Claim[] claims = new Claim[]
-{
+                {
                      new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                      new Claim(ClaimTypes.Name, user.FullName)
-
-};
+                      new Claim(ClaimTypes.Name, user.FullName),
+                      new Claim(ClaimTypes.Role, ""+user.IsAdmin.ToString()+"")
+                };
 
                 var token = TokenHelper.CreateToken(claims, _config);
 
