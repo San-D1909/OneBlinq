@@ -4,6 +4,7 @@ import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
 import AdminNavMenu from "../components/Admin/AdminNavMenu";
 import { PluginCreate, PluginEdit, PluginList, PluginShow } from "../components/Admin/Plugins";
+import { UserCreate, UserEdit, UserList, UserShow } from "../components/Admin/Users";
 import { LicenseList, LicenseShow } from "../components/Admin/License";
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -73,6 +74,7 @@ const UserDashboard = () => {
                 show={LicenseShow}
             />
             <Resource name="plugins" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
+            <Resource name="users" list={UserList} create={UserCreate} edit={UserEdit} show={UserShow} />
         </Admin>
     );
 }

@@ -33,6 +33,12 @@ services:
       environment:
         PMA_HOST: db
 
+  front:
+    image: ${DOCKER_REGISTRY-}front
+    build:
+      context: .
+      dockerfile: Front/Dockerfile
 
 volumes:
   dbdata:
+

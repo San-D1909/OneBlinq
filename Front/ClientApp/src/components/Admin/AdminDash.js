@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
-import { Admin, Resource, ListGuesser,EditGuesser} from 'react-admin';
+import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
+import { UserFilters, UserList, UserShow, UserEdit, UserCreate } from './Users'
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
 
@@ -43,6 +44,14 @@ const dataProvider = fakeDataProvider({
         { id: 4, userid: 4, licensename: 'Line Height & Forms', licensetype: 'Bundle', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
         { id: 5, userid: 5, licensename: 'Line Height & Forms', licensetype: 'Bundle', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
     ],
+    users: [
+        { id: 0, userid: 1, licensename: 'Forms', licensetype: 'Single', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 1, userid: 2, licensename: 'Line Height', licensetype: 'Single', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 2, userid: 3, licensename: 'Line Height', licensetype: 'Single', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 3, userid: 3, licensename: 'Line Height', licensetype: 'Single', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 4, userid: 4, licensename: 'Line Height & Forms', licensetype: 'Bundle', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+        { id: 5, userid: 5, licensename: 'Line Height & Forms', licensetype: 'Bundle', isactive: 1, timesactivated: 3, creationtime: '1-1 - 2020', expirationdate: '1-1-2022' },
+    ],
 })
 
 const AdminDash = () => {
@@ -51,6 +60,10 @@ const AdminDash = () => {
             <Resource name="licenses"
                 list={ListGuesser}
                 edit={EditGuesser}
+            />
+            <Resource name="users"
+                list={UserList}
+                show={UserShow}
             />
         </Admin>
     );
