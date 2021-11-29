@@ -48,7 +48,7 @@ namespace Backend.Controllers
                 {
                        new Claim(ClaimTypes.Email, Email.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -177,20 +177,18 @@ namespace Backend.Controllers
                     IssuerSigningKey = mySecurityKey
                 }, out SecurityToken validatedToken);
 
-                string claim_email = TokenHelper.GetClaim(dto.Token, ClaimTypes.Email);
-                if (claim_email != dto.Email)
+                string claim_email = TokenHelper.GetClaim(dto.Token, "email");
+                if (claim_email == dto.Email)
                 {
                     var user = await _context
-                        .User
-                        .Where(u => u.Email == dto.Email)
-                        .FirstOrDefaultAsync();
+                            .User
+                            .FirstOrDefaultAsync(u => u.Email == dto.Email);
 
                     user.IsVerified = true;
 
                     await _context.SaveChangesAsync();
-
-                    return Ok();
                 }
+
             }
             catch
             {

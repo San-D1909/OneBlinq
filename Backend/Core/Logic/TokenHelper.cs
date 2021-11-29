@@ -64,7 +64,7 @@ namespace Backend.Core.Logic
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
-			var stringClaimValue = securityToken.Claims.First(claim => claim.Type == claimType).Value;
+			var stringClaimValue = securityToken.Claims.FirstOrDefault(claim => claim.Type == claimType).Value;
 			return stringClaimValue;
 		}
 	}
