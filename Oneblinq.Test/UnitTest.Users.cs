@@ -9,7 +9,7 @@ using Backend.Models;
 namespace Oneblinq.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTestUsers
     {
         UserRepository userRepository;
 
@@ -26,7 +26,7 @@ namespace Oneblinq.Test
         }
 
         [TestMethod]
-        public void User_UpdateFullName_TrueExistsById()
+        public void User_Add_TrueExistsById()
         {
             UserModel user = new UserModel()
             {
@@ -37,8 +37,27 @@ namespace Oneblinq.Test
                 IsAdmin = false,
             };
             userRepository.Add(user);
+            userRepository.Save();
 
             Assert.IsTrue(userRepository.GetById(1) != null);
         }
+
+        [TestMethod]
+        public async Task User_UpdateFullName_TrueIsNewFullName()
+        {
+            const string newName = "Janneman";
+
+            await userRepository.UpdateFullName(newName, 1);
+            await userRepository.SaveAsync();
+
+            Assert.IsTrue(userRepository.GetById(1).FullName == newName);
+        }
+
+        [TestMethod]
+        public void User_()
+        {
+
+        }
+
     }
 }
