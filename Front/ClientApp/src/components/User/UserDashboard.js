@@ -2,16 +2,15 @@
 import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
-import AdminNavMenu from "../components/Admin/AdminNavMenu";
-import { PluginCreate, PluginEdit, PluginList, PluginShow } from "../components/Admin/Plugins";
-import { UserCreate, UserEdit, UserList, UserShow } from "../components/Admin/Users";
-import { LicenseList, LicenseShow } from "../components/Admin/License";
+import AdminNavMenu from "../Admin/AdminNavMenu";
+import { PluginCreate, PluginEdit, PluginList, PluginShow } from "../User/Plugins";
+import { LicenseList, LicenseShow } from "../User/License";
 import simpleRestProvider from 'ra-data-simple-rest';
 import React, { forwardRef } from 'react';
 import { useLogout } from 'react-admin';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
-import LogoutButton from '../components/Admin/LogoutButton';
+import LogoutButton from '../Admin/LogoutButton';
 
 export const newOptions = {
 
@@ -78,17 +77,14 @@ const UserDashboard = () => {
 
     let protocol = window.location.protocol;
     console.log(protocol);
+    let token = localStorage.getItem("token");
     return (
-        <Admin theme={newOptions} dataProvider={simpleRestProvider(process.env.REACT_APP_API_BACKEND + "/api/v1")} logoutButton={LogoutButton}>
-            <Resource name="devices"
-                list={ListGuesser}
-                edit={EditGuesser}
-            />
-            <Resource name="licenses"
+        <Admin theme={newOptions} dataProvider={simpleRestProvider(process.env.REACT_APP_API_BACKEND + `/api/v1/user/${token}`)} logoutButton={LogoutButton}>
+            <Resource name="license"
                 list={LicenseList}
                 show={LicenseShow}
             />
-            <Resource name="plugins" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
+            <Resource name="plugin" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
         </Admin>
     );
 }

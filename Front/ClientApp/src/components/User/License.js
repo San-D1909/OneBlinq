@@ -7,12 +7,12 @@ import RichTextInput from 'ra-input-rich-text';
 export const LicenseList = (props) => (
     <List {...props}>
         <Datagrid>
-            <TextField source="licenseKey" label="License key"/>
+            <TextField source="license.licenseKey" label="License key"/>
             <TextField source="plugin.pluginName" label="Plugin name" />
-            <TextField source="licenseType.maxAmount" label="Limit" />
+            <TextField source="license.licenseType.maxAmount" label="Limit" />
             <TextField source="timesActivated" label="Amount activated" />
-            <DateField source="creationTime" label="Created on" />
-            <DateField source="expirationTime" label="Expires on" />
+            <DateField source="license.creationTime" label="Created on" />
+            <DateField source="license.expirationTime" label="Expires on" />
             <LicenseShowButton {...props} />
         </Datagrid>
     </List>
@@ -29,12 +29,12 @@ const LicenseShowButton = ({ record }) => {
 export const LicenseShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout>
-            <TextField source="licenseKey" label="License key" />
+            <TextField source="license.licenseKey" label="License key" />
             <TextField source="plugin.pluginName" label="Plugin name" />
-            <TextField source="licenseType.maxAmount" label="Limit" />
+            <TextField source="license.licenseType.maxAmount" label="Limit" />
             <TextField source="timesActivated" label="Amount activated" />
-            <DateField source="creationTime" label="Created on" />
-            <DateField source="expirationTime" label="Expires on" />
+            <DateField source="license.creationTime" label="Created on" />
+            <DateField source="license.expirationTime" label="Expires on" />
         </SimpleShowLayout>
     </Show>
 );
