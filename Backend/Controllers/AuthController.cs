@@ -219,7 +219,7 @@ namespace Backend.Controllers
                     {
                        new Claim(ClaimTypes.Email, user.Email.ToString())
                     }),
-                    Expires = DateTime.UtcNow.AddHours(1),
+                    Expires = DateTime.Now.AddHours(1),
                     SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
                 };
 
@@ -256,16 +256,21 @@ namespace Backend.Controllers
                     IssuerSigningKey = mySecurityKey
                 }, out SecurityToken validatedToken);
 
-                string claim_email = TokenHelper.GetClaim(dto.Token, ClaimTypes.Email);
+                string claim_email = TokenHelper.GetClaim(dto.Token, "email");
+
                 if (claim_email == dto.Email && dto.Password == dto.PasswordConfirm)
                 {
+                    byte[] salt;
+                    new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+
                     //TODO: repo hier
                     var user = await _context
                         .User
                         .Where(u => u.Email == dto.Email)
                         .FirstOrDefaultAsync();
 
-                    user.Password = _encryptor.EncryptPassword(dto.Password);
+                    user.Password = _encryptor.EncryptPassword(dto.Password + salt);
+                    user.Salt = salt; 
 
                     await _context.SaveChangesAsync();
 
