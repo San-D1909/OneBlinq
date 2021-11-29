@@ -4,6 +4,10 @@ import { UserFilters, UserList, UserShow, UserEdit, UserCreate } from './Users'
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
 import { Link, Redirect } from 'react-router-dom';
+import simpleRestProvider from 'ra-data-simple-rest';
+import { LicenseList, LicenseShow } from "./License";
+import { PluginList, PluginShow, PluginEdit, PluginCreate } from "./Plugins";
+import { LogoutButton } from './LogoutButton';
 
 export const newOptions = {
 
@@ -56,6 +60,12 @@ const dataProvider = fakeDataProvider({
 })
 
 const AdminDash = () => {
+    if (localStorage.getItem("token") === null) {
+        return (
+            <Redirect to="/" />
+        )
+    }
+
     if (localStorage.getItem("loggedin")) {
         if (localStorage.getItem("isAdmin") === 'False') {
             return (
@@ -64,15 +74,10 @@ const AdminDash = () => {
         }
     }
     return (
-        <Admin theme={newOptions} dataProvider={dataProvider}>
-            <Resource name="licenses"
-                list={ListGuesser}
-                edit={EditGuesser}
-            />
-            <Resource name="users"
-                list={UserList}
-                show={UserShow}
-            />
+        <Admin theme={newOptions} dataProvider={simpleRestProvider(process.env.REACT_APP_API_BACKEND + "/api/v1")}>
+            <Resource name="license" list={LicenseList} show={LicenseShow} />
+            <Resource name="plugin" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
+            <Resource name="user" list={UserList} create={UserCreate} edit={UserEdit} show={UserShow} />
         </Admin>
     );
 };

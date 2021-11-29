@@ -52,9 +52,11 @@ export class UserInfo extends Component {
         const userid = self.state.userData.userId
         const user = self.state.userData
         const company = self.state.companyData
+
+        console.log(userid.id);
         axios({
             method: 'POST',
-            url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/UpdateData',
+            url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/UpdateData/' + userid.id + "/",
             dataType: "json",
             data: {userid, user, company}
         }).then((data) => {

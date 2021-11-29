@@ -18,12 +18,10 @@ namespace Backend.Models
 		[Required]
 		public int LicenseId { get; set; }
 		public LicenseModel License { get; set; }
-		[Required]
-		public int PluginId { get; set; }
-		public PluginModel Plugin { get; set; }
-		[Required]
-		public int PluginBundleId { get; set; }
-		public PluginBundleModel PluginBundle { get; set; }
+		public int? PluginId { get; set; }
+		public PluginModel Plugin { get; set; } = null;
+		public int? PluginBundleId { get; set; }
+		public PluginBundleModel PluginBundle { get; set; } = null;
 
 		[DefaultValue(0)]
 		public int TimesActivated { get; set; }

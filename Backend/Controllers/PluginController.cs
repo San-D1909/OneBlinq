@@ -7,18 +7,20 @@ using Backend.Infrastructure.Data;
 using Backend.Models;
 using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.DTO.Out;
+using System.Net.NetworkInformation;
+using System;
 
-namespace Backend.Controllers
+namespace Backend.Controllers.AdminDashboard
 {
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1")]
     [ApiController]
-    public class PluginsController : ControllerBase
+    public class PluginController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly IPluginRepository _pluginRepository;
 
-        public PluginsController(ApplicationDbContext context, IPluginRepository pluginRepository)
+        public PluginController(ApplicationDbContext context, IPluginRepository pluginRepository)
         {
             _context = context;
             _pluginRepository = pluginRepository;
@@ -34,7 +36,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<IEnumerable<PluginModel>>> GetPlugin([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
 
-          IEnumerable<PluginModel> plugins = await _pluginRepository.GetPlugins(filter, sort);
+            IEnumerable<PluginModel> plugins = await _pluginRepository.GetPlugins(filter, sort);
 
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
             Request.HttpContext.Response.Headers.Add("Content-Range", "plugins 0-5/1");
@@ -55,6 +57,25 @@ namespace Backend.Controllers
             }
 
             return Ok(plugin);
+        }
+
+        [HttpGet("macaddress")]
+        public IActionResult MacTest()
+        {
+            try
+            {
+                var firstMacAddress = NetworkInterface
+                    .GetAllNetworkInterfaces()
+                    .Where(nic => nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                    .Select(nic => nic.GetPhysicalAddress().ToString())
+                    .FirstOrDefault();
+
+                return Ok(firstMacAddress);
+            }
+            catch (Exception e)
+            {
+                return Unauthorized(e);
+            }
         }
 
         // PUT: api/Plugins/5

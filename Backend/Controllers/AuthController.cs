@@ -48,7 +48,7 @@ namespace Backend.Controllers
                 {
                        new Claim(ClaimTypes.Email, Email.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -69,6 +69,7 @@ namespace Backend.Controllers
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] LoginInput credentials)
         {
+
             var user = await _context.User
                     .Where(u => u.Email == credentials.Email)
                     .FirstOrDefaultAsync();
@@ -100,7 +101,7 @@ namespace Backend.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterInput credentials)
         {
-            /**
+
             var findUser = await _context.User
                     .Where(u => u.Email == credentials.User.Email)
                     .FirstOrDefaultAsync();
@@ -109,12 +110,11 @@ namespace Backend.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            */
 
             if (credentials.User.Password == credentials.User.PasswordConfirmation)
             {   
                 CompanyModel company = null;
-                if (credentials.Company != null)
+                if (credentials.HasCompany)
                 {
                     await _context.Company.AddAsync(new CompanyModel
                     {
@@ -137,18 +137,18 @@ namespace Backend.Controllers
 
                 byte[] salt;
                 new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+                UserModel user = new UserModel
+                {
+                    Email = credentials.User.Email,
+                    Password = _encryptor.EncryptPassword(credentials.User.Password + salt),
+                    FullName = credentials.User.FullName,
+                    IsAdmin = false,
+                    Salt = salt,
+                    Company = company
 
-                var newUser = await _context.User
-                    .AddAsync(new UserModel
-                    {
-                        Email = credentials.User.Email,
-                        Password = _encryptor.EncryptPassword(credentials.User.Password + salt),
-                        FullName = credentials.User.FullName,
-                        IsAdmin = false,
-                        Salt = salt,
-                        Company = company
-
-                    });
+                };
+                var newUser = _context.User
+                    .Add(user);
 
                 SendVerificationMail(credentials.User.Email);
 
@@ -177,20 +177,18 @@ namespace Backend.Controllers
                     IssuerSigningKey = mySecurityKey
                 }, out SecurityToken validatedToken);
 
-                string claim_email = TokenHelper.GetClaim(dto.Token, ClaimTypes.Email);
-                if (claim_email != dto.Email)
+                string claim_email = TokenHelper.GetClaim(dto.Token, "email");
+                if (claim_email == dto.Email)
                 {
                     var user = await _context
-                        .User
-                        .Where(u => u.Email == dto.Email)
-                        .FirstOrDefaultAsync();
+                            .User
+                            .FirstOrDefaultAsync(u => u.Email == dto.Email);
 
                     user.IsVerified = true;
 
                     await _context.SaveChangesAsync();
-
-                    return Ok();
                 }
+
             }
             catch
             {
@@ -221,7 +219,7 @@ namespace Backend.Controllers
                     {
                        new Claim(ClaimTypes.Email, user.Email.ToString())
                     }),
-                    Expires = DateTime.UtcNow.AddHours(1),
+                    Expires = DateTime.Now.AddHours(1),
                     SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
                 };
 
@@ -258,16 +256,21 @@ namespace Backend.Controllers
                     IssuerSigningKey = mySecurityKey
                 }, out SecurityToken validatedToken);
 
-                string claim_email = TokenHelper.GetClaim(dto.Token, ClaimTypes.Email);
+                string claim_email = TokenHelper.GetClaim(dto.Token, "email");
+
                 if (claim_email == dto.Email && dto.Password == dto.PasswordConfirm)
                 {
+                    byte[] salt;
+                    new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+
                     //TODO: repo hier
                     var user = await _context
                         .User
                         .Where(u => u.Email == dto.Email)
                         .FirstOrDefaultAsync();
 
-                    user.Password = _encryptor.EncryptPassword(dto.Password);
+                    user.Password = _encryptor.EncryptPassword(dto.Password + salt);
+                    user.Salt = salt; 
 
                     await _context.SaveChangesAsync();
 

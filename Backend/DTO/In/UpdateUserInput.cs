@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace Backend.DTO.In
 {
-	public class RegisterInput
+	public class UpdateUserInput
 	{
 
-        public RegisterUserInput User { get; set; }
-		public RegisterCompanyInput Company { get; set; }
-
-		public bool HasCompany { get; set; }
+		public UserModel User { get; set; }
+		public CompanyModel Company { get; set; }
 
 	}
 }
