@@ -36,7 +36,7 @@ namespace Backend.Controllers
             _encryptor = new PasswordEncrypter(config);
         }
 
-        private async void SendVerificationMail(string Email )
+        private async void SendVerificationMail(string Email)
         {
             var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
 
@@ -59,7 +59,7 @@ namespace Backend.Controllers
                  "stuurmen@stuur.men",
                  "test@gmail.com",
                  "Reset Password",
-                 $"Press this link to confirm your account: localhost:29616/verify?email={Email}&token={tokenHandler.WriteToken(token)}"
+                 $"Press this link to confirm your account: localhost:29616/verify/{tokenHandler.WriteToken(token)}?email={Email}"
              );
 
             await _mailClient.SendEmailAsync(mail);
@@ -161,11 +161,42 @@ namespace Backend.Controllers
         }
 
         [HttpPost("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail()
+        public async Task<IActionResult> ConfirmEmail(VerifyEmailDTO dto)
         {
+            var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                tokenHandler.ValidateToken(dto.Token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = mySecurityKey
+                }, out SecurityToken validatedToken);
+
+                string claim_email = TokenHelper.GetClaim(dto.Token, ClaimTypes.Email);
+                if (claim_email != dto.Email)
+                {
+                    var user = await _context
+                        .User
+                        .Where(u => u.Email == dto.Email)
+                        .FirstOrDefaultAsync();
+
+                    user.IsVerified = true;
+
+                    await _context.SaveChangesAsync();
+
+                    return Ok();
+                }
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
             return Ok();
         }
-
 
         [HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] LoginInput credentials)
@@ -224,15 +255,25 @@ namespace Backend.Controllers
                     IssuerSigningKey = mySecurityKey
                 }, out SecurityToken validatedToken);
 
-                // token is verified
-                //TODO: repo hier
-                var user = _context.User.Where(u => u.Email == dto.Email).FirstOrDefault();
-                user.Password = _encryptor.EncryptPassword(dto.Password);
-                _context.SaveChanges();
+                string claim_email = TokenHelper.GetClaim(dto.Token, ClaimTypes.Email);
+                if (claim_email != dto.Email && dto.Password == dto.PasswordConfirm)
+                {
+                    //TODO: repo hier
+                    var user = await _context
+                        .User
+                        .Where(u => u.Email == dto.Email)
+                        .FirstOrDefaultAsync();
+
+                    user.Password = _encryptor.EncryptPassword(dto.Password);
+
+                    await _context.SaveChangesAsync();
+
+                    return Ok();
+                }
             }
             catch
             {
-                return Ok();
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             return Ok();
