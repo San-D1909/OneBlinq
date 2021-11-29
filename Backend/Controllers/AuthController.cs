@@ -141,13 +141,8 @@ namespace Backend.Controllers
                 var newUser = await _context.User
                     .AddAsync(new UserModel
                     {
-<<<<<<< Updated upstream
-                        Email = credentials.User.Mail,
-                        Password = _encryptor.EncryptPassword(credentials.User.Password + salt),
-=======
                         Email = credentials.User.Email,
-                        Password = _encryptor.EncryptPassword(credentials.User.Password),
->>>>>>> Stashed changes
+                        Password = _encryptor.EncryptPassword(credentials.User.Password + salt),
                         FullName = credentials.User.FullName,
                         IsAdmin = false,
                         Salt = salt,

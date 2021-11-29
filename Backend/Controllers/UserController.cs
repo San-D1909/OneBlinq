@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using Backend.DTO.In;
 
 namespace Backend.Controllers
 {
@@ -50,18 +51,9 @@ namespace Backend.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateData([FromBody]RegisterModel updatedUser)
+        public async Task<ActionResult> UpdateData([FromBody] RegisterInput updatedUser)
         {
-<<<<<<< Updated upstream
-            if (userId != updateUserModel.Id)
-            {
-                return BadRequest();
-            }
-
-            UserModel userbyid = await _userRepository.GetUserById(userId);
-=======
             UserModel userbyid = await _userRepository.GetUserById(updatedUser.User.UserId);
->>>>>>> Stashed changes
             if (userbyid is null)
             {
                 return NotFound();
