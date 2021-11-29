@@ -47,7 +47,7 @@ export class Register extends Component {
             phoneNumber: this.state.phoneNumber
         };
         var user = {
-            mail: this.state.mail,
+            email: this.state.mail,
             fullname: this.state.fullname,
             password: this.state.password,
             passwordConfirmation: this.state.passwordConfirmation
