@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using Backend.DTO.In;
 
 namespace Backend.Controllers
 {
@@ -28,7 +29,7 @@ namespace Backend.Controllers
 
         [HttpGet("GetUserByToken")]
         public async Task<ActionResult> GetUserByToken([FromQuery] string jtoken)
-        {
+        {//Gets the user and company data by the token from the front end, used in the userinfo page to populate the data.
             var user = TokenHelper.Verify(jtoken, _config);
             if (user is null)
             {
@@ -46,25 +47,20 @@ namespace Backend.Controllers
         
 
 
-        [HttpPut("{userId}")]
+        [HttpPost("UpdateData")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateUserData(int userId, UserModel updateUserModel)
+        public async Task<ActionResult> UpdateData([FromBody] RegisterInput updatedUser)
         {
-            if (userId != updateUserModel.Id)
-            {
-                return BadRequest();
-            }
-
-            UserModel userbyid = await _userRepository.GetUserById(userId);
+            UserModel userbyid = await _userRepository.GetUserById(updatedUser.User.UserId);
             if (userbyid is null)
             {
                 return NotFound();
             }
-            if (userbyid.FullName != updateUserModel.FullName)
+            if (userbyid.FullName != updatedUser.User.FullName)
             {
-                await _userRepository.UpdateFullName(updateUserModel.FullName, userId);
+                await _userRepository.UpdateFullName(updatedUser.User.FullName, updatedUser.User.UserId);
             }
             // var updatedUser = await _userRepository.UpdateUser(userModel);
             return Ok();
