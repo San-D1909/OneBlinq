@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+﻿
 import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
@@ -7,10 +7,13 @@ import { PluginCreate, PluginEdit, PluginList, PluginShow } from "../components/
 import { UserCreate, UserEdit, UserList, UserShow } from "../components/Admin/Users";
 import { LicenseList, LicenseShow } from "../components/Admin/License";
 import simpleRestProvider from 'ra-data-simple-rest';
+import React, { forwardRef } from 'react';
+import { useLogout } from 'react-admin';
+import MenuItem from '@material-ui/core/MenuItem';
+import ExitIcon from '@material-ui/icons/PowerSettingsNew';
+import LogoutButton from '../components/Admin/LogoutButton';
 
 export const newOptions = {
-
-
 
     // theme customizable at https://bareynol.github.io/mui-theme-creator
 
@@ -64,7 +67,7 @@ const UserDashboard = () => {
     let protocol = window.location.protocol;
     console.log(protocol);
     return (
-        <Admin theme={newOptions} dataProvider={simpleRestProvider(process.env.REACT_APP_API_BACKEND + "/api/v1")}>
+        <Admin theme={newOptions} dataProvider={simpleRestProvider(process.env.REACT_APP_API_BACKEND + "/api/v1")} logoutButton={LogoutButton}>
             <Resource name="devices"
                 list={ListGuesser}
                 edit={EditGuesser}
@@ -74,7 +77,6 @@ const UserDashboard = () => {
                 show={LicenseShow}
             />
             <Resource name="plugins" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
-            <Resource name="users" list={UserList} create={UserCreate} edit={UserEdit} show={UserShow} />
         </Admin>
     );
 }

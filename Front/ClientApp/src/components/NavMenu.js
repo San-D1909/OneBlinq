@@ -51,7 +51,7 @@ export class NavMenu extends Component {
 
         if (path == "/login" || path == "/logout" || path == "/register") {
             LoginLogoutButton = <></>;
-        }else if (ReactSession.get("loggedin")) {
+        }else if (localStorage.getItem("loggedin")) {
             LoginLogoutButton = (
                 <NavDropdown id="accountdropdown" title="Account">
                     <NavDropdown.Item href="/user/dashboard/">Dashboard</NavDropdown.Item>

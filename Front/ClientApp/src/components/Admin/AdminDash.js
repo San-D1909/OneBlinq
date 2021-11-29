@@ -4,6 +4,7 @@ import { UserFilters, UserList, UserShow, UserEdit, UserCreate } from './Users'
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
 import { Link, Redirect } from 'react-router-dom';
+import { LogoutButton } from './LogoutButton';
 
 export const newOptions = {
 
