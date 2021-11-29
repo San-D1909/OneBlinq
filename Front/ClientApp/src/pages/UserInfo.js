@@ -37,7 +37,7 @@ export class UserInfo extends Component {
     OnLoad = (e) => {
         var self = this;
         axios({
-            method: 'get',
+            method: 'GET',
             url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/GetUserByToken',
             params: {
                 jtoken: localStorage.getItem("token"),
@@ -56,7 +56,7 @@ export class UserInfo extends Component {
             method: 'POST',
             url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/UpdateData',
             dataType: "json",
-            data: {userid,user, company}
+            data: {userid, user, company}
         }).then((data) => {
 
         });

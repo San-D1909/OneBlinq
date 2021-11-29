@@ -17,7 +17,7 @@ export class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            mail: '',
+            email: '',
             fullname: '',
             password: '',
             passwordConfirmation: '',
@@ -47,21 +47,36 @@ export class Register extends Component {
             phoneNumber: this.state.phoneNumber
         };
         var user = {
-            email: this.state.mail,
+            email: this.state.email,
             fullname: this.state.fullname,
             password: this.state.password,
             passwordConfirmation: this.state.passwordConfirmation
         };
 
         var userdata = {};
+
         userdata.user = user;
         userdata.company = company;
+
+        const { email } = user.email;
+        const { password } = user.password;
+
         axios({
             method: 'post',
             url: process.env.REACT_APP_API_BACKEND + '/api/v1/Auth/Register',
             dataType: "json",
             data: userdata
-        }).then(data => console.log(data))
+        }).then(data => {
+            axios({
+                method: 'post',
+                url: process.env.REACT_APP_API_BACKEND + '/api/v1/Auth/LogIn',
+                dataType: "json",
+                data: { email, password }
+            }).then(token => {
+                localStorage.setItem("token", token.data)
+                window.location.href = "/user/dashboard"
+            })
+        })
         
     }
 
@@ -82,7 +97,7 @@ export class Register extends Component {
                                         </div>
                                         <div className="py-2">
                                             <Label for="email">Email</Label>
-                                            <Input type="text" onChange={(e) => this.setState({ mail: e.target.value })} name="email" />
+                                            <Input type="text" onChange={(e) => this.setState({ email: e.target.value })} name="email" />
                                         </div>
                                         <div className="py-2">
                                             <Label for="password">Password</Label>
@@ -168,7 +183,7 @@ export class Register extends Component {
                                         </div>
                                         <div className="py-2">
                                             <Label for="email">Email</Label>
-                                            <Input type="text" onChange={(e) => this.setState({ mail: e.target.value })} name="email" />
+                                            <Input type="text" onChange={(e) => this.setState({ email: e.target.value })} name="email" />
                                         </div>
                                         <div className="py-2">
                                             <Label for="password">Password</Label>
