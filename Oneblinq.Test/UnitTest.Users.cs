@@ -26,7 +26,7 @@ namespace Oneblinq.Test
         }
 
         [TestMethod]
-        public async Task User_UpdateFullName_TrueIsNewNameAsync()
+        public void User_UpdateFullName_TrueExistsById()
         {
             UserModel user = new UserModel()
             {
@@ -37,6 +37,8 @@ namespace Oneblinq.Test
                 IsAdmin = false,
             };
             userRepository.Add(user);
+
+            Assert.IsTrue(userRepository.GetById(1) != null);
         }
     }
 }
