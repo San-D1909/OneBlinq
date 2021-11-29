@@ -20,7 +20,7 @@ namespace Backend.Core.Logic
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(claims),
-				Expires = DateTime.UtcNow.AddDays(7),
+				Expires = DateTime.Now.AddDays(7),
 				SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
 			};
 
@@ -64,7 +64,7 @@ namespace Backend.Core.Logic
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
-			var stringClaimValue = securityToken.Claims.FirstOrDefault(claim => claim.Type == claimType).Value;
+			var stringClaimValue = securityToken.Claims.FirstOrDefault(c => c.Type == claimType)?.Value;
 			return stringClaimValue;
 		}
 	}
