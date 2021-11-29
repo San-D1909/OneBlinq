@@ -46,7 +46,9 @@ export function ResetPassword() {
                 passwordConfirm
             }
         }).then(() => {
-
+            window.location.href = "/login";
+        }).catch((e) => {
+            console.log(e);
         })
     }
 

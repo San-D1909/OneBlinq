@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,20 +69,23 @@ namespace Backend.Controllers
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] LoginInput credentials)
         {
-            var encryptedPassword = _encryptor.EncryptPassword(credentials.Password);
-
             var user = await _context.User
-                    .Where(u => u.Email == credentials.Email && u.Password == encryptedPassword)
+                    .Where(u => u.Email == credentials.Email)
                     .FirstOrDefaultAsync();
 
-            if (user != null)
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
+            if (_encryptor.EncryptPassword(credentials.Password + user.Salt) == user.Password)
             {
                 Claim[] claims = new Claim[]
-                {
+{
                      new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                       new Claim(ClaimTypes.Name, user.FullName)
 
-                };
+};
 
                 var token = TokenHelper.CreateToken(claims, _config);
 
@@ -89,7 +93,6 @@ namespace Backend.Controllers
             }
             else
             {
-
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
         }
@@ -97,6 +100,7 @@ namespace Backend.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterInput credentials)
         {
+            /**
             var findUser = await _context.User
                     .Where(u => u.Email == credentials.User.Mail)
                     .FirstOrDefaultAsync();
@@ -105,12 +109,14 @@ namespace Backend.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
+            */
 
             if (credentials.User.Password == credentials.User.PasswordConfirmation)
-            {
-                if (credentials.Company.CompanyName != "")
+            {   
+                CompanyModel company = null;
+                if (credentials.Company != null)
                 {
-                    var newCompany = await _context.Company.AddAsync(new CompanyModel
+                    await _context.Company.AddAsync(new CompanyModel
                     {
                         CompanyName = credentials.Company.CompanyName,
                         ZipCode = credentials.Company.ZipCode,
@@ -121,31 +127,27 @@ namespace Backend.Controllers
                         KVKNumber = credentials.Company.KVKNumber,
                         PhoneNumber = credentials.Company.PhoneNumber
                     });
-                }
 
-                var company = await _context.Company
+                    await _context.SaveChangesAsync();
+
+                    company = await _context.Company
                     .Where(c => c.CompanyName == credentials.Company.CompanyName)
                     .FirstOrDefaultAsync();
-
-                int? id = 0;
-
-                if (company == null || company.CompanyName == "")
-                {
-                    id = null;
                 }
-                else
-                {
-                    id = company.Id;
-                }
+
+                byte[] salt;
+                new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
                 var newUser = await _context.User
                     .AddAsync(new UserModel
                     {
                         Email = credentials.User.Mail,
-                        Password = _encryptor.EncryptPassword(credentials.User.Password),
+                        Password = _encryptor.EncryptPassword(credentials.User.Password + salt),
                         FullName = credentials.User.FullName,
                         IsAdmin = false,
+                        Salt = salt,
                         Company = company
+
                     });
 
                 SendVerificationMail(credentials.User.Mail);
@@ -226,12 +228,13 @@ namespace Backend.Controllers
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
                 // TODO: change site url from localhost to config["SITE_URL"] || env SITE_URL
+                
                 MailMessage mail = new MailMessage
                  (
                      "stuurmen@stuur.men",
-                     "test@gmail.com",
+                     user.Email.ToString(),
                      "Reset Password",
-                     $"Press this link to reset your password: localhost:29616/resetpassword?email={credentials.Email}&token={tokenHandler.WriteToken(token)}"
+                     $"Press this link to reset your password: localhost:3000/resetpassword?email={credentials.Email}&token={tokenHandler.WriteToken(token)}"
                  );
 
                 await _mailClient.SendEmailAsync(mail);
@@ -256,7 +259,7 @@ namespace Backend.Controllers
                 }, out SecurityToken validatedToken);
 
                 string claim_email = TokenHelper.GetClaim(dto.Token, ClaimTypes.Email);
-                if (claim_email != dto.Email && dto.Password == dto.PasswordConfirm)
+                if (claim_email == dto.Email && dto.Password == dto.PasswordConfirm)
                 {
                     //TODO: repo hier
                     var user = await _context
@@ -271,7 +274,7 @@ namespace Backend.Controllers
                     return Ok();
                 }
             }
-            catch
+            catch(Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

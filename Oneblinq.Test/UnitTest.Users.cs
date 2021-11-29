@@ -30,7 +30,7 @@ namespace Oneblinq.Test
         {
             UserModel user = new UserModel()
             {
-                UserId = 1,
+                Id = 1,
                 FullName = "Ronaldo",
                 Password = "b",
                 Email = "t@t.nl",

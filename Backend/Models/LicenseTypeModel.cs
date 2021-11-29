@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-    public class LicenseType
+    public class LicenseTypeModel
     {
         [Key]
         public int Id { get; set; }
         [Required]
         public string TypeName { get; set; }
         [Required]
-        public string MaxAmount { get; set; }
+        public int MaxAmount { get; set; }
         private DateTime? _creationTime = null;
         [Required]
         public DateTime CreationTime
@@ -30,7 +30,5 @@ namespace Backend.Models
                 this._creationTime = value;
             }
         }
-        [Required]
-        public DateTime ExpirationTime { get; set; }
     }
 }

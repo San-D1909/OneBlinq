@@ -8,3 +8,9 @@ bin/Debug/
 obj/Debug/
 
 obj/Docker/
+
+Oneblinq.Test/bin/Debug/net5.0/
+
+Oneblinq.Test/obj/Debug/net5.0/
+
+Oneblinq.Test/obj/

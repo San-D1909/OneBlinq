@@ -3,14 +3,16 @@ using System;
 using Backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211129095123_IncreaseCountAfterDeviceInsertTrigger")]
+    partial class IncreaseCountAfterDeviceInsertTrigger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,6 +270,9 @@ namespace Backend.Migrations
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("ConfirmedEmail")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -279,16 +284,13 @@ namespace Backend.Migrations
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("Salt")
+                    b.Property<string>("Salt")
                         .IsRequired()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

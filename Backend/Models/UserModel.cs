@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
+	public class UserModel { 
 		[Key]
 		public int Id { get; set; }
 		[Required]
@@ -19,7 +20,7 @@ namespace Backend.Models
 		[Required]
 		public string Password { get; set; }
 		[Required]
-        public string Salt { get; set; }
+        public byte[] Salt { get; set; }
 		[DefaultValue(false)]
 		public bool IsAdmin { get; set; }
 		public CompanyModel Company { get; set; }

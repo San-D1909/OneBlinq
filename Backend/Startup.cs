@@ -89,6 +89,13 @@ namespace Backend
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            System.Console.WriteLine("Applying Migrations....");
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                context.Database.Migrate();
+            }
+
             if (env.IsDevelopment() || env.IsEnvironment("local"))
             {
                 app.UseDeveloperExceptionPage();

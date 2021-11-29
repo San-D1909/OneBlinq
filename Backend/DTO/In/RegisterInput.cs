@@ -11,7 +11,7 @@ namespace Backend.DTO.In
 	{
 
         public RegisterUserInput User { get; set; }
-		public CompanyModel Company { get; set; }
+		public RegisterCompanyInput Company { get; set; }
 
     }
 }

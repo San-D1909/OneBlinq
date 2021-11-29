@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,11 +10,13 @@ namespace Backend.Models
 	public class LicenseModel
 	{
 		[Key]
-		public string Id { get; set; }
+        public int Id { get; set; }
+        [Required]
+		public string LicenseKey { get; set; }
 		[Required]
 		public UserModel User { get; set; }
 		[Required]
-		public string LicenseType { get; set; }
+		public LicenseTypeModel LicenseType { get; set; }
 		[Required]
 		public bool IsActive { get; set; }
         private DateTime? _creationTime = null;

@@ -51,20 +51,28 @@ namespace Backend.Controllers
                 _context.SaveChanges();
             }
 
+            LicenseTypeModel licenseType = new LicenseTypeModel
+            {
+                MaxAmount = 5,
+                TypeName = "Test"
+            };
+
+            _context.LicenseType.Add(licenseType);
+
             LicenseModel license = new LicenseModel()
             {
                 ExpirationTime = DateTime.Now.AddYears(1),
-                LicenseType = "Test",
+                LicenseType = licenseType,
                 IsActive = true,
                 TimesActivated = 0,
-                Id = _generator.CreateLicenseKey(response.Email, "Forms", response.Variants),
+                LicenseKey = _generator.CreateLicenseKey(response.Email, "Forms", response.Variants),
                 User = user
             };
 
             _context.License.Add(license);
             _context.SaveChanges();
 
-            SendLicenseMail(user.Email, license.Id);
+            SendLicenseMail(user.Email, license.LicenseKey);
 
             return Ok();
         }
