@@ -78,8 +78,8 @@ namespace Backend.Controllers
                 Claim[] claims = new Claim[]
                 {
                      new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                      new Claim(ClaimTypes.Name, user.FullName)
-
+                      new Claim(ClaimTypes.Name, user.FullName),
+                      new Claim(ClaimTypes.Role, ""+user.IsAdmin.ToString()+"")
                 };
 
                 var token = TokenHelper.CreateToken(claims, _config);
