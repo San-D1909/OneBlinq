@@ -1,9 +1,13 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Backend.Infrastructure.Data;
 using Backend.Infrastructure.Data.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
-using System.Linq;
 using Backend.Models;
 
 namespace Oneblinq.Test
@@ -32,16 +36,17 @@ namespace Oneblinq.Test
         {
             CompanyModel company = companyRepository.GetById(1);
 
-            UserModel user = new UserModel()
-            {
-                Id = 1,
-                FullName = "Ronaldo",
-                Password = "b",
-                Email = "t@t.nl",
-                IsAdmin = false,
-                Company = company
-            };
-            userRepository.Add(user);
+            //UserModel user = new UserModel()
+            //{
+            //    Id = 1,
+            //    FullName = "Ronaldo",
+            //    Password = "b",
+            //    Email = "t@t.nl",
+            //    IsAdmin = false,
+            //    Company = company
+            //};
+            //userRepository.Add(user);
+            //userRepository.Save();
 
             Assert.IsTrue(userRepository.GetById(1) != null);
         }
@@ -67,6 +72,14 @@ namespace Oneblinq.Test
             CompanyModel checkCompany = await userRepository.GetCompanyById(1);
 
             Assert.IsTrue(company == checkCompany);
+        }
+
+        [TestMethod]
+        public async Task User_GetUserByEmail_TrueEmailExists()
+        {
+            UserModel user = await userRepository.GetUserByEmail("t@t.nl");
+
+            Assert.IsTrue(user != null);
         }
 
     }

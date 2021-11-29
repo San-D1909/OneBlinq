@@ -30,18 +30,37 @@ namespace Oneblinq.Test
         }
 
         [TestMethod]
-        public void Plugin_Add_TrueExistsById()
+        public void Plugin_AddPlugin_TrueExistsById()
         {
             PluginModel plugin = new PluginModel()
             {
                 Id = 1,
-                PluginName = "Ronaldo",
+                PluginName = "Ronaldo's plugin",
                 PluginDescription = "b",
                 Price = 6
             };
-            pluginRepository.Add(plugin);
+            pluginRepository.AddPlugin(plugin);
+            pluginRepository.Save();
 
             Assert.IsTrue(pluginRepository.GetById(1) != null);
+        }
+
+        //[TestMethod]
+        //public void Plugin_GetPlugins_TrueIfPluginExists()
+        //{
+        //    PluginModel plugin = pluginRepository.GetPlugins("Ronaldo's", "v").Result.FirstOrDefault();
+
+        //    Assert.IsTrue(plugin != null);
+        //}
+
+        [TestMethod]
+        public async Task Plugin_GetPluginsByNameAsync_TrueIfNameIsCorrect()
+        {
+            PluginModel plugin = pluginRepository.GetById(1);
+            string searchString = plugin.PluginName;
+            var plugins = await pluginRepository.GetPluginsByNameAsync(searchString);
+
+            Assert.IsTrue(plugins.First() != null);
         }
     }
 }
