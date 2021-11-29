@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavMenu } from '../components/NavMenu';
 import { PluginCard } from '../components/PluginCard'
 import { Footer } from '../components/Footer'
+import axios from 'axios'
 
 function PluginList(props) {
     const { plugins } = props
@@ -74,8 +75,8 @@ export class Plugins extends Component {
         this.fetchBundles = this.fetchBundles.bind(this)
     }
 
-    componentDidMount() {
-        this.setState({ plugins: this.fetchPlugins(), bundles: this.fetchBundles(), hover: false})
+    async componentDidMount() {
+        this.setState({ plugins: await this.fetchPlugins(), bundles: this.fetchBundles(), hover: false})
     }
 
     fetchBundles() {
@@ -90,26 +91,8 @@ export class Plugins extends Component {
         }]
     }
 
-    fetchPlugins() {
-        return [{
-            id: "1",
-            title: "forms"
-        }, {
-            id: "2",
-            title: "squares"
-        }, {
-            id: "1",
-            title: "forms"
-        }, {
-            id: "1",
-            title: "forms"
-        }, {
-            id: "1",
-            title: "forms"
-        }, {
-            id: "1",
-            title: "forms"
-        }]
+    async fetchPlugins() {
+        return await axios.get(process.env.REACT_APP_API_BACKEND + '/api/v1/plugins').then(response => response.data)
     }
 
     addPlugin() {
