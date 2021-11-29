@@ -1,11 +1,18 @@
 ﻿import * as React from "react";
 import { Component } from "react";
+import { NavMenu } from '../components/NavMenu';
 import { email } from "react-admin";
 import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
 import axios from 'axios';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import { Link, Redirect } from 'react-router-dom';
+import jwt from 'jwt-decode'
+import Card from 'reactstrap/lib/Card';
+import CardBody from 'reactstrap/lib/CardBody';
+import CardImg from 'reactstrap/lib/CardImg';
+import { Input } from 'reactstrap';
+import Button from 'reactstrap/lib/Button';
 
 export class UserInfo extends Component {
     static displayName = UserInfo.name;
@@ -14,36 +21,47 @@ export class UserInfo extends Component {
         super(props);
 
         this.state = {
-            fullname: '',
-            mail: '',
-            password: '',
-            companyname: '',
-            userData: '',
-            companyData: '',
+            userData: [],
+            companyData: [],
             loggedIn: false,
             jtoken: localStorage.getItem("token")
         }
         this.OnLoad = this.OnLoad.bind(this)
+        this.OnUpdateUserData = this.OnUpdateUserData.bind(this)
     }
+
     componentDidMount() {
         this.OnLoad();
     }
 
-
     OnLoad = (e) => {
         var self = this;
         axios({
-            method: 'get',
+            method: 'GET',
             url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/GetUserByToken',
             params: {
                 jtoken: localStorage.getItem("token"),
             }
         }).then((data) => {
-            console.log(data);
-            self.setState({ userData: data.data.userById, companyData: data.data.userCompany });
-            console.log(this.userData);
+            self.setState({ userData: data.data.userById }, () => { console.log(self.state.userData) });
+            self.setState({ companyData: data.data.userCompany }, () => { console.log(self.state.companyData) });
         });
     }
+    OnUpdateUserData = (e) => {
+        var self = this;
+        const userid = self.state.userData.userId
+        const user = self.state.userData
+        const company = self.state.companyData
+        axios({
+            method: 'POST',
+            url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/UpdateData',
+            dataType: "json",
+            data: {userid, user, company}
+        }).then((data) => {
+
+        });
+    }
+
 
 
     render() {
@@ -52,24 +70,26 @@ export class UserInfo extends Component {
                 <Redirect to="/login" />
             )
         }
-        console.log(this.userData);
         return (
             <body>
-                <div>
-                    <div class="col-sm-4 mt-4">
-                        <div class="card" style={{ backgroundColor: "white", minHeight: "520px", maxHeight: "520px", borderColor: "#FF1801" }}>
-                            <div class="card-body">
-                                <h4 style={{ textAlign: "center", fontWeight: "bold" }} class="card-title">FullName: {/*{this.state.userData.userbyid.fullName}*/}</h4>
-                                <hr class="solid"></hr>
-{/*                                <p style={{ textAlign: "center" }} class="card-text">CompanyID: {this.state.userData.company}</p>
-                                <p style={{ textAlign: "center" }} class="card-text">UserId: {this.state.userData.userId}</p>*/}
-                            </div>
-                            <div class="card-footer" style={{ backgroundColor: "darkgray", Height: "auto", maxHeight: "auto" }} >
-                            </div>
+                <NavMenu />
+                <div class="card mx-auto" style={{ backgroundColor: "white", maxWidth: "60%" }}>
+                    <div class="card-body">
+                        <h4 style={{ textAlign: "center", fontWeight: "bold" }} class="card-title">UserData</h4>
+                        <h6 style={{ textAlign: "center" }}>You can update your userdata in the fields below.</h6>
+                        <hr class="solid"></hr>
+                        <div className="py-2">
+                            <Label for="fullName">Full Name</Label>
+                            <Input type="fullName" placeholder={this.state.userData.fullName} onChange={(e) => this.state.userData.fullName = e.target.value} name="fullName" />
                         </div>
+                        <div className="py-2">
+                            <Label for="email">Email</Label>
+                            <Input type="email" placeholder={this.state.userData.email} onChange={(e) => this.state.userData.email = e.target.value} name="email" />
+                        </div>
+                        <Button className="my-2 mr-2 ml-0 loginbutton" onClick={(e) => this.OnUpdateUserData(e)}>Update</Button>
                     </div>
                 </div>
-            </body>
+            </body >
         )
     }
 }

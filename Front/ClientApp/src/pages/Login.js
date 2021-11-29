@@ -75,7 +75,7 @@ export class Login extends Component {
 
     render() {
         if (localStorage.getItem("loggedin")) {
-            if (localStorage.getItem("isAdmin") === false)
+            if (localStorage.getItem("isAdmin") === 'False')
                 return (
                     <Redirect to="/user/dashboard/" />
                 )

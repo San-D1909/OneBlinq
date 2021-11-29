@@ -57,7 +57,7 @@ const dataProvider = fakeDataProvider({
 
 const AdminDash = () => {
     if (localStorage.getItem("loggedin")) {
-        if (localStorage.getItem("isAdmin") === false) {
+        if (localStorage.getItem("isAdmin") === 'False') {
             return (
                 <Redirect to="/user/dashboard/" />
             )
