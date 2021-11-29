@@ -62,7 +62,7 @@ export class Login extends Component {
         var self = this;
         axios({
             method: 'post',
-            url: 'http://localhost:5000/api/v1/Auth/LogIn',
+            url: process.env.REACT_APP_API_BACKEND + '/api/v1/Auth/LogIn',
             data: { email, password }
         }).then(token => this.setSession(token)).catch(function (error) {
             if (error.message == "Request failed with status code 401") {

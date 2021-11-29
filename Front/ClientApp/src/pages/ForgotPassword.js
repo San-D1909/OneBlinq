@@ -46,7 +46,7 @@ export class ForgotPassword extends Component {
 
         axios({
             method: 'post',
-            url: 'http://localhost:4388/api/v1/Auth/ForgotPassword',
+            url: process.env.REACT_APP_API_BACKEND + '/api/v1/Auth/ForgotPassword',
             data: { email, password: '' }
         }).then(() => {
             this.setState({
