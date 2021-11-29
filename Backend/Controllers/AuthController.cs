@@ -162,9 +162,9 @@ namespace Backend.Controllers
         [HttpPost("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail()
         {
+
             return Ok();
         }
-
 
         [HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] LoginModel credentials)
@@ -223,7 +223,12 @@ namespace Backend.Controllers
                     IssuerSigningKey = mySecurityKey
                 }, out SecurityToken validatedToken);
 
-                // token is verified
+                string claim_email = TokenHelper.GetClaim(dto.Token, ClaimTypes.Email);
+                if (claim_email != dto.Email)
+                {
+                    return Ok();
+                }
+
                 //TODO: repo hier
                 var user = _context.User.Where(u => u.Email == dto.Email).FirstOrDefault();
                 user.Password = _encryptor.EncryptPassword(dto.Password);
