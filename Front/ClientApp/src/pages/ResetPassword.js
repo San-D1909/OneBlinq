@@ -35,7 +35,7 @@ export function ResetPassword() {
 
         axios({
             method: 'post',
-            url: 'http://localhost:5000/api/v1/Auth/ResetPassword',
+            url: process.env.REACT_APP_API_BACKEND + '/api/v1/Auth/ResetPassword',
             headers: {
                 'Content-Type': 'application/json',
             },

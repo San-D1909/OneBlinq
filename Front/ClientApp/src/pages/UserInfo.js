@@ -34,7 +34,7 @@ export class UserInfo extends Component {
         var self = this;
         axios({
             method: 'get',
-            url: 'http://localhost:5000/api/v1/user/GetUserByToken',
+            url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/GetUserByToken',
             params: {
                 jtoken: localStorage.getItem("token"),
             }
