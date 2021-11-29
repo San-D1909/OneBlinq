@@ -4,6 +4,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Linq;
 
 namespace Backend.Core.Logic
 {
@@ -58,6 +59,13 @@ namespace Backend.Core.Logic
 				throw new Exception($"Couldn't validate the token. {ex.Message}");
 			}
 		}
+		public static string GetClaim(string token, string claimType)
+		{
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
+			var stringClaimValue = securityToken.Claims.First(claim => claim.Type == claimType).Value;
+			return stringClaimValue;
+		}
 	}
 }
