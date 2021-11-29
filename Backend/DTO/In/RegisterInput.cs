@@ -13,5 +13,7 @@ namespace Backend.DTO.In
         public RegisterUserInput User { get; set; }
 		public RegisterCompanyInput Company { get; set; }
 
-    }
+		public bool HasCompany { get; set; }
+
+	}
 }

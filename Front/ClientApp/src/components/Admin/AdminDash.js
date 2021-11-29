@@ -3,7 +3,7 @@ import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import { UserFilters, UserList, UserShow, UserEdit, UserCreate } from './Users'
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { LogoutButton } from './LogoutButton';
 
 export const newOptions = {
@@ -57,6 +57,12 @@ const dataProvider = fakeDataProvider({
 })
 
 const AdminDash = () => {
+    if (localStorage.getItem("token") === null) {
+        return (
+            <Redirect to="/" />
+        )
+    }
+
     if (localStorage.getItem("loggedin")) {
         if (localStorage.getItem("isAdmin") === 'False') {
             return (

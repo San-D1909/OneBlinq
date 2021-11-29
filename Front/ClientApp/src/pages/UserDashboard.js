@@ -1,4 +1,4 @@
-﻿
+﻿import { Redirect } from 'react-router-dom';
 import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
@@ -63,6 +63,18 @@ const dataProvider = fakeDataProvider({
 })
 
 const UserDashboard = () => {
+
+    if (localStorage.getItem("token") === null) {
+        return (
+            <Redirect to="/" />
+        )
+    }
+    else if (localStorage.getItem("isAdmin") === 'True') {
+        return (
+            <Redirect to="/admin/dashboard" />
+        )
+    }
+
 
     let protocol = window.location.protocol;
     console.log(protocol);

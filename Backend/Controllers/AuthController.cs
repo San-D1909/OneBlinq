@@ -69,6 +69,7 @@ namespace Backend.Controllers
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] LoginInput credentials)
         {
+
             var user = await _context.User
                     .Where(u => u.Email == credentials.Email)
                     .FirstOrDefaultAsync();
@@ -100,7 +101,7 @@ namespace Backend.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterInput credentials)
         {
-            /**
+
             var findUser = await _context.User
                     .Where(u => u.Email == credentials.User.Email)
                     .FirstOrDefaultAsync();
@@ -109,12 +110,11 @@ namespace Backend.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            */
 
             if (credentials.User.Password == credentials.User.PasswordConfirmation)
             {   
                 CompanyModel company = null;
-                if (credentials.Company != null)
+                if (credentials.HasCompany)
                 {
                     await _context.Company.AddAsync(new CompanyModel
                     {

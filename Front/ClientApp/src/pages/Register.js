@@ -57,6 +57,7 @@ export class Register extends Component {
 
         userdata.user = user;
         userdata.company = company;
+        userdata.hascompany = this.state.hasCompany
 
         const { email } = user.email;
         const { password } = user.password;
