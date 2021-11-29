@@ -137,18 +137,18 @@ namespace Backend.Controllers
 
                 byte[] salt;
                 new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+                UserModel user = new UserModel
+                {
+                    Email = credentials.User.Email,
+                    Password = _encryptor.EncryptPassword(credentials.User.Password + salt),
+                    FullName = credentials.User.FullName,
+                    IsAdmin = false,
+                    Salt = salt,
+                    Company = company
 
-                var newUser = await _context.User
-                    .AddAsync(new UserModel
-                    {
-                        Email = credentials.User.Email,
-                        Password = _encryptor.EncryptPassword(credentials.User.Password + salt),
-                        FullName = credentials.User.FullName,
-                        IsAdmin = false,
-                        Salt = salt,
-                        Company = company
-
-                    });
+                };
+                var newUser = _context.User
+                    .Add(user);
 
                 SendVerificationMail(credentials.User.Email);
 

@@ -23,6 +23,6 @@ namespace Backend.Models
         public byte[] Salt { get; set; }
 		[DefaultValue(false)]
 		public bool IsAdmin { get; set; }
-		public CompanyModel Company { get; set; }
+		public CompanyModel Company { get; set; } = null;
     }
 }

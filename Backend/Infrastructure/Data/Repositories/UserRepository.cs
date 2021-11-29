@@ -44,5 +44,26 @@ namespace Backend.Infrastructure.Data.Repositories
                 throw new Exception($"Couldn't retrieve entity with id={UserId}: {ex.Message}");
             }
         }
+        public async Task<UserModel> GetUserByEmail(string Email)
+        {
+            try
+            {
+                var item = await _context.Set<UserModel>()
+                    .Where(x => x.Email == Email)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
+
+                if (item == null)
+                {
+                    throw new Exception($"Couldn't find entity with email={Email}");
+                }
+
+                return item;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve entity with email={Email}: {ex.Message}");
+            }
+        }
     }
 }

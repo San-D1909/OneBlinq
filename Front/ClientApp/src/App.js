@@ -12,7 +12,7 @@ import PluginInfo from './pages/PluginInfo';
 import { Plugins } from './pages/Plugins';
 import { Register } from './pages/Register';
 import { ResetPassword } from './pages/ResetPassword';
-import UserDashboard from './pages/UserDashboard';
+import UserDashboard from './components/User/UserDashboard';
 import { UserInfo } from './pages/UserInfo';
 import  VerifyEmail  from './pages/VerifyEmail';
 

@@ -10,7 +10,7 @@ import CardImg from 'reactstrap/lib/CardImg';
 import Form from 'reactstrap/lib/Form';
 import Label from 'reactstrap/lib/Label';
 import { NavMenu } from '../components/NavMenu';
-import jwt from 'jwt-decode'
+import jwt_decode from 'jwt-decode';
 import "./CSS/Login.css";
 
 
@@ -36,7 +36,7 @@ export class Login extends Component {
     }
 
     setSession = (token) => {
-        const user = jwt(token.data);
+        const user = jwt_decode(token.data);
         localStorage.setItem("loggedin", true);
         localStorage.setItem("token", token.data);
         localStorage.setItem("isAdmin", user.role);

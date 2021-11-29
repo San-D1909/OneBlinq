@@ -205,8 +205,8 @@ namespace Backend.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     LicenseId = table.Column<int>(type: "int", nullable: false),
-                    PluginId = table.Column<int>(type: "int", nullable: false),
-                    PluginBundleId = table.Column<int>(type: "int", nullable: false),
+                    PluginId = table.Column<int>(type: "int", nullable: true),
+                    PluginBundleId = table.Column<int>(type: "int", nullable: true),
                     TimesActivated = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
