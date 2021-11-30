@@ -18,7 +18,7 @@ jobs:
       run: dotnet restore ./Oneblinq.sln
         
     - name: Build
-      run: dotnet build Oneblinq/Backend.csproj --configuration Release
+      run: dotnet build OneBlinq/Backend.csproj --configuration Release
       
     - name: Tests
       run: dotnet test ./Oneblinq.sln --configuration Release
