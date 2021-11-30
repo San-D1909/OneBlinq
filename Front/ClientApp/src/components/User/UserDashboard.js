@@ -76,7 +76,6 @@ const UserDashboard = () => {
 
 
     let protocol = window.location.protocol;
-    console.log(protocol);
     let token = localStorage.getItem("token");
     return (
         <Admin theme={newOptions} dataProvider={simpleRestProvider(process.env.REACT_APP_API_BACKEND + `/api/v1/user/${token}`)} logoutButton={LogoutButton}>

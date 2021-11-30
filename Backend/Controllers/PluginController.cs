@@ -19,11 +19,13 @@ namespace Backend.Controllers.AdminDashboard
     {
         private readonly ApplicationDbContext _context;
         private readonly IPluginRepository _pluginRepository;
+        private readonly IUserRepository _userRepository;
 
-        public PluginController(ApplicationDbContext context, IPluginRepository pluginRepository)
+        public PluginController(ApplicationDbContext context, IPluginRepository pluginRepository, IUserRepository userRepository)
         {
             _context = context;
             _pluginRepository = pluginRepository;
+            _userRepository = userRepository;
         }
 
         // GET: api/Plugins
@@ -33,30 +35,53 @@ namespace Backend.Controllers.AdminDashboard
         /// </summary>
         /// <param name="filter" example='"pluginIds": [1,21321, 2312]'>The filter for the plugins</param>
         [Produces("application/json")]
-        public async Task<ActionResult<IEnumerable<PluginModel>>> GetPlugin([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
+        public async Task<ActionResult<IEnumerable<PluginOutput>>> GetPlugins([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
-
+            List<PluginOutput> pluginOutput = new List<PluginOutput>();
             IEnumerable<PluginModel> plugins = await _pluginRepository.GetPlugins(filter, sort);
+
+            foreach(PluginModel plugin in plugins)
+            {
+                IEnumerable<UserModel> users = await _userRepository.GetUsersByPlugin(null, null, plugin);
+                pluginOutput.Add(new PluginOutput
+                {
+                    Id = plugin.Id,
+                    PluginName = plugin.PluginName,
+                    PluginDescription = plugin.PluginDescription,
+                    Price = plugin.Price,
+                    Users = users
+                });
+            }
+           
 
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
             Request.HttpContext.Response.Headers.Add("Content-Range", "plugins 0-5/1");
             Request.HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
 
-            return Ok(plugins);
+            return Ok(pluginOutput);
         }
 
         // GET: api/Plugins/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PluginOutput>> GetPlugin(int id)
         {
-            var plugin = await _context.Plugin.FindAsync(id);
+            var plugin = await _pluginRepository.GetPlugin(id);
 
             if (plugin == null)
             {
                 return NotFound();
             }
 
-            return Ok(plugin);
+            IEnumerable<UserModel> users = await _userRepository.GetUsersByPlugin(null, null, plugin);
+            PluginOutput pluginOutput = new PluginOutput
+            {
+                Id = plugin.Id,
+                PluginName = plugin.PluginName,
+                PluginDescription = plugin.PluginDescription,
+                Price = plugin.Price,
+                Users = users
+            };
+            return Ok(pluginOutput);
         }
 
         [HttpGet("macaddress")]

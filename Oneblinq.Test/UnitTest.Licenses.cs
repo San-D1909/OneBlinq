@@ -22,7 +22,7 @@ namespace Oneblinq.Test
         public void TestInit()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: "Test_DB")
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             var context = new ApplicationDbContext(options);

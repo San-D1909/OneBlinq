@@ -34,5 +34,35 @@ namespace Backend.Infrastructure.Data.Repositories
             _context.Plugin.Add(plugin);
         }
 
+        public IEnumerable<PluginModel> GetPluginsByUser(string filter, string sort, UserModel user)
+        {
+            IEnumerable<PluginLicenseModel> plugins = _context.PluginLicense.Include(p => p.Plugin).Include(l => l.License).ThenInclude(u => u.User).Where(p => p.License.User.Id == user.Id);
+
+            RequestSortFilterLogic filterLogic = new RequestSortFilterLogic();
+
+            plugins = filterLogic.FilterDatabaseModel<PluginLicenseModel>(plugins, filter);
+
+            return plugins.Select(p => p.Plugin).ToList();
+        }
+
+        public PluginModel CreatePlugin(PluginModel plugin)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PluginModel UpdatePlugin(int id, PluginModel plugin)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeletePlugin(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PluginModel> GetPlugin(int id)
+        {
+            return _context.Plugin.Where(p => p.Id == id).FirstAsync();
+        }
     }
 }

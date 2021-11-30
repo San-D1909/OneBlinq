@@ -10,6 +10,7 @@ const PluginFilters = [
 ];
 
 const PluginPanel = ({ id, record, resource }) => {
+    console.log(record);
     return (<div dangerouslySetInnerHTML={{
         __html: record.pluginDescription
     }}

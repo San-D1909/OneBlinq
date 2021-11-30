@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Backend.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Backend.DTO.Out
 		public int Id { get; set; }
 		public string PluginName { get; set; }
 		public string PluginDescription { get; set; }
-		public float Price { get; set; }
+		public decimal Price { get; set; }
+
+		public IEnumerable<UserModel> Users { get; set; } 
 	}
 }
