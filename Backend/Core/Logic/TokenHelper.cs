@@ -59,6 +59,7 @@ namespace Backend.Core.Logic
 				throw new Exception($"Couldn't validate the token. {ex.Message}");
 			}
 		}
+
 		public static string GetClaim(string token, string claimType)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();

@@ -37,7 +37,7 @@ namespace Backend.Controllers
             _encryptor = new PasswordEncrypter(config);
         }
 
-        private async void SendVerificationMail(string Email)
+        private async void SendTokenizedMail(string email, string subject, string body, string endpoint)
         {
             var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Secret"]));
 
@@ -46,7 +46,7 @@ namespace Backend.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                       new Claim(ClaimTypes.Email, Email.ToString())
+                       new Claim(ClaimTypes.Email, email.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
@@ -54,17 +54,23 @@ namespace Backend.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            // TODO: change site url from localhost to config["SITE_URL"] || env SITE_URL
+            string fullBody = $"{body}: {_config["baseUrlFront"]}{endpoint}?email={email}&token={tokenHandler.WriteToken(token)}";
+            if (endpoint == "verify")
+			{
+                fullBody = $"{body}: {_config["baseUrlFront"]}{endpoint}/{tokenHandler.WriteToken(token)}?email={email}";
+            }
+
             MailMessage mail = new MailMessage
              (
                  "stuurmen@stuur.men",
-                 "test@gmail.com",
-                 "Reset Password",
-                 $"Press this link to confirm your account: localhost:3000/verify/{tokenHandler.WriteToken(token)}?email={Email}"
+                 email,
+                 subject,
+                 fullBody
              );
 
             await _mailClient.SendEmailAsync(mail);
         }
+
 
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] LoginInput credentials)
@@ -150,7 +156,7 @@ namespace Backend.Controllers
                 var newUser = _context.User
                     .Add(user);
 
-                SendVerificationMail(credentials.User.Email);
+                SendTokenizedMail(credentials.User.Email, "Email verification", "Press this link to verify your email", "verify");
 
                 await _context.SaveChangesAsync();
 
@@ -169,13 +175,7 @@ namespace Backend.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             try
             {
-                tokenHandler.ValidateToken(dto.Token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    IssuerSigningKey = mySecurityKey
-                }, out SecurityToken validatedToken);
+                JwtSecurityToken validatedToken = TokenHelper.Verify(dto.Token, _config);
 
                 string claim_email = TokenHelper.GetClaim(dto.Token, "email");
                 if (claim_email == dto.Email)
@@ -201,7 +201,6 @@ namespace Backend.Controllers
         [HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] LoginInput credentials)
         {
-            //FIXME email wordt niet verzonden wanneer request wordt gemaakt via frontend ??
 
             //Check if user exists with given email
             var user = await _context.User
@@ -225,17 +224,7 @@ namespace Backend.Controllers
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                // TODO: change site url from localhost to config["SITE_URL"] || env SITE_URL
-                
-                MailMessage mail = new MailMessage
-                 (
-                     "stuurmen@stuur.men",
-                     user.Email.ToString(),
-                     "Reset Password",
-                     $"Press this link to reset your password: localhost:3000/resetpassword?email={credentials.Email}&token={tokenHandler.WriteToken(token)}"
-                 );
-
-                await _mailClient.SendEmailAsync(mail);
+                SendTokenizedMail(user.Email, "Reset Password", "Press this link to reset your password", "resetpassword");
             }
 
             return Ok();
@@ -248,13 +237,7 @@ namespace Backend.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             try
             {
-                tokenHandler.ValidateToken(dto.Token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    IssuerSigningKey = mySecurityKey
-                }, out SecurityToken validatedToken);
+                JwtSecurityToken validatedToken = TokenHelper.Verify(dto.Token, _config);
 
                 string claim_email = TokenHelper.GetClaim(dto.Token, "email");
 
@@ -279,7 +262,7 @@ namespace Backend.Controllers
             }
             catch(Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, e);
             }
 
             return Ok();

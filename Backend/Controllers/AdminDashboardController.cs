@@ -17,6 +17,7 @@ namespace Backend.Controllers
     {
         private readonly ILicenceRepository LicenceRepository;
         private readonly IPluginRepository PluginRepository;
+
         public AdminDashboardController(ILicenceRepository licenceRepository, IPluginRepository pluginRepository)
         {
             LicenceRepository = licenceRepository;
