@@ -77,6 +77,12 @@ namespace Backend.Controllers
             return Ok();
         }
 
+        [HttpPost("LicenseTest")]
+        public IActionResult GenerateLicenseTest(string email, string plugin, string variants)
+		{
+            return Ok(_generator.CreateLicenseKey(email, plugin, variants));
+		}
+
         private async void SendLicenseMail(string receiver, string key)
 		{
             MailMessage mail = new MailMessage
@@ -89,5 +95,6 @@ namespace Backend.Controllers
 
             await _mailClient.SendEmailAsync(mail);
 		}
+
     }
 }

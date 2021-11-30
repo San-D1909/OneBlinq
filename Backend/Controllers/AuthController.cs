@@ -60,7 +60,7 @@ namespace Backend.Controllers
                  "stuurmen@stuur.men",
                  "test@gmail.com",
                  "Reset Password",
-                 $"Press this link to confirm your account: localhost:29616/verify/{tokenHandler.WriteToken(token)}?email={Email}"
+                 $"Press this link to confirm your account: localhost:3000/verify/{tokenHandler.WriteToken(token)}?email={Email}"
              );
 
             await _mailClient.SendEmailAsync(mail);

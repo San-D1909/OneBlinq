@@ -68,15 +68,7 @@ export class Register extends Component {
             dataType: "json",
             data: userdata
         }).then(data => {
-            axios({
-                method: 'post',
-                url: process.env.REACT_APP_API_BACKEND + '/api/v1/Auth/LogIn',
-                dataType: "json",
-                data: { email, password }
-            }).then(token => {
-                localStorage.setItem("token", token.data)
-                window.location.href = "/user/dashboard"
-            })
+            window.location.href = '/login'
         })
         
     }

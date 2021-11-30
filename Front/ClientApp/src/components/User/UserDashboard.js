@@ -84,7 +84,7 @@ const UserDashboard = () => {
                 list={LicenseList}
                 show={LicenseShow}
             />
-            <Resource name="plugin" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
+            <Resource name="plugin" list={PluginList} show={PluginShow} />
         </Admin>
     );
 }

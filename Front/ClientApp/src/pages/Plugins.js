@@ -92,7 +92,7 @@ export class Plugins extends Component {
     }
 
     async fetchPlugins() {
-        return await axios.get(process.env.REACT_APP_API_BACKEND + '/api/v1/plugins').then(response => response.data)
+        return await axios.get(process.env.REACT_APP_API_BACKEND + '/api/v1/Plugin').then(response => response.data)
     }
 
     addPlugin() {
