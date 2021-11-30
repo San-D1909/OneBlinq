@@ -151,7 +151,6 @@ namespace Backend.Controllers
                     IsAdmin = false,
                     Salt = salt,
                     Company = company
-
                 };
                 var newUser = _context.User
                     .Add(user);
