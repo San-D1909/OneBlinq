@@ -59,8 +59,8 @@ namespace Backend.Controllers
              (
                  "stuurmen@stuur.men",
                  "test@gmail.com",
-                 "Reset Password",
-                 $"Press this link to confirm your account: localhost:3000/verify/{tokenHandler.WriteToken(token)}?email={Email}"
+                 "OneBlinq account confirmation",
+                 $"Thanks for creating an account on OneBlinq. Press this link to confirm your account: localhost:3000/verify/{tokenHandler.WriteToken(token)}?email={Email}"
              );
 
             await _mailClient.SendEmailAsync(mail);
