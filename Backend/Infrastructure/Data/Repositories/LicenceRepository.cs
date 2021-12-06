@@ -17,17 +17,7 @@ namespace Backend.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<LicenseModel> CreateLicense(LicenseModel license)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<LicenseModel> DeactivateLicense(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteLicense(int id)
         {
             throw new NotImplementedException();
         }
@@ -59,11 +49,6 @@ namespace Backend.Infrastructure.Data.Repositories
         }
 
         public Task<IEnumerable<LicenseModel>> GetLicensesForUserAndPlugin(string filter, string sort, PluginModel plugin, UserModel user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<LicenseModel> UpdateLicense(int id, LicenseModel license)
         {
             throw new NotImplementedException();
         }
