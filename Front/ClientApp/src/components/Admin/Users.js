@@ -36,7 +36,7 @@ export const UserCreate = (props) => (
             <TextInput source="email" label="Email" validate={required()} />
             <TextInput source="fullName" label="Fullname" validate={required()} />
             <PasswordInput source="password" label="Password" validate={required()} />
-            <BooleanInput source="isAdmin" label="Is Admin" validate={required()} />
+            <PasswordInput source="passwordConfirmation" label="Password Confirmation" validate={required()} />
         </SimpleForm>
     </Create>
 );
