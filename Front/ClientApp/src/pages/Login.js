@@ -70,6 +70,8 @@ export class Login extends Component {
             }
             return Promise.reject(error)
         });
+
+        return;
     }
 
 

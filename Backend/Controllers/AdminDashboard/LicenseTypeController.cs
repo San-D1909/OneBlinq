@@ -10,56 +10,57 @@ using Backend.Models;
 
 namespace Backend.Controllers.AdminDashboard
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/admin/[controller]")]
     [ApiVersion("1")]
     [ApiController]
-    public class LicenseController : ControllerBase
+    public class LicenseTypeController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public LicenseController(ApplicationDbContext context)
+        public LicenseTypeController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/LicenseModels
+        // GET: api/LicenseType
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LicenseModel>>> GetLicense()
+        public async Task<ActionResult<IEnumerable<LicenseTypeModel>>> GetLicenseType()
         {
-            IEnumerable<LicenseModel> licenses = await _context.License.Include(t => t.LicenseType).Include(t => t.User).ToListAsync();
+            IEnumerable<LicenseTypeModel> licenseTypes = await _context.LicenseType.ToListAsync();
+
 
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
-            Request.HttpContext.Response.Headers.Add("Content-Range", "plugins 0-5/1");
+            Request.HttpContext.Response.Headers.Add("Content-Range", "licenseTypes 0-5/1");
             Request.HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
 
-            return Ok(licenses);
+            return Ok(licenseTypes);
         }
 
-        // GET: api/LicenseModels/5
+        // GET: api/LicenseType/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LicenseModel>> GetLicenseModel(int id)
+        public async Task<ActionResult<LicenseTypeModel>> GetLicenseTypeModel(int id)
         {
-            var licenseModel =  _context.License.Include(t => t.LicenseType).Include(t => t.User).ToList().Find(p => p.Id == id);
+            var licenseTypeModel = await _context.LicenseType.FindAsync(id);
 
-            if (licenseModel == null)
+            if (licenseTypeModel == null)
             {
                 return NotFound();
             }
 
-            return licenseModel;
+            return licenseTypeModel;
         }
 
-        // PUT: api/LicenseModels/5
+        // PUT: api/LicenseType/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLicenseModel(int id, LicenseModel licenseModel)
+        public async Task<IActionResult> PutLicenseTypeModel(int id, LicenseTypeModel licenseTypeModel)
         {
-            if (id != licenseModel.Id)
+            if (id != licenseTypeModel.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(licenseModel).State = EntityState.Modified;
+            _context.Entry(licenseTypeModel).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +68,7 @@ namespace Backend.Controllers.AdminDashboard
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LicenseModelExists(id))
+                if (!LicenseTypeModelExists(id))
                 {
                     return NotFound();
                 }
@@ -80,36 +81,36 @@ namespace Backend.Controllers.AdminDashboard
             return NoContent();
         }
 
-        // POST: api/LicenseModels
+        // POST: api/LicenseType
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<LicenseModel>> PostLicenseModel(LicenseModel licenseModel)
+        public async Task<ActionResult<LicenseTypeModel>> PostLicenseTypeModel(LicenseTypeModel licenseTypeModel)
         {
-            _context.License.Add(licenseModel);
+            _context.LicenseType.Add(licenseTypeModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLicenseModel", new { id = licenseModel.Id }, licenseModel);
+            return CreatedAtAction("GetLicenseTypeModel", new { id = licenseTypeModel.Id }, licenseTypeModel);
         }
 
-        // DELETE: api/LicenseModels/5
+        // DELETE: api/LicenseType/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLicenseModel(int id)
+        public async Task<IActionResult> DeleteLicenseTypeModel(int id)
         {
-            var licenseModel = await _context.License.FindAsync(id);
-            if (licenseModel == null)
+            var licenseTypeModel = await _context.LicenseType.FindAsync(id);
+            if (licenseTypeModel == null)
             {
                 return NotFound();
             }
 
-            _context.License.Remove(licenseModel);
+            _context.LicenseType.Remove(licenseTypeModel);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool LicenseModelExists(int id)
+        private bool LicenseTypeModelExists(int id)
         {
-            return _context.License.Any(e => e.Id == id);
+            return _context.LicenseType.Any(e => e.Id == id);
         }
     }
 }

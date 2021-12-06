@@ -5,6 +5,8 @@ import { Link, Redirect } from 'react-router-dom';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { LicenseList, LicenseShow } from "./License";
 import { PluginList, PluginShow, PluginEdit, PluginCreate } from "./Plugins";
+import { LogoutButton } from './LogoutButton';
+import { LicenseTypeCreate, LicenseTypeList, LicenseTypeEdit, LicenseTypeShow } from "./LicenseTypes";
 
 export const newOptions = {
     palette: {
@@ -48,10 +50,11 @@ const AdminDash = () => {
         }
     }
     return (
-        <Admin theme={newOptions} dataProvider={simpleRestProvider(process.env.REACT_APP_API_BACKEND + "/api/v1")}>
+        <Admin theme={newOptions} dataProvider={simpleRestProvider(process.env.REACT_APP_API_BACKEND + "/api/v1/admin")}>
             <Resource name="license" list={LicenseList} show={LicenseShow} />
             <Resource name="plugin" list={PluginList} create={PluginCreate} edit={PluginEdit} show={PluginShow} />
             <Resource name="user" list={UserList} create={UserCreate} edit={UserEdit} show={UserShow} />
+            <Resource name="licenseType" list={LicenseTypeList} create={LicenseTypeCreate} edit={LicenseTypeEdit} show={LicenseTypeShow} />
         </Admin>
     );
 };

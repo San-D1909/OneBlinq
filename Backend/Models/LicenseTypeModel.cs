@@ -15,6 +15,8 @@ namespace Backend.Models
         public string TypeName { get; set; }
         [Required]
         public int MaxAmount { get; set; }
+        [Required]
+        public int MonthlyPeriod { get; set; }
         private DateTime? _creationTime = null;
         [Required]
         public DateTime CreationTime

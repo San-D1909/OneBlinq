@@ -7,6 +7,7 @@ import Button from 'reactstrap/lib/Button';
 import { Footer } from '../components/Footer';
 
 import { useParams } from "react-router-dom";
+import { PluginBuyButton } from "../components/PluginBuy"
 
 export default function PluginInfo() {
     const params = useParams()
@@ -48,7 +49,7 @@ export default function PluginInfo() {
                     </div>
 
                     <div className="btnholder">
-                        <Button style={buttonFontSize} className="m-1 px-4 py-3 btn-oneblinq-roze" href="/plugins">Buy</Button>
+                        <PluginBuyButton />
                         <Button style={buttonFontSize} className="m-1 px-4 py-3" variant="outline-light" href="">Add to wishlist</Button>
                     </div>
             </div>

@@ -10,7 +10,7 @@ using Backend.DTO.Out;
 using System.Net.NetworkInformation;
 using System;
 
-namespace Backend.Controllers.AdminDashboard
+namespace Backend.Controllers
 {
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1")]
@@ -28,6 +28,7 @@ namespace Backend.Controllers.AdminDashboard
             _userRepository = userRepository;
         }
 
+
         // GET: api/Plugins
         [HttpGet]
         /// <summary>
@@ -40,7 +41,7 @@ namespace Backend.Controllers.AdminDashboard
             List<PluginOutput> pluginOutput = new List<PluginOutput>();
             IEnumerable<PluginModel> plugins = await _pluginRepository.GetPlugins(filter, sort);
 
-            foreach(PluginModel plugin in plugins)
+            foreach (PluginModel plugin in plugins)
             {
                 IEnumerable<UserModel> users = await _userRepository.GetUsersByPlugin(null, null, plugin);
                 pluginOutput.Add(new PluginOutput
@@ -52,7 +53,7 @@ namespace Backend.Controllers.AdminDashboard
                     Users = users
                 });
             }
-           
+
 
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
             Request.HttpContext.Response.Headers.Add("Content-Range", "plugins 0-5/1");
@@ -61,28 +62,6 @@ namespace Backend.Controllers.AdminDashboard
             return Ok(pluginOutput);
         }
 
-        // GET: api/Plugins/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PluginOutput>> GetPlugin(int id)
-        {
-            var plugin = await _pluginRepository.GetPlugin(id);
-
-            if (plugin == null)
-            {
-                return NotFound();
-            }
-
-            IEnumerable<UserModel> users = await _userRepository.GetUsersByPlugin(null, null, plugin);
-            PluginOutput pluginOutput = new PluginOutput
-            {
-                Id = plugin.Id,
-                PluginName = plugin.PluginName,
-                PluginDescription = plugin.PluginDescription,
-                Price = plugin.Price,
-                Users = users
-            };
-            return Ok(pluginOutput);
-        }
 
         [HttpGet("macaddress")]
         public IActionResult MacTest()
@@ -101,89 +80,6 @@ namespace Backend.Controllers.AdminDashboard
             {
                 return Unauthorized(e);
             }
-        }
-
-        // PUT: api/Plugins/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlugin(int id, PluginModel plugin)
-        {
-            if (id != plugin.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(plugin).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PluginExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok(plugin);
-        }
-
-        // POST: api/Plugins
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<PluginModel>> PostPlugin(PluginModel plugin)
-        {
-            _context.Plugin.Add(plugin);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPlugin", new { id = plugin.Id }, plugin);
-        }
-
-        // DELETE: api/Plugins/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlugin(int id)
-        {
-            var plugin = await _context.Plugin.FindAsync(id);
-            if (plugin == null)
-            {
-                return NotFound();
-            }
-
-            _context.Plugin.Remove(plugin);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        // DELETE: api/Plugins/5
-        [HttpDelete]
-        public async Task<IActionResult> DeletePlugins([FromQuery( Name = "filter" )] string filter)
-        {
-            //"{\"id\":[4]}"
-            List<PluginModel> plugins = (await _pluginRepository.GetPlugins(filter, "")).ToList();
-
-            int[] deletedPlugins = new int[plugins.Count()];
-            for (int i = 0; i < plugins.Count(); i++)
-            {
-                
-                if (plugins[i] == null)
-                {
-                    return NotFound();
-                }
-
-                deletedPlugins[i] = plugins[i].Id;
-                _context.Plugin.Remove(plugins[i]);
-            }
-
-            await _context.SaveChangesAsync();
-
-            return Ok(deletedPlugins);
         }
 
         private bool PluginExists(int id)

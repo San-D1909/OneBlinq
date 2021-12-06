@@ -70,7 +70,6 @@ export class Plugins extends Component {
             bundles: [],
             hover: false
         }
-        this.addPlugin = this.addPlugin.bind(this)
         this.fetchPlugins = this.fetchPlugins.bind(this)
         this.fetchBundles = this.fetchBundles.bind(this)
     }
@@ -93,15 +92,6 @@ export class Plugins extends Component {
 
     async fetchPlugins() {
         return await axios.get(process.env.REACT_APP_API_BACKEND + '/api/v1/Plugin').then(response => response.data)
-    }
-
-    addPlugin() {
-        // TODO: remove, meant for testing during development
-        const p = {
-            id: "1",
-            title: "forms"
-        }
-        this.setState({ plugins: this.state.plugins.concat(p).concat(p).concat(p)})
     }
 
     hrStyling = {
@@ -148,7 +138,7 @@ export class Plugins extends Component {
                 <div className="container">
                     <PluginList plugins={this.state.plugins} />
                     <div className="row m-0 justify-content-center">
-                        <button style={btnStyle} onClick={this.addPlugin} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover} className="btn btn-outline-pastel w-25 m-2"><span>Show More</span></button>
+                        <button style={btnStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover} className="btn btn-outline-pastel w-25 m-2"><span>Show More</span></button>
                     </div>
                 </div>
                 <Footer />
