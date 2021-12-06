@@ -67,9 +67,9 @@ namespace Backend.Controllers
             {
                 return NotFound();
             }
-            if (userbyid.FullName != userInfo.User.FullName)
+            if (userbyid != userInfo.User)
             {
-                await _userRepository.UpdateFullName(userInfo.User.FullName, userInfo.User.Id);
+                await _userRepository.UpdateUser(userInfo.User);
             }
             // var updatedUser = await _userRepository.UpdateUser(userModel);
             return Ok();

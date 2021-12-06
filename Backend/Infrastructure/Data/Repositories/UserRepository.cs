@@ -13,11 +13,12 @@ namespace Backend.Infrastructure.Data.Repositories
     {
         public UserRepository(ApplicationDbContext context) : base(context) { }
 
-        public async Task<UserModel> UpdateFullName(string FullName, int userId)
+        public async Task<UserModel> UpdateUser(UserModel user)
         {
-            _context.User.Where(x => x.Id == userId).FirstOrDefault().FullName = FullName;
-            UserModel userModel = await _context.User.Where(x => x.Id == userId).FirstOrDefaultAsync();
+            UserModel userModel = await _context.User.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
+            userModel = user;
             await _context.SaveChangesAsync();
+            UserModel userModel1 = await _context.User.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
             return userModel;
         }
         public async Task<CompanyModel> GetCompanyById(int? companyId)
@@ -27,25 +28,8 @@ namespace Backend.Infrastructure.Data.Repositories
         }
             public async Task<UserModel> GetUserById(int UserId)
         {
-            UserModel user = await _context.User.Include(c =>c.Company).Where(user => user.Id == UserId).FirstOrDefaultAsync();
+          UserModel user = await _context.User.Include(c =>c.Company).Where(user => user.Id == UserId).FirstOrDefaultAsync();
             return user;
-/*            try
-            {
-                var item = await _context.Set<UserModel>()
-                    .Where(x => x.Id == UserId)
-                    .FirstOrDefaultAsync();
-
-                if (item == null)
-                {
-                    throw new Exception($"Couldn't find entity with id={UserId}");
-                }
-
-                return item;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Couldn't retrieve entity with id={UserId}: {ex.Message}");
-            }*/
         }
         public async Task<UserModel> GetUserByEmail(string Email)
         {

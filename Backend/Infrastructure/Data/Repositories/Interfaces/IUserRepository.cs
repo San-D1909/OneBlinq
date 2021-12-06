@@ -8,7 +8,7 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
     {
         Task<UserModel> GetUserById(int UserId);
         Task<UserModel> GetUserByEmail(string email);
-        Task<UserModel> UpdateFullName(string FullName, int UserId);
+        Task<UserModel> UpdateUser(UserModel user);
         Task<CompanyModel> GetCompanyById(int? companyId);
         Task<IEnumerable<UserModel>> GetUsers(string filter, string sort);
         Task<IEnumerable<UserModel>> GetUsersByPlugin(string filter, string sort, PluginModel plugin);
