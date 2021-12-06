@@ -47,18 +47,19 @@ export class UserInfo extends Component {
             self.setState({ companyData: data.data.userCompany }, () => { console.log(self.state.companyData) });
         });
     }
+
     OnUpdateUserData = (e) => {
         var self = this;
-        const userid = self.state.userData.userId
+        const userid = self.state.userData.id
         const user = self.state.userData
         const company = self.state.companyData
+        var UserInfo = userid, user,company
 
-        console.log(userid.id);
         axios({
             method: 'POST',
-            url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/UpdateData/' + userid.id + "/",
+            url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/UpdateData',
             dataType: "json",
-            data: {userid, user, company}
+            data: UserInfo
         }).then((data) => {
 
         });

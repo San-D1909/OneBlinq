@@ -11,6 +11,7 @@ using Backend.Core.Logic;
 using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
+using Backend.DTO.In;
 
 namespace Backend.Controllers
 {
@@ -55,20 +56,20 @@ namespace Backend.Controllers
         }
 
 
-        [HttpPost("UpdateData/{id}")]
+        [HttpPost("UpdateData")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateData(int userId, [FromBody] UserModel updatedUser)
+        public async Task<ActionResult> UpdateData([FromBody] UserinfoDTO userInfo)
         {
-            UserModel userbyid = await _userRepository.GetUserById(userId);
+            UserModel userbyid = await _userRepository.GetUserById(userInfo.UserID);
             if (userbyid is null)
             {
                 return NotFound();
             }
-            if (userbyid.FullName != updatedUser.FullName)
+            if (userbyid.FullName != userInfo.User.FullName)
             {
-                await _userRepository.UpdateFullName(updatedUser.FullName, userId);
+                await _userRepository.UpdateFullName(userInfo.User.FullName, userInfo.UserID);
             }
             // var updatedUser = await _userRepository.UpdateUser(userModel);
             return Ok();
