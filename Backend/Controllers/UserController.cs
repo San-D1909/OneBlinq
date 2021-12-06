@@ -11,6 +11,7 @@ using Backend.Core.Logic;
 using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
+using Backend.DTO.In;
 
 namespace Backend.Controllers
 {
@@ -136,16 +137,30 @@ namespace Backend.Controllers
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserModel>> PostUserModel(UserModel userModel)
+        public async Task<ActionResult<UserModel>> PostUserModel(AdminCreateInput createInput)
         {
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-            userModel.Salt = salt;
-            userModel.Password = _encryptor.EncryptPassword(userModel.Password + salt);
-            _context.User.Add(userModel);
-            await _context.SaveChangesAsync();
+            if (createInput.Password == createInput.PasswordConfirmation)
+            {
+                byte[] salt;
+                new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
-            return CreatedAtAction("GetUserModel", new { id = userModel.Id }, userModel);
+                UserModel userModel = new UserModel
+                {
+                    FullName = createInput.FullName,
+                    Salt = salt,
+                    Password = _encryptor.EncryptPassword(createInput.Password + salt),
+                    IsAdmin = true,
+                    Email = createInput.Email,
+                    IsVerified = false
+                };
+
+                _context.User.Add(userModel);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("PostUserModel", userModel);
+            }
+
+            return BadRequest();
         }
 
         // DELETE: api/User/5
