@@ -7,7 +7,6 @@ import { Link, Redirect } from 'react-router-dom';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { LicenseList, LicenseShow } from "./License";
 import { PluginList, PluginShow, PluginEdit, PluginCreate } from "./Plugins";
-import { LogoutButton } from './LogoutButton';
 
 export const newOptions = {
 
