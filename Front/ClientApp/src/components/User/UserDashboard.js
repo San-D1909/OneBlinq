@@ -9,7 +9,6 @@ import React, { forwardRef } from 'react';
 import { useLogout } from 'react-admin';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
-import LogoutButton from '../Admin/LogoutButton';
 
 export const newOptions = {
     palette: {
