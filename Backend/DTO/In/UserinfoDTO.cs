@@ -10,6 +10,5 @@ namespace Backend.DTO.In
     {
         public UserModel User { get; set; }
         public CompanyModel Company { get; set; }
-        public int UserID { get; set; }
     }
 }

@@ -60,16 +60,16 @@ namespace Backend.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateData([FromBody] UserinfoDTO userInfo)
+        public async Task<ActionResult> UpdateData([FromBody]UserinfoDTO userInfo)
         {
-            UserModel userbyid = await _userRepository.GetUserById(userInfo.UserID);
+            UserModel userbyid = await _userRepository.GetUserById(userInfo.User.Id);
             if (userbyid is null)
             {
                 return NotFound();
             }
             if (userbyid.FullName != userInfo.User.FullName)
             {
-                await _userRepository.UpdateFullName(userInfo.User.FullName, userInfo.UserID);
+                await _userRepository.UpdateFullName(userInfo.User.FullName, userInfo.User.Id);
             }
             // var updatedUser = await _userRepository.UpdateUser(userModel);
             return Ok();

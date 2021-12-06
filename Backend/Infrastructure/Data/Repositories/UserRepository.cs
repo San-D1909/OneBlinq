@@ -27,11 +27,12 @@ namespace Backend.Infrastructure.Data.Repositories
         }
             public async Task<UserModel> GetUserById(int UserId)
         {
-            try
+            UserModel user = await _context.User.Include(c =>c.Company).Where(user => user.Id == UserId).FirstOrDefaultAsync();
+            return user;
+/*            try
             {
                 var item = await _context.Set<UserModel>()
                     .Where(x => x.Id == UserId)
-                    .AsNoTracking()
                     .FirstOrDefaultAsync();
 
                 if (item == null)
@@ -44,7 +45,7 @@ namespace Backend.Infrastructure.Data.Repositories
             catch (Exception ex)
             {
                 throw new Exception($"Couldn't retrieve entity with id={UserId}: {ex.Message}");
-            }
+            }*/
         }
         public async Task<UserModel> GetUserByEmail(string Email)
         {

@@ -51,15 +51,15 @@ export class UserInfo extends Component {
     OnUpdateUserData = (e) => {
         var self = this;
         const userid = self.state.userData.id
+        const companyid = self.state.companyData.id
         const user = self.state.userData
         const company = self.state.companyData
-        var UserInfo = userid, user,company
-
+        console.log(company)
         axios({
             method: 'POST',
             url: process.env.REACT_APP_API_BACKEND + '/api/v1/user/UpdateData',
             dataType: "json",
-            data: UserInfo
+            data: { user, company }
         }).then((data) => {
 
         });
