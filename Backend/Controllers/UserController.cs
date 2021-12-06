@@ -21,9 +21,6 @@ namespace Backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
-
-
         private readonly IUserRepository _userRepository;
         private IConfiguration _config;
         private PasswordEncrypter _encryptor;
@@ -63,6 +60,7 @@ namespace Backend.Controllers
         public async Task<ActionResult> UpdateData([FromBody]UserinfoDTO userInfo)
         {
             UserModel userbyid = await _userRepository.GetUserById(userInfo.User.Id);
+            CompanyModel companybyid = await _userRepository.GetCompanyById(userInfo.Company.Id);
             if (userbyid is null)
             {
                 return NotFound();
@@ -71,7 +69,10 @@ namespace Backend.Controllers
             {
                 await _userRepository.UpdateUser(userInfo.User);
             }
-            // var updatedUser = await _userRepository.UpdateUser(userModel);
+            if(companybyid != userInfo.Company)
+            {
+                await _userRepository.UpdateCompany(userInfo.Company);
+            }
             return Ok();
         }
 

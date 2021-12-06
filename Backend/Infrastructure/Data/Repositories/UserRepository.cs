@@ -16,10 +16,18 @@ namespace Backend.Infrastructure.Data.Repositories
         public async Task<UserModel> UpdateUser(UserModel user)
         {
             UserModel userModel = await _context.User.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
-            userModel = user;
+            _context.User.Update(userModel).CurrentValues.SetValues(user);
             await _context.SaveChangesAsync();
-            UserModel userModel1 = await _context.User.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
+            userModel = await _context.User.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
             return userModel;
+        }
+        public async Task<CompanyModel> UpdateCompany(CompanyModel company)
+        {
+            CompanyModel companyModel = await _context.Company.Where(x => x.Id == company.Id).FirstOrDefaultAsync();
+            _context.Company.Update(companyModel).CurrentValues.SetValues(company);
+            await _context.SaveChangesAsync();
+            companyModel = await _context.Company.Where(x => x.Id == company.Id).FirstOrDefaultAsync();
+            return companyModel;
         }
         public async Task<CompanyModel> GetCompanyById(int? companyId)
         {
