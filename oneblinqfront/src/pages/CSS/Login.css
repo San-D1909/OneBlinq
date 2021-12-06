@@ -1,0 +1,66 @@
+.loginbutton {
+    background-color: #5E5BFF;
+}
+
+.loginlink {
+    color: #5E5BFF;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    left: 0;
+}
+
+.loginlogo {
+    width: auto;
+    display: block;
+    margin: auto;
+}
+
+.loginformcard {
+    border: none;
+    background-color: #efa9ae;
+}
+
+
+
+@media (min-width: 0px) {
+    .logincontainer {
+        margin-top: 0;
+        width: 100vw;
+    }
+}
+@media (min-width: 576px) {
+    .logincontainer {
+        margin-top: 0;
+        width: 90vw;
+    }
+}
+@media (min-width: 768px) {
+    .logincontainer {
+        margin-top: 0;
+        width: 85vw;
+    }
+}
+@media (min-width: 992px) {
+    .logincontainer {
+        margin-top: 10em;
+        width: 80vw;
+    }
+}
+@media (min-width: 1200px) {
+    .logincontainer {
+        margin-top: 10em;
+        width: 70vw;
+    }
+}
+@media (min-width: 1400px) {
+    .logincontainer {
+        margin-top: 10em;
+        width: 60vw;
+    }
+}
