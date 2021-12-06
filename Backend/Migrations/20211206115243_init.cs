@@ -8,7 +8,6 @@ namespace Backend.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            
             migrationBuilder.CreateTable(
                 name: "Company",
                 columns: table => new
@@ -37,6 +36,7 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     TypeName = table.Column<string>(type: "text", nullable: false),
                     MaxAmount = table.Column<int>(type: "int", nullable: false),
+                    MonthlyPeriod = table.Column<int>(type: "int", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
@@ -97,9 +97,9 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     FullName = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
-                    ConfirmedEmail = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsVerified = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
-                    Salt = table.Column<string>(type: "text", nullable: false),
+                    Salt = table.Column<byte[]>(type: "varbinary(4000)", nullable: false),
                     IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -223,13 +223,13 @@ namespace Backend.Migrations
                         column: x => x.PluginId,
                         principalTable: "Plugin",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PluginLicense_PluginBundle_PluginBundleId",
                         column: x => x.PluginBundleId,
                         principalTable: "PluginBundle",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

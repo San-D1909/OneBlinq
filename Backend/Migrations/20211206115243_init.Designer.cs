@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211129102008_UserChanges")]
-    partial class UserChanges
+    [Migration("20211206115243_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -134,6 +134,9 @@ namespace Backend.Migrations
                     b.Property<int>("MaxAmount")
                         .HasColumnType("int");
 
+                    b.Property<int>("MonthlyPeriod")
+                        .HasColumnType("int");
+
                     b.Property<string>("TypeName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -196,10 +199,10 @@ namespace Backend.Migrations
                     b.Property<int>("LicenseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PluginBundleId")
+                    b.Property<int?>("PluginBundleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PluginId")
+                    b.Property<int?>("PluginId")
                         .HasColumnType("int");
 
                     b.Property<int>("TimesActivated")
@@ -288,9 +291,9 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Salt")
+                    b.Property<byte[]>("Salt")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varbinary(4000)");
 
                     b.HasKey("Id");
 
@@ -362,15 +365,11 @@ namespace Backend.Migrations
 
                     b.HasOne("Backend.Models.PluginBundleModel", "PluginBundle")
                         .WithMany()
-                        .HasForeignKey("PluginBundleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PluginBundleId");
 
                     b.HasOne("Backend.Models.PluginModel", "Plugin")
                         .WithMany()
-                        .HasForeignKey("PluginId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PluginId");
 
                     b.Navigation("License");
 
