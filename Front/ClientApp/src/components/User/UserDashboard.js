@@ -2,7 +2,6 @@
 import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import { ThemeOptions } from '@material-ui/core';
 import fakeDataProvider from 'ra-data-fakerest';
-import AdminNavMenu from "../Admin/AdminNavMenu";
 import { PluginCreate, PluginEdit, PluginList, PluginShow } from "../User/Plugins";
 import { LicenseList, LicenseShow } from "../User/License";
 import simpleRestProvider from 'ra-data-simple-rest';
@@ -13,9 +12,6 @@ import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import LogoutButton from '../Admin/LogoutButton';
 
 export const newOptions = {
-
-    // theme customizable at https://bareynol.github.io/mui-theme-creator
-
     palette: {
         type: 'dark',
         primary: {
@@ -43,26 +39,7 @@ export const newOptions = {
     },
 };
 
-const dataProvider = fakeDataProvider({
-    devices: [
-        { id: 1, devicename: 'LAPTOP-FHVM', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '1-6-2021' },
-        { id: 2, devicename: 'DESKTOP-FHVM', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '1-6-2021'},
-        { id: 3, devicename: 'DESKTOP-XJXJ', licensename: 'Forms', licensekey: 'DFGA-FDAF-ASDEF-QWERQ', activationtime: '8-11-2021'},
-        { id: 4, devicename: 'LAPTOP-FHVM', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '1-6-2021' },
-        { id: 5, devicename: 'DESKTOP-FHVM', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '1-6-2021' },
-        { id: 6, devicename: 'DESKTOP-OXIK', licensename: 'Line Height', licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', activationtime: '8-11-2021' },
-    ],
-    licenses: [
-        { id: 1, plugin: {id: 1, pluginname: 'Testing'}, licensekey: 'DFGA-FDAF-ASDEF-QWERQ', limit: 5, amountactivated: 3, creationtime: '1-1-2020', expirationdate: '1-1-2022' },
-        { id: 2, plugin: { id: 1, pluginname: 'Testing' }, licensekey: 'RQWE-QWERQ-ZXCZ-VCXZ', limit: 3, amountactivated: 3, creationtime: '1-1-2020', expirationdate: '1-1-2022' },
-    ],
-    plugins: [
-        { id: 1, pluginname: { en: 'Testing', nl: 'Testen' }, plugindescription: {en: '<p>This is a test</p>', nl: '<p>Dit is een test</p>'}, price: 12.00, pictures: null}
-    ]
-})
-
 const UserDashboard = () => {
-
     if (localStorage.getItem("token") === null) {
         return (
             <Redirect to="/" />
@@ -73,8 +50,6 @@ const UserDashboard = () => {
             <Redirect to="/admin/dashboard" />
         )
     }
-
-
     let protocol = window.location.protocol;
     let token = localStorage.getItem("token");
     return (
