@@ -2,7 +2,8 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-EXPOSE 80
+
+EXPOSE 3000
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
@@ -15,7 +16,15 @@ RUN dotnet build "Front.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "Front.csproj" -c Release -o /app/publish
 
+FROM node as node_builder
+WORKDIR /node
+COPY ./ClientApp /node
+RUN npm install
+RUN npm build
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Front.dll"]
+
+CMD ["npm", "start"]

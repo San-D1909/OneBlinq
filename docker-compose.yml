@@ -11,7 +11,7 @@ services:
         - "5000:80" 
 
   db:
-    image: mysql:8.0
+    image: mariadb:10.4.17
     container_name: db
     restart: always
     ports:
@@ -29,16 +29,21 @@ services:
       container_name: phpmyadmin
       restart: always
       ports:
-       - '80:80'
+       - '8080:80'
       environment:
         PMA_HOST: db
 
   front:
-    image: ${DOCKER_REGISTRY-}front
+    container_name: front
     build:
-      context: .
-      dockerfile: Front/Dockerfile
+      context: ../oneblinqfront
+      dockerfile: ../oneblinqfront/Dockerfile
+    ports:
+      - 3000:3000
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm start
 
 volumes:
   dbdata:
-
