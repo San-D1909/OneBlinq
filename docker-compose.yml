@@ -36,8 +36,8 @@ services:
   front:
     container_name: front
     build:
-      context: ../oneblinqfront
-      dockerfile: ../oneblinqfront/Dockerfile
+      context: ../Oneblinq-Front
+      dockerfile: ../Oneblinq-Front/Dockerfile
     ports:
       - 3000:3000
     stdin_open: true
