@@ -221,43 +221,43 @@ namespace Oneblinq.Test
             Assert.IsTrue(userRepository.GetById(1) != null);
         }
 
-        [TestMethod]
-        public async Task User_UpdateFullName_TrueIsNewFullName()
-        {
-            CompanyModel company = new CompanyModel
-            {
-                Id = 1,
-                BTWNumber = "892389432",
-                CompanyName = "TestCompany",
-                Country = "Netherlands",
-                HouseNumber = "23",
-                KVKNumber = "324324342",
-            };
+        //[TestMethod]
+        //public async Task User_UpdateFullName_TrueIsNewFullName()
+        //{
+        //    CompanyModel company = new CompanyModel
+        //    {
+        //        Id = 1,
+        //        BTWNumber = "892389432",
+        //        CompanyName = "TestCompany",
+        //        Country = "Netherlands",
+        //        HouseNumber = "23",
+        //        KVKNumber = "324324342",
+        //    };
 
-            context.Company.Add(company);
-            context.SaveChanges();
+        //    context.Company.Add(company);
+        //    context.SaveChanges();
 
-            UserModel userdb = new UserModel()
-            {
-                Id = 1,
-                FullName = "Ronaldo",
-                Password = "b",
-                Email = "t@t.nl",
-                IsAdmin = false,
-                Company = company
-            };
-            userRepository.Add(userdb);
-            context.SaveChanges();
+        //    UserModel userdb = new UserModel()
+        //    {
+        //        Id = 1,
+        //        FullName = "Ronaldo",
+        //        Password = "b",
+        //        Email = "t@t.nl",
+        //        IsAdmin = false,
+        //        Company = company
+        //    };
+        //    userRepository.Add(userdb);
+        //    context.SaveChanges();
 
-            const string newName = "Janneman";
+        //    const string newName = "Janneman";
 
-            await userRepository.UpdateFullName(newName, 1);
-            await userRepository.SaveAsync();
+        //    await userRepository.UpdateFullName(newName, 1);
+        //    await userRepository.SaveAsync();
 
-            UserModel newNameUser = await userRepository.GetByIdAsync(1);
+        //    UserModel newNameUser = await userRepository.GetByIdAsync(1);
 
-            Assert.IsTrue(newNameUser.FullName == newName);
-        }
+        //    Assert.IsTrue(newNameUser.FullName == newName);
+        //}
 
         [TestMethod]
         public async Task User_GetByCompanyId_TrueExistsById()
