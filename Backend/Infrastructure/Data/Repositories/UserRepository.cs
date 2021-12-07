@@ -13,12 +13,21 @@ namespace Backend.Infrastructure.Data.Repositories
     {
         public UserRepository(ApplicationDbContext context) : base(context) { }
 
-        public async Task<UserModel> UpdateFullName(string FullName, int userId)
+        public async Task<UserModel> UpdateUser(UserModel user)
         {
-            _context.User.Where(x => x.Id == userId).FirstOrDefault().FullName = FullName;
-            UserModel userModel = await _context.User.Where(x => x.Id == userId).FirstOrDefaultAsync();
+            UserModel userModel = await _context.User.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
+            _context.User.Update(userModel).CurrentValues.SetValues(user);
             await _context.SaveChangesAsync();
+            userModel = await _context.User.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
             return userModel;
+        }
+        public async Task<CompanyModel> UpdateCompany(CompanyModel company)
+        {
+            CompanyModel companyModel = await _context.Company.Where(x => x.Id == company.Id).FirstOrDefaultAsync();
+            _context.Company.Update(companyModel).CurrentValues.SetValues(company);
+            await _context.SaveChangesAsync();
+            companyModel = await _context.Company.Where(x => x.Id == company.Id).FirstOrDefaultAsync();
+            return companyModel;
         }
         public async Task<CompanyModel> GetCompanyById(int? companyId)
         {
@@ -27,24 +36,8 @@ namespace Backend.Infrastructure.Data.Repositories
         }
             public async Task<UserModel> GetUserById(int UserId)
         {
-            try
-            {
-                var item = await _context.Set<UserModel>()
-                    .Where(x => x.Id == UserId)
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync();
-
-                if (item == null)
-                {
-                    throw new Exception($"Couldn't find entity with id={UserId}");
-                }
-
-                return item;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Couldn't retrieve entity with id={UserId}: {ex.Message}");
-            }
+          UserModel user = await _context.User.Include(c =>c.Company).Where(user => user.Id == UserId).FirstOrDefaultAsync();
+            return user;
         }
         public async Task<UserModel> GetUserByEmail(string Email)
         {

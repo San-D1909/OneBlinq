@@ -33,6 +33,7 @@ export class Login extends Component {
     }
 
     componentDidUpdate() {
+        console.log("het ging fout");
     }
 
     setSession = (token) => {

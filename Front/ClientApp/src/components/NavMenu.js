@@ -55,6 +55,7 @@ export class NavMenu extends Component {
             LoginLogoutButton = (
                 <NavDropdown id="accountdropdown" title="Account">
                     <NavDropdown.Item href="/user/dashboard/">Dashboard</NavDropdown.Item>
+                    <NavDropdown.Item href="/userinfo">Account</NavDropdown.Item>
                     <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
                 </NavDropdown>
             );

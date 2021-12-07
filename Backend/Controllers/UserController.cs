@@ -21,9 +21,6 @@ namespace Backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
-
-
         private readonly IUserRepository _userRepository;
         private IConfiguration _config;
         private PasswordEncrypter _encryptor;
@@ -56,22 +53,26 @@ namespace Backend.Controllers
         }
 
 
-        [HttpPost("UpdateData/{id}")]
+        [HttpPost("UpdateData")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateData(int userId, [FromBody] UserModel updatedUser)
+        public async Task<ActionResult> UpdateData([FromBody]UserinfoDTO userInfo)
         {
-            UserModel userbyid = await _userRepository.GetUserById(userId);
+            UserModel userbyid = await _userRepository.GetUserById(userInfo.User.Id);
+            CompanyModel companybyid = await _userRepository.GetCompanyById(userInfo.Company.Id);
             if (userbyid is null)
             {
                 return NotFound();
             }
-            if (userbyid.FullName != updatedUser.FullName)
+            if (userbyid != userInfo.User)
             {
-                await _userRepository.UpdateFullName(updatedUser.FullName, userId);
+                await _userRepository.UpdateUser(userInfo.User);
             }
-            // var updatedUser = await _userRepository.UpdateUser(userModel);
+            if(companybyid != userInfo.Company)
+            {
+                await _userRepository.UpdateCompany(userInfo.Company);
+            }
             return Ok();
         }
     }
