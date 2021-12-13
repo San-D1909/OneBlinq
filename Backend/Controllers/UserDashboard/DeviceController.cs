@@ -6,6 +6,7 @@ using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,32 @@ namespace Backend.Controllers.UserDashboard
 			_context = context;
 			_config = config;
 			_userRepository = userRepository;
+		}
+
+		[HttpGet("{jtoken}/[controller]/")]
+		public async Task<ActionResult<IEnumerable<PluginModel>>> GetPlugin(string jtoken)
+		{
+			if (jtoken is null)
+			{
+				return NotFound();
+			}
+			var tokenuser = TokenHelper.Verify(jtoken, _config);
+
+			if (tokenuser is null)
+			{
+				return NotFound();
+			}
+			int id = Convert.ToInt32(tokenuser.Claims.First().Value);
+			UserModel user = await _userRepository.GetUserById(id);
+			var data = await _context.Device.Join(_context.PluginLicense, plugin => plugin.LicenseId, device => device.LicenseId, (plugin, device) => new { License = plugin.License }).Where(u => u.License.User.Id == user.Id).ToListAsync();
+			//IEnumerable<DeviceModel> devices = await _context.PluginLicense.Include(l => l.License).ThenInclude(u => u.User).Include(p => p.Plugin).Where(p => p.License.User.Id == user.Id).Select(p => p.Plugin).ToListAsync();
+
+			Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
+			Request.HttpContext.Response.Headers.Add("Content-Range", "plugins 0-5/1");
+			Request.HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
+
+			throw new NotImplementedException();
+			//return Ok(devices);
 		}
 
 		[HttpPost("[controller]/validate/{id}")]
