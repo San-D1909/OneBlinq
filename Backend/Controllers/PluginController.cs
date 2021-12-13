@@ -117,6 +117,9 @@ namespace Backend.Controllers.AdminDashboard
             _context.Plugin.Add(plugin);
             await _context.SaveChangesAsync();
 
+            // TODO: create stripe product object
+            // TODO: create stripe payment object
+
             return CreatedAtAction("GetPlugin", new { id = plugin.Id }, plugin);
         }
 
