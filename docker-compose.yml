@@ -2,48 +2,57 @@ version: '3.4'
 
 services:
 
-  backend:
-    image: ${DOCKER_REGISTRY-}backend
-    build:
-      context: .
-      dockerfile: Backend/Dockerfile
-    ports:
-        - "5000:80" 
+    backend:
+        image: ${DOCKER_REGISTRY-}backend
+        depends_on:
+            - pma
+        build:
+            context: .
+            dockerfile: Backend/Dockerfile
+        ports:
+            - "5000:80" 
 
-  db:
-    image: mariadb:10.4.17
-    container_name: db
-    restart: always
-    ports:
-       - '3306:3306'
-    environment:
-       MYSQL_DATABASE: oneblinq
-       MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - dbdata:/var/lib/mysql
+    db:
+        image: mariadb:10.4.17
+        container_name: dbmysql
+        restart: always
+        ports:
+            - '3306:3306'
+        environment:
+            - MYSQL_DATABASE=oneblinq
+            - MYSQL_HOST=localhost
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=root
+            - MYSQL_ROOT_PASSWORD=root
+        volumes:
+            - dbdata:/var/lib/mysql
 
-  pma:
-      depends_on:
-       - db
-      image: phpmyadmin/phpmyadmin
-      container_name: phpmyadmin
-      restart: always
-      ports:
-       - '8080:80'
-      environment:
-        PMA_HOST: db
+    pma:
+        depends_on:
+        - db
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        restart: always
+        ports:
+        - '8081:80'
+        environment:
+            PMA_HOST: db
+            PMA_PORT: "3306"
 
-  front:
-    container_name: front
-    build:
-      context: ../Oneblinq-Front
-      dockerfile: ../Oneblinq-Front/Dockerfile
-    ports:
-      - 3000:3000
-    stdin_open: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    command: npm start
+    front:
+        container_name: front
+        depends_on:
+            - backend
+        build:
+            context: ../Oneblinq-Front
+            dockerfile: ../Oneblinq-Front/Dockerfile
+        ports:
+            - '3000:3000'
+        stdin_open: true
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+        command: npm start
 
 volumes:
   dbdata:
+  mysql_data:
