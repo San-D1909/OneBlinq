@@ -15,8 +15,8 @@ namespace Backend.Models
 		public string LicenseKey { get; set; }
 		[Required]
 		public UserModel User { get; set; }
-		[Required]
 		public LicenseTypeModel LicenseType { get; set; }
+        public int LicenseTypeId { get; set; }
 		[Required]
 		public bool IsActive { get; set; }
         private DateTime? _creationTime = null;

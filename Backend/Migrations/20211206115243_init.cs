@@ -199,6 +199,32 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+               name: "DeviceUser",
+               columns: table => new
+               {
+                   Id = table.Column<int>(type: "int", nullable: false)
+                       .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                   UserId = table.Column<int>(type: "int", nullable: false),
+                   DeviceId = table.Column<int>(type: "int", nullable: false),
+               },
+               constraints: table =>
+               {
+                   table.PrimaryKey("PK_Device", x => x.Id);
+                   table.ForeignKey(
+                       name: "FK_DeviceUser_User_UserId",
+                       column: x => x.UserId,
+                       principalTable: "User",
+                       principalColumn: "Id",
+                       onDelete: ReferentialAction.Cascade);
+                   table.ForeignKey(
+                       name: "FK_DeviceUser_Device_DeviceId",
+                       column: x => x.DeviceId,
+                       principalTable: "Device",
+                       principalColumn: "Id",
+                       onDelete: ReferentialAction.Cascade);
+               });
+
+            migrationBuilder.CreateTable(
                 name: "PluginLicense",
                 columns: table => new
                 {
