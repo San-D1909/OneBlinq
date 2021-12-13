@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211206115243_init")]
+    [Migration("20211207132239_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,9 +134,6 @@ namespace Backend.Migrations
                     b.Property<int>("MaxAmount")
                         .HasColumnType("int");
 
-                    b.Property<int>("MonthlyPeriod")
-                        .HasColumnType("int");
-
                     b.Property<string>("TypeName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -226,6 +223,12 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<decimal>("FullPrice")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("MonthlyPrice")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("PluginDescription")
                         .IsRequired()
                         .HasColumnType("text");
@@ -233,9 +236,6 @@ namespace Backend.Migrations
                     b.Property<string>("PluginName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("Id");
 

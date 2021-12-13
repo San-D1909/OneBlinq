@@ -40,7 +40,8 @@ namespace Oneblinq.Test
                 Id = 1,
                 PluginName = "Ronaldo's plugin",
                 PluginDescription = "b",
-                Price = 6
+                FullPrice = 6,
+                MonthlyPrice = 6
             };
             pluginRepository.AddPlugin(plugin);
             await pluginRepository.SaveAsync();
@@ -57,7 +58,8 @@ namespace Oneblinq.Test
                 Id = 1,
                 PluginName = "TestPlugin 1",
                 PluginDescription = "Just testing a plugin.",
-                Price = 8
+                FullPrice = 8,
+                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin1);
             PluginModel plugin2 = new PluginModel
@@ -65,7 +67,8 @@ namespace Oneblinq.Test
                 Id = 2,
                 PluginName = "TestPlugin 2",
                 PluginDescription = "Just testing a plugin.",
-                Price = 13
+                FullPrice = 8,
+                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin1); 
             PluginModel plugin3 = new PluginModel
@@ -73,7 +76,8 @@ namespace Oneblinq.Test
                 Id = 3,
                 PluginName = "TestPlugin 3",
                 PluginDescription = "Just testing a plugin.",
-                Price = 20
+                FullPrice = 8,
+                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin1);
             byte[] salt;
@@ -164,7 +168,8 @@ namespace Oneblinq.Test
                 Id = 1,
                 PluginName = "Ronaldo's plugin",
                 PluginDescription = "b",
-                Price = 6
+                FullPrice = 8,
+                MonthlyPrice = 8
             };
             pluginRepository.AddPlugin(plugin);
             await pluginRepository.SaveAsync();

@@ -36,7 +36,6 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     TypeName = table.Column<string>(type: "text", nullable: false),
                     MaxAmount = table.Column<int>(type: "int", nullable: false),
-                    MonthlyPeriod = table.Column<int>(type: "int", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
@@ -52,7 +51,8 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     PluginName = table.Column<string>(type: "text", nullable: false),
                     PluginDescription = table.Column<string>(type: "text", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false)
+                    MonthlyPrice = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
+                    FullPrice = table.Column<decimal>(type: "decimal(18, 2)", nullable: false)
                 },
                 constraints: table =>
                 {

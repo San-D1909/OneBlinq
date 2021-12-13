@@ -42,7 +42,8 @@ namespace Oneblinq.Test
                 Id = 1,
                 PluginName = "TestPlugin 1",
                 PluginDescription = "Just testing a plugin.",
-                Price = 8
+                FullPrice = 8,
+                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin1);
             PluginModel plugin2 = new PluginModel
@@ -50,7 +51,8 @@ namespace Oneblinq.Test
                 Id = 2,
                 PluginName = "TestPlugin 2",
                 PluginDescription = "Just testing a plugin.",
-                Price = 13
+                FullPrice = 8,
+                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin2);
             byte[] salt;
