@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Models
 {
-	public class PluginModel
+    public class PluginModel
 	{
 
 		[Key]
@@ -21,5 +16,6 @@ namespace Backend.Models
 		[Required]
 		public decimal FullPrice { get; set; }
 
+		public string StripeProductId { get; set; }
 	}
 }
