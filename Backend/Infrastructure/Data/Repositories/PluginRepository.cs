@@ -45,11 +45,6 @@ namespace Backend.Infrastructure.Data.Repositories
             return plugins.Select(p => p.Plugin).ToList();
         }
 
-        public PluginModel CreatePlugin(PluginModel plugin)
-        {
-            throw new NotImplementedException();
-        }
-
         public PluginModel UpdatePlugin(int id, PluginModel plugin)
         {
             throw new NotImplementedException();
