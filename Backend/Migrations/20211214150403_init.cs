@@ -29,6 +29,20 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Device",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    DeviceToken = table.Column<string>(type: "varchar(767)", nullable: false),
+                    LicenseId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Device", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LicenseType",
                 columns: table => new
                 {
@@ -172,26 +186,6 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Device",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    DeviceToken = table.Column<string>(type: "varchar(767)", nullable: false),
-                    LicenseId = table.Column<int>(type: "int", nullable: false),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Device", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Device_License_LicenseId",
-                        column: x => x.LicenseId,
-                        principalTable: "License",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PluginLicense",
                 columns: table => new
                 {
@@ -226,14 +220,9 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Device_PluginId",
-                table: "Device",
-                column: "PluginId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UNIQUE_DEVICE",
                 table: "Device",
-                columns: new[] { "LicenseId", "PluginId", "DeviceToken" },
+                columns: new[] { "LicenseId", "DeviceToken" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

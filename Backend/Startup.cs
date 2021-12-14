@@ -18,6 +18,7 @@ using Backend.Infrastructure.Data.Repositories;
 using System.Reflection;
 using System.IO;
 using Stripe;
+using Backend.Core.DatabaseSeeders;
 
 namespace Backend
 {
@@ -98,6 +99,13 @@ namespace Backend
                 ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
                 
                 context.Database.Migrate();
+                UserSeeder.SeedData(context, new PasswordEncrypter(this.Configuration));
+                PluginSeeder.SeedData(context);
+                LicenseTypeSeeder.SeedData(context);
+                LicenseSeeder.SeedData(context);
+                PluginLicenseSeeder.SeedData(context);
+                
+                
             }
 
             StripeConfiguration.ApiKey = Configuration["STRIPE_SECRET_KEY"]; // TODO: add to env

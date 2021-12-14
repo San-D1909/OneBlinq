@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211214135358_init")]
+    [Migration("20211214150403_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,14 +67,9 @@ namespace Backend.Migrations
                     b.Property<int>("LicenseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PluginId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PluginId");
-
-                    b.HasIndex(new[] { "LicenseId", "PluginId", "DeviceToken" }, "IX_UNIQUE_DEVICE")
+                    b.HasIndex(new[] { "LicenseId", "DeviceToken" }, "IX_UNIQUE_DEVICE")
                         .IsUnique();
 
                     b.ToTable("Device");
@@ -295,25 +290,6 @@ namespace Backend.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("Backend.Models.DeviceModel", b =>
-                {
-                    b.HasOne("Backend.Models.LicenseModel", "License")
-                        .WithMany()
-                        .HasForeignKey("LicenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Models.PluginModel", "Plugin")
-                        .WithMany()
-                        .HasForeignKey("PluginId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("License");
-
-                    b.Navigation("Plugin");
                 });
 
             modelBuilder.Entity("Backend.Models.LicenseModel", b =>
