@@ -31,10 +31,10 @@ namespace Backend.Controllers
 
         // GET: api/Plugins
         [HttpGet]
-        /// <summary>
-        /// Get plugins
-        /// </summary>
-        /// <param name="filter" example='"pluginIds": [1,21321, 2312]'>The filter for the plugins</param>
+        // <summary>
+        // Get plugins
+        // </summary>
+        // <param name="filter" example='"pluginIds": [1,21321, 2312]'>The filter for the plugins</param>
         [Produces("application/json")]
         public async Task<ActionResult<IEnumerable<PluginOutput>>> GetPlugins([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
