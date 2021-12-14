@@ -7,19 +7,38 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Infrastructure.Data;
 using Backend.Models;
+using Backend.Infrastructure.Data.Repositories.Interfaces;
 
 namespace Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1")]
     [ApiController]
     public class PluginBundleController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPluginBundleRepository _pluginBundleRepository;
 
-        public PluginBundleController(ApplicationDbContext context)
+
+        public PluginBundleController(ApplicationDbContext context, IPluginBundleRepository pluginBundleRepository)
         {
             _context = context;
+            _pluginBundleRepository = pluginBundleRepository;
         }
+
+        [HttpPost("SearchForPluginBundle")]
+        public async Task<ActionResult<IEnumerable<PluginModel>>> SearchForPlugin([FromQuery(Name = "searchString")] string searchString)
+        {
+            IEnumerable<PluginBundleModel> pluginBundleResults = await _pluginBundleRepository.GetPluginBundleByName(searchString);
+            return Ok(pluginBundleResults);
+        }
+
+        //[HttpPost("SearchForBundle")]
+        //public async Task<ActionResult<List<PluginModel>>> SearchForBundle([FromQuery(Name = "searchString")] string searchString)
+        //{
+        //    List<PluginBundleModel> bundles = await _context.PluginBundle.Where(s => s.BundleName.Contains(searchString == null ? "" : searchString)).ToListAsync();
+        //    return Ok(bundles);
+        //}
 
         // GET: api/PluginBundle
         [HttpGet]
