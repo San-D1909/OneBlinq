@@ -10,7 +10,7 @@ namespace Backend.DTO.In
 
 		public string DeviceInfo { get; set; }
 		public string Jtoken { get; set; }
-		public int LicenseId { get; set; }
+		public string LicenseKey { get; set; }
 		public string LocalToken { get; set; }
 
 	}
