@@ -49,8 +49,10 @@ namespace Backend
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseMySQL(
-                Configuration.GetConnectionString("DockerConnection")));
+                options.UseMySQL(
+                    Configuration.GetConnectionString("DockerConnection")
+                )
+            );
 
             services.AddApiVersioning(o =>
             {
