@@ -179,7 +179,6 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     DeviceToken = table.Column<string>(type: "varchar(767)", nullable: false),
                     LicenseId = table.Column<int>(type: "int", nullable: false),
-                    PluginId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -188,12 +187,6 @@ namespace Backend.Migrations
                         name: "FK_Device_License_LicenseId",
                         column: x => x.LicenseId,
                         principalTable: "License",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Device_Plugin_PluginId",
-                        column: x => x.PluginId,
-                        principalTable: "Plugin",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
