@@ -26,6 +26,8 @@ namespace Backend.Infrastructure.Data
 		public DbSet<ResetTokenModel> ResetToken { get; set; }
 		public DbSet<PluginLicenseModel> PluginLicense { get; set; }
 		public DbSet<PluginBundlesModel> PluginBundles { get; set; }
+		public DbSet<PluginVariantModel> PluginVariant { get; set; }
+
 
 	}
 }

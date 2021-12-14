@@ -4,7 +4,10 @@ namespace Backend.Models
 {
     public class PluginVariantModel
     {
+        [Key]
+        public int Id { get; set; }
         [Required]
+        public int PluginId { get; set; }
         public PluginModel Plugin { get; set; }
         [Required]
         public string Description { get; set; }

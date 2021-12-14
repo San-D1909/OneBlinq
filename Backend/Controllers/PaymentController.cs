@@ -3,6 +3,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Stripe;
@@ -21,6 +22,12 @@ namespace Backend.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class CheckoutApiController : Controller
     {
+        private IConfiguration _config;
+        public CheckoutApiController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         [HttpPost("create-checkout-session")]
         public ActionResult Create()
         {
@@ -28,7 +35,7 @@ namespace Backend.Controllers
             var pluginId = Request.Form["pluginId"];
             var variantId = Request.Form["variantId"];
 
-            var domain = "http://localhost:3000"; // TODO: add to env
+            var domain = _config["DOMAIN"];
             var options = new SessionCreateOptions
             {
                 CustomerEmail = Request.Form["email"],
@@ -36,7 +43,7 @@ namespace Backend.Controllers
                 {
                   new SessionLineItemOptions
                   {
-                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    // TODO: get price_id from variant
                     Price = "price_1K6C7WD3N0oRDjVt28k8Cxpl",
                     Quantity = 1,
                   },
