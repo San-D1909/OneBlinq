@@ -17,6 +17,7 @@ using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.Infrastructure.Data.Repositories;
 using System.Reflection;
 using System.IO;
+using Stripe;
 
 namespace Backend
 {
@@ -97,6 +98,8 @@ namespace Backend
                 ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
                 context.Database.Migrate();
             }
+
+            StripeConfiguration.ApiKey = Configuration["STRIPE_SECRET_KEY"]; // TODO: add to env
 
             if (env.IsDevelopment() || env.IsEnvironment("local"))
             {

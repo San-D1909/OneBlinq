@@ -16,7 +16,5 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
         Task DeletePlugin(int id);
 
         void AddPlugin(PluginModel plugin);
-
-        Task<int> SaveAsync();
     }
 }
