@@ -35,13 +35,6 @@ namespace Backend.Controllers
             return Ok(pluginResults);
         }
 
-        [HttpPost("SearchForBundle")]
-        public async Task<ActionResult<List<PluginModel>>> SearchForBundle([FromQuery(Name = "searchString")] string searchString)
-        {
-            List<PluginBundleModel> bundles = await _context.PluginBundle.Where(s => s.BundleName.Contains(searchString == null ? "" : searchString)).ToListAsync();
-            return Ok(bundles);
-        }
-
         // GET: api/Plugins
         [HttpGet]
         // <summary>
