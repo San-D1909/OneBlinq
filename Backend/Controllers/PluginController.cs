@@ -49,7 +49,8 @@ namespace Backend.Controllers
                     Id = plugin.Id,
                     PluginName = plugin.PluginName,
                     PluginDescription = plugin.PluginDescription,
-                    Price = plugin.Price,
+                    FullPrice = plugin.FullPrice,
+                    MonthlyPrice = plugin.MonthlyPrice,
                     Users = users
                 });
             }
@@ -60,6 +61,20 @@ namespace Backend.Controllers
             Request.HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
 
             return Ok(pluginOutput);
+        }
+
+        // GET: api/Plugins/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PluginOutput>> GetPlugin(int id)
+        {
+            var plugin = await _pluginRepository.GetPlugin(id);
+
+            if (plugin == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(plugin);
         }
 
 

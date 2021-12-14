@@ -132,9 +132,6 @@ namespace Backend.Migrations
                     b.Property<int>("MaxAmount")
                         .HasColumnType("int");
 
-                    b.Property<int>("MonthlyPeriod")
-                        .HasColumnType("int");
-
                     b.Property<string>("TypeName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -224,6 +221,12 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<decimal>("FullPrice")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("MonthlyPrice")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("PluginDescription")
                         .IsRequired()
                         .HasColumnType("text");
@@ -231,9 +234,6 @@ namespace Backend.Migrations
                     b.Property<string>("PluginName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("Id");
 

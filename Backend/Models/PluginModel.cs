@@ -17,7 +17,9 @@ namespace Backend.Models
 		[Required]
 		public string PluginDescription { get; set; }
 		[Required]
-		public decimal Price { get; set; }
+		public decimal MonthlyPrice { get; set; }
+		[Required]
+		public decimal FullPrice { get; set; }
 
 	}
 }

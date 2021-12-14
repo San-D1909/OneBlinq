@@ -94,6 +94,7 @@ namespace Backend
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                
                 context.Database.Migrate();
             }
 
