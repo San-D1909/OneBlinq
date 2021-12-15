@@ -110,7 +110,7 @@ namespace Backend.Controllers.AdminDashboard
 
             await _pluginVariantRepository.SaveAsync();
 
-            return CreatedAtAction("GetPluginVariant", new { id = pluginVariant.Id }, pluginVariant); // TODO: fix deze tering zooi
+            return CreatedAtAction("GetPluginVariants", new { id = pluginVariant.Id }, pluginVariant); // TODO: fix deze tering zooi
         }
 
         // DELETE: api/Plugins/5
