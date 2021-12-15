@@ -91,5 +91,10 @@ namespace Backend.Infrastructure.Data.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<UserModel>> GetUsersByPluginBundle(string filter, string sort, PluginBundleModel pluginBundle)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
