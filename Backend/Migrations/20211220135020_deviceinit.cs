@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Backend.Migrations
 {
-    public partial class init : Migration
+    public partial class deviceinit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,6 +35,7 @@ namespace Backend.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     DeviceToken = table.Column<string>(type: "varchar(767)", nullable: false),
+                    DeviceName = table.Column<string>(type: "text", nullable: false),
                     LicenseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

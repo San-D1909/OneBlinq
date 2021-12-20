@@ -27,15 +27,12 @@ namespace Backend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CompanyName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HouseNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("KVKNumber")
@@ -45,11 +42,9 @@ namespace Backend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Street")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -63,21 +58,20 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("LicenseId")
-                        .HasColumnType("int");
+                    b.Property<string>("DeviceName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<string>("MacAddress")
+                    b.Property<string>("DeviceToken")
                         .IsRequired()
                         .HasColumnType("varchar(767)");
 
-                    b.Property<int>("PluginId")
+                    b.Property<int>("LicenseId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PluginId");
-
-                    b.HasIndex(new[] { "LicenseId", "PluginId", "MacAddress" }, "IX_UNIQUE_DEVICE")
+                    b.HasIndex(new[] { "LicenseId", "DeviceToken" }, "IX_UNIQUE_DEVICE")
                         .IsUnique();
 
                     b.ToTable("Device");
@@ -102,7 +96,7 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("LicenseTypeId")
+                    b.Property<int>("LicenseTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("TimesActivated")
@@ -300,30 +294,13 @@ namespace Backend.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Backend.Models.DeviceModel", b =>
-                {
-                    b.HasOne("Backend.Models.LicenseModel", "License")
-                        .WithMany()
-                        .HasForeignKey("LicenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Models.PluginModel", "Plugin")
-                        .WithMany()
-                        .HasForeignKey("PluginId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("License");
-
-                    b.Navigation("Plugin");
-                });
-
             modelBuilder.Entity("Backend.Models.LicenseModel", b =>
                 {
                     b.HasOne("Backend.Models.LicenseTypeModel", "LicenseType")
                         .WithMany()
-                        .HasForeignKey("LicenseTypeId");
+                        .HasForeignKey("LicenseTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Backend.Models.UserModel", "User")
                         .WithMany()
