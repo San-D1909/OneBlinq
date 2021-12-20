@@ -105,8 +105,10 @@ namespace Backend
                 LicenseTypeSeeder.SeedData(context);
                 LicenseSeeder.SeedData(context);
                 PluginLicenseSeeder.SeedData(context);
-                
-                
+                DeviceSeeder.SeedData(context);
+                PluginBundleSeeder.SeedData(context);
+                PluginBundlesSeeder.SeedData(context);
+
             }
 
             StripeConfiguration.ApiKey = Configuration["STRIPE_SECRET_KEY"]; // TODO: add to env
