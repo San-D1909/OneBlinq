@@ -89,6 +89,7 @@ namespace Backend
             services.AddScoped<ILicenceRepository, LicenceRepository>();
             services.AddScoped<IPluginRepository, PluginRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPluginBundleRepository, PluginBundleRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -104,8 +105,10 @@ namespace Backend
                 LicenseTypeSeeder.SeedData(context);
                 LicenseSeeder.SeedData(context);
                 PluginLicenseSeeder.SeedData(context);
-                
-                
+                DeviceSeeder.SeedData(context);
+                PluginBundleSeeder.SeedData(context);
+                PluginBundlesSeeder.SeedData(context);
+
             }
 
             StripeConfiguration.ApiKey = Configuration["STRIPE_SECRET_KEY"]; // TODO: add to env

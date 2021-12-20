@@ -13,6 +13,7 @@ namespace Backend.Core.DatabaseSeeders
     {
         public static UserModel USER_ADMIN;
         public static UserModel USER_CUSTOMER;
+        public static UserModel USER_T;
 
         public static void SeedData(ApplicationDbContext context, PasswordEncrypter encryptor)
         {
@@ -45,8 +46,22 @@ namespace Backend.Core.DatabaseSeeders
                     Salt = salt
                 };
 
+                new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+                USER_T = new UserModel
+                {
+                    Id = 3,
+                    FullName = "Moet Korter",
+                    Company = null,
+                    Email = "t@t",
+                    IsAdmin = false,
+                    IsVerified = true,
+                    Password = encryptor.EncryptPassword("t" + salt),
+                    Salt = salt
+                };
+
                 context.Add(USER_ADMIN);
                 context.Add(USER_CUSTOMER);
+                context.Add(USER_T);
                 context.SaveChanges();
             }
         }
