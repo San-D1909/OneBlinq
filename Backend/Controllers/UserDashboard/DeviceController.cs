@@ -149,7 +149,7 @@ namespace Backend.Controllers.UserDashboard
 			return Ok(dtoken);
 		}
 
-		[HttpDelete("{jtoken}/[controller]/delete/{id}")]
+		[HttpDelete("{jtoken}/[controller]/{id}")]
 		public async Task<IActionResult> DeleteDevice(int id, string jtoken)
 		{
 			if (jtoken is null)

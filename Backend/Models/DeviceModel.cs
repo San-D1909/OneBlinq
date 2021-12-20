@@ -14,8 +14,8 @@ namespace Backend.Models
         public int Id { get; set; }
         [Required]
         public string DeviceToken { get; set; }
-        [Required]
-        public string DeviceName { get; set; }
+        //[Required]
+        //public string DeviceName { get; set; }
         [Required]
         public int LicenseId { get; set; }
     }
