@@ -123,6 +123,7 @@ namespace Backend.Controllers.UserDashboard
 			DeviceModel device = new DeviceModel
 			{
 				DeviceToken = dtoken,
+				DeviceName = "Test",
 				LicenseId = license.Id,
 			};
 			try
