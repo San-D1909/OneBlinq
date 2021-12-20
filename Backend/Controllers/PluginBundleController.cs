@@ -44,40 +44,6 @@ namespace Backend.Controllers
             return await _context.PluginBundle.ToListAsync();
         }
 
-        //// GET: api/PluginBundles
-        ////
-        //[HttpGet]
-        //// <summary>
-        //// Get plugins
-        //// </summary>
-        //// <param name="filter" example='"pluginIds": [1,21321, 2312]'>The filter for the plugins</param>
-        //[Produces("application/json")]
-        //public async Task<ActionResult<IEnumerable<PluginBundleOutput>>> GetPlugins([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
-        //{
-        //    List<PluginBundleOutput> pluginBundleOutput = new List<PluginBundleOutput>();
-        //    IEnumerable<PluginBundleModel> pluginBundles = await _pluginBundleRepository.GetAllPluginBundle(filter, sort);
-          
-
-        //    foreach (PluginBundleModel pluginBundle in pluginBundles)
-        //    {
-        //        IEnumerable<UserModel> users = await _userRepository.GetUsersByPluginBundle(null, null, pluginBundle);
-        //        pluginBundleOutput.Add(new PluginBundleOutput
-        //        {
-        //            Id = pluginBundle.Id,
-        //            BundleName = pluginBundle.BundleName,
-        //            BundleDescription = pluginBundle.BundleDescription,
-        //            Price = pluginBundle.Price,
-        //            Users = users
-        //        });
-        //    }
-
-        //    Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
-        //    Request.HttpContext.Response.Headers.Add("Content-Range", "plugins 0-5/1");
-        //    Request.HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
-
-        //    return Ok(pluginBundleOutput);
-        //}
-
         // GET: api/Plugins/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PluginOutput>> GetPlugin(int id)
