@@ -23,10 +23,13 @@ namespace Backend.Controllers
     {
         private IConfiguration _config;
         private MailClient _mail;
-        public CheckoutApiController(IConfiguration config, MailClient mailClient)
+        private LicenseGenerator _licenseGenerator;
+
+        public CheckoutApiController(IConfiguration config, MailClient mailClient, LicenseGenerator licenseGenerator)
         {
             _config = config;
             _mail = mailClient;
+            _licenseGenerator = licenseGenerator;
         }
 
         [HttpPost("create-checkout-session")]
@@ -86,8 +89,12 @@ namespace Backend.Controllers
                 Console.WriteLine($"Session ID: {session.Id}");
                 // Take some action based on session.
                 var email = session.CustomerDetails.Email;
-                await _mail.PurchaseConfirmationMail("oneblinq@stuur.men", email, "Purchase confirmation", "asdfkek");
 
+                var key = _licenseGenerator.CreateLicenseKey(email, "plugin", "variant");
+                // TODO: plugin + variant ids
+                // TODO: add license key 
+
+                await _mail.PurchaseConfirmationMail("oneblinq@stuur.men", email, "Purchase confirmation", key);
             }
 
             return Ok();

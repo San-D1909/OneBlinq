@@ -18,8 +18,6 @@ namespace Backend.Core.Logic
 		{
             var concat = email + plugin + variant + _config["Secret"] + Convert.ToString(DateTime.Now);
 			
-            //TODO: Add time to md5 hash to always generate unique keys
-
 			MD5 md5 = new MD5CryptoServiceProvider();
             byte[] result = md5.ComputeHash(Encoding.UTF8.GetBytes(concat));
 
