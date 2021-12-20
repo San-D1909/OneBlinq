@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Backend.Migrations
 {
-    public partial class init : Migration
+    public partial class stripeinit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,11 +14,11 @@ namespace Backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    CompanyName = table.Column<string>(type: "text", nullable: false),
-                    ZipCode = table.Column<string>(type: "text", nullable: false),
-                    Street = table.Column<string>(type: "text", nullable: false),
-                    HouseNumber = table.Column<string>(type: "text", nullable: false),
-                    Country = table.Column<string>(type: "text", nullable: false),
+                    CompanyName = table.Column<string>(type: "text", nullable: true),
+                    ZipCode = table.Column<string>(type: "text", nullable: true),
+                    Street = table.Column<string>(type: "text", nullable: true),
+                    HouseNumber = table.Column<string>(type: "text", nullable: true),
+                    Country = table.Column<string>(type: "text", nullable: true),
                     BTWNumber = table.Column<string>(type: "text", nullable: true),
                     KVKNumber = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true)
@@ -52,7 +52,8 @@ namespace Backend.Migrations
                     PluginName = table.Column<string>(type: "text", nullable: false),
                     PluginDescription = table.Column<string>(type: "text", nullable: false),
                     MonthlyPrice = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
-                    FullPrice = table.Column<decimal>(type: "decimal(18, 2)", nullable: false)
+                    FullPrice = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
+                    StripeProductId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -115,6 +116,28 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PluginVariant",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    PluginId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
+                    StripePriceId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PluginVariant", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PluginVariant_Plugin_PluginId",
+                        column: x => x.PluginId,
+                        principalTable: "Plugin",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PluginBundles",
                 columns: table => new
                 {
@@ -148,7 +171,7 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     LicenseKey = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true),
-                    LicenseTypeId = table.Column<int>(type: "int", nullable: true),
+                    LicenseTypeId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime", nullable: false),
                     ExpirationTime = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -162,7 +185,7 @@ namespace Backend.Migrations
                         column: x => x.LicenseTypeId,
                         principalTable: "LicenseType",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_License_User_UserId",
                         column: x => x.UserId,
@@ -177,7 +200,7 @@ namespace Backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    MacAddress = table.Column<string>(type: "varchar(767)", nullable: false),
+                    DeviceToken = table.Column<string>(type: "varchar(767)", nullable: false),
                     LicenseId = table.Column<int>(type: "int", nullable: false),
                     PluginId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -197,32 +220,6 @@ namespace Backend.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateTable(
-               name: "DeviceUser",
-               columns: table => new
-               {
-                   Id = table.Column<int>(type: "int", nullable: false)
-                       .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                   UserId = table.Column<int>(type: "int", nullable: false),
-                   DeviceId = table.Column<int>(type: "int", nullable: false),
-               },
-               constraints: table =>
-               {
-                   table.PrimaryKey("PK_Device", x => x.Id);
-                   table.ForeignKey(
-                       name: "FK_DeviceUser_User_UserId",
-                       column: x => x.UserId,
-                       principalTable: "User",
-                       principalColumn: "Id",
-                       onDelete: ReferentialAction.Cascade);
-                   table.ForeignKey(
-                       name: "FK_DeviceUser_Device_DeviceId",
-                       column: x => x.DeviceId,
-                       principalTable: "Device",
-                       principalColumn: "Id",
-                       onDelete: ReferentialAction.Cascade);
-               });
 
             migrationBuilder.CreateTable(
                 name: "PluginLicense",
@@ -266,7 +263,7 @@ namespace Backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_UNIQUE_DEVICE",
                 table: "Device",
-                columns: new[] { "LicenseId", "PluginId", "MacAddress" },
+                columns: new[] { "LicenseId", "PluginId", "DeviceToken" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -307,6 +304,11 @@ namespace Backend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PluginVariant_PluginId",
+                table: "PluginVariant",
+                column: "PluginId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_CompanyId",
                 table: "User",
                 column: "CompanyId");
@@ -324,16 +326,19 @@ namespace Backend.Migrations
                 name: "PluginLicense");
 
             migrationBuilder.DropTable(
+                name: "PluginVariant");
+
+            migrationBuilder.DropTable(
                 name: "ResetToken");
 
             migrationBuilder.DropTable(
                 name: "License");
 
             migrationBuilder.DropTable(
-                name: "Plugin");
+                name: "PluginBundle");
 
             migrationBuilder.DropTable(
-                name: "PluginBundle");
+                name: "Plugin");
 
             migrationBuilder.DropTable(
                 name: "LicenseType");
