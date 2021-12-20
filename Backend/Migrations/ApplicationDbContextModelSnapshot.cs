@@ -229,9 +229,38 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("StripeProductId")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Plugin");
+                });
+
+            modelBuilder.Entity("Backend.Models.PluginVariantModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PluginId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("StripePriceId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PluginId");
+
+                    b.ToTable("PluginVariant");
                 });
 
             modelBuilder.Entity("Backend.Models.ResetTokenModel", b =>
@@ -351,6 +380,17 @@ namespace Backend.Migrations
                     b.Navigation("Plugin");
 
                     b.Navigation("PluginBundle");
+                });
+
+            modelBuilder.Entity("Backend.Models.PluginVariantModel", b =>
+                {
+                    b.HasOne("Backend.Models.PluginModel", "Plugin")
+                        .WithMany()
+                        .HasForeignKey("PluginId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plugin");
                 });
 
             modelBuilder.Entity("Backend.Models.UserModel", b =>

@@ -61,11 +61,11 @@ namespace Backend
                 o.AssumeDefaultVersionWhenUnspecified = true;
                 o.DefaultApiVersion = new ApiVersion(1, 0);
             });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OneBlinq API - V1", Version = "v1" });
-                c.SwaggerDoc("v2", new OpenApiInfo { Title = "OneBlinq API - V2", Version = "v2" });
+                //c.SwaggerDoc("v2", new OpenApiInfo { Title = "OneBlinq API - V2", Version = "v2" });
                 c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -84,11 +84,10 @@ namespace Backend
                 c.IncludeXmlComments(xmlPath);
             });
 
-            //services.AddAuthentication("BasicAuthentication")
-            //    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
             services.AddScoped<ILicenceRepository, LicenceRepository>();
             services.AddScoped<IPluginRepository, PluginRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPluginVariantRepository, PluginVariantRepository>();
             services.AddScoped<IPluginBundleRepository, PluginBundleRepository>();
         }
 
@@ -111,7 +110,7 @@ namespace Backend
 
             }
 
-            StripeConfiguration.ApiKey = Configuration["STRIPE_SECRET_KEY"]; // TODO: add to env
+            StripeConfiguration.ApiKey = Configuration["STRIPE_SECRET_KEY"];
 
             if (env.IsDevelopment() || env.IsEnvironment("local"))
             {
@@ -119,7 +118,7 @@ namespace Backend
                 app.UseSwagger();
                 app.UseSwaggerUI(c => {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "OneBlinq API - v1");
-                    c.SwaggerEndpoint("/swagger/v2/swagger.json", "OneBlinq API - v2");
+                    //c.SwaggerEndpoint("/swagger/v2/swagger.json", "OneBlinq API - v2");
                 });
             }
 
