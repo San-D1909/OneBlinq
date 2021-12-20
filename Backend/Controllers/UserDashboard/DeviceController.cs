@@ -134,7 +134,6 @@ namespace Backend.Controllers.UserDashboard
 				throw;
 			}
 			
-
 			license.TimesActivated++;
 
 			_context.Update(license);
