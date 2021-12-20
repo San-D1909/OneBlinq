@@ -21,6 +21,7 @@ namespace Backend.Core.DatabaseSeeders
                 {
                     Id = 1,
                     DeviceToken = "12345",
+                    DeviceName = "DESKTOP-SIF9L5F",
                     LicenseId = LicenseSeeder.LICENSE_BUSINESS_USER.Id,
                 };
 
