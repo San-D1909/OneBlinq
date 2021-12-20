@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using Backend.DTO.In;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Stripe;
 using Stripe.Checkout;
+using System;
+using Backend.Core.Logic;
 
 public class StripeOptions
 {
@@ -17,9 +22,11 @@ namespace Backend.Controllers
     public class CheckoutApiController : Controller
     {
         private IConfiguration _config;
-        public CheckoutApiController(IConfiguration config)
+        private MailClient _mail;
+        public CheckoutApiController(IConfiguration config, MailClient mailClient)
         {
             _config = config;
+            _mail = mailClient;
         }
 
         [HttpPost("create-checkout-session")]
@@ -51,6 +58,39 @@ namespace Backend.Controllers
 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
+        }
+
+        [HttpPost("webhook")]
+        public async Task<IActionResult> Webhook()
+        {
+            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+            Event stripeEvent;
+            try
+            {
+                stripeEvent = EventUtility.ConstructEvent(
+                    json,
+                    Request.Headers["Stripe-Signature"],
+                    _config["STRIPE_WEBHOOK_SECRET"]
+                );
+                Console.WriteLine($"Webhook notification with type: {stripeEvent.Type} found for {stripeEvent.Id}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Something failed {e}");
+                return BadRequest();
+            }
+
+            if (stripeEvent.Type == "checkout.session.completed")
+            {
+                var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
+                Console.WriteLine($"Session ID: {session.Id}");
+                // Take some action based on session.
+                var email = session.CustomerDetails.Email;
+                await _mail.PurchaseConfirmationMail("oneblinq@stuur.men", email, "Purchase confirmation", "asdfkek");
+
+            }
+
+            return Ok();
         }
     }
 }
