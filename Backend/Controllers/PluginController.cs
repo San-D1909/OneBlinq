@@ -9,6 +9,7 @@ using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.DTO.Out;
 using System.Net.NetworkInformation;
 using System;
+using Stripe;
 
 namespace Backend.Controllers
 {
@@ -132,12 +133,21 @@ namespace Backend.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<PluginModel>> PostPlugin(PluginModel plugin)
-        {
-            _context.Plugin.Add(plugin);
-            await _context.SaveChangesAsync();
+        { 
+            var options = new ProductCreateOptions
+            {
+                Name = plugin.PluginName,
+                Description = plugin.PluginDescription,
+                // TODO: Add image field
+            };
 
-            // TODO: create stripe product object
-            // TODO: create stripe payment object
+            var service = new ProductService();
+            var productId = service.Create(options);
+
+            plugin.StripeProductId = productId.Id;
+
+            _pluginRepository.Add(plugin);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPlugin", new { id = plugin.Id }, plugin);
         }

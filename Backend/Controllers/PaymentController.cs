@@ -1,14 +1,8 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using Backend.DTO.In;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Stripe;
 using Stripe.Checkout;
-
 
 public class StripeOptions
 {
@@ -32,19 +26,17 @@ namespace Backend.Controllers
         public ActionResult Create()
         {
 
-            var pluginId = Request.Form["pluginId"];
-            var variantId = Request.Form["variantId"];
+            var priceId = Request.Form["priceId"];
 
             var domain = _config["DOMAIN"];
             var options = new SessionCreateOptions
             {
-                CustomerEmail = Request.Form["email"],
+                //CustomerEmail = Request.Form["email"],
                 LineItems = new List<SessionLineItemOptions>
                 {
                   new SessionLineItemOptions
                   {
-                    // TODO: get price_id from variant
-                    Price = "price_1K6C7WD3N0oRDjVt28k8Cxpl",
+                    Price = priceId,
                     Quantity = 1,
                   },
                 },

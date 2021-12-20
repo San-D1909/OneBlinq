@@ -9,6 +9,7 @@ using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.DTO.Out;
 using System.Net.NetworkInformation;
 using System;
+using Stripe;
 
 namespace Backend.Controllers.AdminDashboard
 {
@@ -122,7 +123,20 @@ namespace Backend.Controllers.AdminDashboard
         [HttpPost]
         public async Task<ActionResult<PluginModel>> PostPlugin(PluginModel plugin)
         {
-            _context.Plugin.Add(plugin);
+            var options = new ProductCreateOptions
+            {
+                Name = plugin.PluginName,
+                Description = plugin.PluginDescription,
+                TaxCode = "txcd_10000000",
+                // TODO: Add image field
+            };
+
+            var service = new ProductService();
+            var productId = service.Create(options);
+
+            plugin.StripeProductId = productId.Id;
+
+            _pluginRepository.Add(plugin);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPlugin", new { id = plugin.Id }, plugin);

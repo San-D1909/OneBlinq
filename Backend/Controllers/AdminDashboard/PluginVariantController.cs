@@ -97,9 +97,12 @@ namespace Backend.Controllers.AdminDashboard
 
             var options = new PriceCreateOptions
             {
-                UnitAmount = (long)(pluginVariant.Price * 100),
+                
+                UnitAmountDecimal = pluginVariant.Price * 100,
                 Currency = "eur",
                 Product = plugin.StripeProductId,
+                BillingScheme = "per_unit",
+                TaxBehavior = "inclusive"
                 // TODO: tax
             };
             var service = new PriceService();
@@ -118,11 +121,16 @@ namespace Backend.Controllers.AdminDashboard
         public async Task<IActionResult> DeletePlugin(int id)
         {
             var plugin = await _pluginVariantRepository.GetByIdAsync(id);
+            var service = new ProductService();
             if (plugin == null)
             {
                 return NotFound();
             }
 
+            if (plugin.StripePriceId == null)
+            {
+                service.Delete(plugin.StripePriceId);
+            }
             _pluginVariantRepository.Remove(plugin);
             await _pluginVariantRepository.SaveAsync();
 
@@ -139,7 +147,7 @@ namespace Backend.Controllers.AdminDashboard
             int[] deletedPlugins = new int[plugins.Count()];
             for (int i = 0; i < plugins.Count(); i++)
             {
-
+                
                 if (plugins[i] == null)
                 {
                     return NotFound();
@@ -158,5 +166,6 @@ namespace Backend.Controllers.AdminDashboard
         {
             return _pluginVariantRepository.GetById(id) != null;
         }
+
     }
 }
