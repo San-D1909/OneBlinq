@@ -92,9 +92,15 @@ namespace Backend.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<UserModel>> GetUsersByPluginBundle(string filter, string sort, PluginBundleModel pluginBundle)
+        public async Task<IEnumerable<UserModel>> GetUsersByPluginBundle(string filter, string sort, PluginBundleModel pluginBundle)
         {
-            throw new NotImplementedException();
+            IEnumerable<PluginLicenseModel> pluginbundles = _context.PluginLicense.Include(p => p.PluginBundle).Include(l => l.License).ThenInclude(u => u.User).Where(p => p.PluginBundle.Id == pluginBundle.Id);
+
+            RequestSortFilterLogic filterLogic = new RequestSortFilterLogic();
+
+            pluginbundles = filterLogic.FilterDatabaseModel<PluginLicenseModel>(pluginbundles, filter);
+
+            return pluginbundles.Select(p => p.License.User).ToList();
         }
     }
 }

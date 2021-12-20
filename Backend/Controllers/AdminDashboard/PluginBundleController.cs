@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Infrastructure.Data;
 using Backend.Models;
+using Backend.DTO.In;
+using Backend.DTO.Out;
+using Backend.Infrastructure.Data.Repositories.Interfaces;
 
 namespace Backend.Controllers.AdminDashboard
 {
@@ -16,10 +19,11 @@ namespace Backend.Controllers.AdminDashboard
     public class PluginBundleController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
-        public PluginBundleController(ApplicationDbContext context)
+        private readonly IUserRepository _userRepository;
+        public PluginBundleController(ApplicationDbContext context, IUserRepository userRepository)
         {
             _context = context;
+            this._userRepository = userRepository;
         }
 
         // GET: api/PluginBundle
@@ -35,7 +39,7 @@ namespace Backend.Controllers.AdminDashboard
 
         // GET: api/PluginBundle/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PluginBundleModel>> GetPluginBundleModel(int id)
+        public async Task<ActionResult<PluginBundleOutput>> GetPluginBundleModel(int id)
         {
             var pluginBundleModel = await _context.PluginBundle.FindAsync(id);
 
@@ -44,14 +48,19 @@ namespace Backend.Controllers.AdminDashboard
                 return NotFound();
             }
 
-            return pluginBundleModel;
+            IEnumerable<PluginModel> plugins = this._context.PluginBundles.Include(p => p.Plugin).Include(p => p.PluginBundle).Where(p => p.PluginBundleId == pluginBundleModel.Id).Select(p => p.Plugin).ToList();
+            IEnumerable<UserModel> users = await this._userRepository.GetUsersByPluginBundle(null, null, pluginBundleModel);
+
+            return new PluginBundleOutput(pluginBundleModel, this._context.PluginBundles.Where(p => p.PluginBundleId == pluginBundleModel.Id).Select(p => p.Plugin).ToList(), users);
         }
 
         // PUT: api/PluginBundle/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPluginBundleModel(int id, PluginBundleModel pluginBundleModel)
+        public async Task<IActionResult> PutPluginBundleModel(int id, PluginBundleInput pluginBundleInput)
         {
+            PluginBundleModel pluginBundleModel = pluginBundleInput.GetPluginBundleModel();
+
             if (id != pluginBundleModel.Id)
             {
                 return BadRequest();
@@ -81,10 +90,24 @@ namespace Backend.Controllers.AdminDashboard
         // POST: api/PluginBundle
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PluginBundleModel>> PostPluginBundleModel(PluginBundleModel pluginBundleModel)
+        public async Task<ActionResult<PluginBundleModel>> PostPluginBundleModel(PluginBundleInput pluginBundleInput)
         {
+            PluginBundleModel pluginBundleModel = pluginBundleInput.GetPluginBundleModel();
             _context.PluginBundle.Add(pluginBundleModel);
             await _context.SaveChangesAsync();
+
+            foreach(int pluginId in pluginBundleInput.PluginIds)
+            {
+                PluginBundlesModel pluginBundles = new PluginBundlesModel
+                {
+                    PluginBundleId = pluginBundleModel.Id,
+                    PluginId = pluginId
+                };
+                _context.PluginBundles.Add(pluginBundles);
+            }
+
+            _context.SaveChanges();
+            
 
             return CreatedAtAction("GetPluginBundleModel", new { id = pluginBundleModel.Id }, pluginBundleModel);
         }
