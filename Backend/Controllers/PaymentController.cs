@@ -38,11 +38,12 @@ namespace Backend.Controllers
                   {
                     Price = priceId,
                     Quantity = 1,
-                  },
+                  }
                 },
                 Mode = "payment",
                 SuccessUrl = domain + "?success=true",
                 CancelUrl = domain + "?canceled=true",
+                AutomaticTax = new SessionAutomaticTaxOptions { Enabled = true },
             };
 
             var service = new SessionService();
