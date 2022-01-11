@@ -103,7 +103,6 @@ namespace Backend
                 LicenseTypeSeeder.SeedData(context);
                 LicenseSeeder.SeedData(context);
                 PluginLicenseSeeder.SeedData(context);
-                DeviceSeeder.SeedData(context);
                 PluginBundleSeeder.SeedData(context);
                 PluginBundlesSeeder.SeedData(context);
                 PluginImageSeeder.SeedData(context);
