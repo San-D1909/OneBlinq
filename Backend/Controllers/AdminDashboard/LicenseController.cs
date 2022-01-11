@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Infrastructure.Data;
 using Backend.Models;
+using Backend.Infrastructure.Data.Repositories.Interfaces;
 
 namespace Backend.Controllers.AdminDashboard
 {
@@ -16,17 +17,20 @@ namespace Backend.Controllers.AdminDashboard
     public class LicenseController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILicenceRepository _licenseRepository;
 
-        public LicenseController(ApplicationDbContext context)
+        public LicenseController(ApplicationDbContext context, ILicenceRepository licenseRepository)
         {
             _context = context;
+            _licenseRepository = licenseRepository;
         }
 
         // GET: api/LicenseModels
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LicenseModel>>> GetLicense()
+        public async Task<ActionResult<IEnumerable<LicenseModel>>> GetLicense([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
-            IEnumerable<LicenseModel> licenses = await _context.License.Include(t => t.LicenseType).Include(t => t.User).ToListAsync();
+            //IEnumerable<LicenseModel> licenses = await _context.License.Include(t => t.LicenseType).Include(t => t.User).ToListAsync();
+            IEnumerable<LicenseModel> licenses = await this._licenseRepository.GetLicenses(filter, sort);
 
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
             Request.HttpContext.Response.Headers.Add("Content-Range", "plugins 0-5/1");

@@ -27,7 +27,6 @@ namespace Backend.Infrastructure.Data
 		public DbSet<PluginLicenseModel> PluginLicense { get; set; }
 		public DbSet<PluginBundlesModel> PluginBundles { get; set; }
 		public DbSet<PluginVariantModel> PluginVariant { get; set; }
-
-
+		public DbSet<PluginImageModel> PluginImage { get; set; }
 	}
 }

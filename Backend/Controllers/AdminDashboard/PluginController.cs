@@ -10,6 +10,8 @@ using Backend.DTO.Out;
 using System.Net.NetworkInformation;
 using System;
 using Stripe;
+using Backend.DTO.In;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.Controllers.AdminDashboard
 {
@@ -44,6 +46,7 @@ namespace Backend.Controllers.AdminDashboard
             foreach(PluginModel plugin in plugins)
             {
                 IEnumerable<UserModel> users = await _userRepository.GetUsersByPlugin(null, null, plugin);
+                PluginImageModel image = _context.PluginImage.Where(p => p.Plugin.Id == plugin.Id).FirstOrDefault();
                 pluginOutput.Add(new PluginOutput
                 {
                     Id = plugin.Id,
@@ -51,7 +54,8 @@ namespace Backend.Controllers.AdminDashboard
                     PluginDescription = plugin.PluginDescription,
                     FullPrice = plugin.FullPrice,
                     MonthlyPrice = plugin.MonthlyPrice,
-                    Users = users
+                    Users = users,
+                    Image = image
                 });
             }
            
@@ -75,6 +79,10 @@ namespace Backend.Controllers.AdminDashboard
             }
 
             IEnumerable<UserModel> users = await _userRepository.GetUsersByPlugin(null, null, plugin);
+
+            Byte[] bytes = System.IO.File.ReadAllBytes("./DefaultImages/HTMLPlaceholder.png");
+            String file = "data:image/jpeg;base64," + Convert.ToBase64String(bytes);
+            PluginImageModel image = _context.PluginImage.Where(p => p.Plugin.Id == id).FirstOrDefault() ?? new PluginImageModel { Id = 0, ImageData = file, Plugin = plugin};
             PluginOutput pluginOutput = new PluginOutput
             {
                 Id = plugin.Id,
@@ -82,7 +90,8 @@ namespace Backend.Controllers.AdminDashboard
                 PluginDescription = plugin.PluginDescription,
                 FullPrice = plugin.FullPrice,
                 MonthlyPrice = plugin.MonthlyPrice,
-                Users = users
+                Users = users,
+                Image = image
             };
             return Ok(pluginOutput);
         }
@@ -90,7 +99,7 @@ namespace Backend.Controllers.AdminDashboard
         // PUT: api/Plugins/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlugin(int id, PluginModel plugin)
+        public async Task<IActionResult> PutPlugin(int id, [FromForm] PluginModel plugin)
         {
             if (id != plugin.Id)
             {
@@ -121,22 +130,30 @@ namespace Backend.Controllers.AdminDashboard
         // POST: api/Plugins
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PluginModel>> PostPlugin(PluginModel plugin)
+        public async Task<ActionResult<PluginModel>> PostPlugin(PluginInput pluginInput)
         {
             var options = new ProductCreateOptions
             {
-                Name = plugin.PluginName,
-                Description = plugin.PluginDescription,
+                Name = pluginInput.PluginName,
+                Description = pluginInput.PluginDescription,
                 TaxCode = "txcd_10000000",
                 // TODO: Add image field
             };
 
             var service = new ProductService();
-            var productId = service.Create(options);
+            //var productId = service.Create(options);
+            
+            PluginModel plugin = pluginInput.GetPluginModel();
+            PluginImageModel image = new PluginImageModel
+            {
+                ImageData = pluginInput.EncodedFileContent,
+                Plugin = plugin
+            };
 
-            plugin.StripeProductId = productId.Id;
+            //plugin.StripeProductId = productId.Id;
 
             _pluginRepository.Add(plugin);
+            _context.PluginImage.Add(image);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPlugin", new { id = plugin.Id }, plugin);
@@ -152,7 +169,10 @@ namespace Backend.Controllers.AdminDashboard
                 return NotFound();
             }
 
+            IEnumerable<PluginImageModel> images = _context.PluginImage.Where(p => p.Plugin.Id == id).ToList();
+            _context.PluginImage.RemoveRange(images);
             _context.Plugin.Remove(plugin);
+
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -175,6 +195,8 @@ namespace Backend.Controllers.AdminDashboard
                 }
 
                 deletedPlugins[i] = plugins[i].Id;
+                IEnumerable<PluginImageModel> images = _context.PluginImage.Where(p => p.Plugin.Id == plugins[i].Id).ToList();
+                _context.PluginImage.RemoveRange(images);
                 _context.Plugin.Remove(plugins[i]);
             }
 

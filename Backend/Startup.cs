@@ -73,7 +73,6 @@ namespace Backend
                     Scheme = "basic",
                     In = ParameterLocation.Header,
                     Description = "Basic Authenthication for API",
-
                 });
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
                 c.OperationFilter<RemoveVersionFromParameter>();
@@ -107,7 +106,7 @@ namespace Backend
                 DeviceSeeder.SeedData(context);
                 PluginBundleSeeder.SeedData(context);
                 PluginBundlesSeeder.SeedData(context);
-
+                PluginImageSeeder.SeedData(context);
             }
 
             StripeConfiguration.ApiKey = Configuration["STRIPE_SECRET_KEY"];

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211220142424_deviceandstripeinit")]
-    partial class deviceandstripeinit
+    [Migration("20211221081816_image")]
+    partial class image
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -179,6 +179,27 @@ namespace Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("PluginBundles");
+                });
+
+            modelBuilder.Entity("Backend.Models.PluginImageModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("LONGTEXT")
+                        .HasColumnName("imagedata");
+
+                    b.Property<int?>("PluginId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PluginId");
+
+                    b.ToTable("PluginImage");
                 });
 
             modelBuilder.Entity("Backend.Models.PluginLicenseModel", b =>
@@ -359,6 +380,15 @@ namespace Backend.Migrations
                     b.Navigation("Plugin");
 
                     b.Navigation("PluginBundle");
+                });
+
+            modelBuilder.Entity("Backend.Models.PluginImageModel", b =>
+                {
+                    b.HasOne("Backend.Models.PluginModel", "Plugin")
+                        .WithMany()
+                        .HasForeignKey("PluginId");
+
+                    b.Navigation("Plugin");
                 });
 
             modelBuilder.Entity("Backend.Models.PluginLicenseModel", b =>

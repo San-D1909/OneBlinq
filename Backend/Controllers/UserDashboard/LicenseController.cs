@@ -22,17 +22,19 @@ namespace Backend.Controllers.UserDashboard
         private readonly ApplicationDbContext _context;
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _config;
+        private readonly ILicenceRepository _licenseRepository;
 
-        public LicenseController(ApplicationDbContext context, IConfiguration config, IUserRepository userRepository)
+        public LicenseController(ApplicationDbContext context, IConfiguration config, IUserRepository userRepository, ILicenceRepository licenceRepository)
         {
             _context = context;
             _config = config;
             _userRepository = userRepository;
+            _licenseRepository = licenceRepository;
         }
 
         // GET: api/LicenseModels
         [HttpGet("{jtoken}/[controller]/")]
-        public async Task<ActionResult<IEnumerable<LicenseModel>>> GetLicense(string jtoken)
+        public async Task<ActionResult<IEnumerable<LicenseModel>>> GetLicense(string jtoken, [FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
             if (jtoken is null)
             {
@@ -47,37 +49,14 @@ namespace Backend.Controllers.UserDashboard
             int tokenid = Convert.ToInt32(tokenuser.Claims.First().Value);
             UserModel user = await _userRepository.GetUserById(tokenid);
 
-            IEnumerable<LicenseModel> licenses = await _context.License.Where(l => l.User.Id == user.Id).ToListAsync();
+            IEnumerable<LicenseOutput> licenses = await this._licenseRepository.GetLicenseOutputs(filter, sort, user);
 
-            List<LicenseOutput> licenseOutputs = new List<LicenseOutput>();
-            
-            foreach(var license in licenses)
-			{
-                license.LicenseType = await _context.LicenseType.Where(lt => lt.Id == license.LicenseTypeId).FirstOrDefaultAsync();
-                IEnumerable<DeviceModel> devices = await _context.Device.Where(d => d.LicenseId == license.Id).ToListAsync();
-                PluginLicenseModel pluginLicense = await _context.PluginLicense.Where(pl => pl.LicenseId == license.Id).FirstOrDefaultAsync();
-                pluginLicense.Plugin = await _context.Plugin.Where(p => p.Id == pluginLicense.PluginId).FirstOrDefaultAsync();
-
-                licenseOutputs.Add(new LicenseOutput
-                {
-                    License = license,
-                    Id = license.Id,
-                    TimesActivated = license.TimesActivated,
-                    LicenseType = license.LicenseType,
-                    Plugin = pluginLicense.Plugin,
-                    PluginBundle = pluginLicense.PluginBundle,
-                    PluginBundleId = pluginLicense.PluginBundleId,
-                    PluginId = pluginLicense.PluginId,
-                    Devices = devices,
-                    User = user
-                });
-			}
 
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
             Request.HttpContext.Response.Headers.Add("Content-Range", "licenses 0-5/1");
             Request.HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
 
-            return Ok(licenseOutputs);
+            return Ok(licenses);
         }
 
         // GET: api/LicenseModels/5

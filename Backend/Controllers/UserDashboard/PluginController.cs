@@ -20,18 +20,20 @@ namespace Backend.Controllers.UserDashboard
     {
         private readonly ApplicationDbContext _context;
         private readonly IUserRepository _userRepository;
+        private readonly IPluginRepository _pluginRepository;
         private readonly IConfiguration _config;
 
-        public PluginController(ApplicationDbContext context, IConfiguration config, IUserRepository userRepository)
+        public PluginController(ApplicationDbContext context, IConfiguration config, IUserRepository userRepository, IPluginRepository pluginRepository)
         {
             _config = config;
             _context = context;
             _userRepository = userRepository;
+            _pluginRepository = pluginRepository;
         }
 
         // GET: api/PluginModels
         [HttpGet("{jtoken}/[controller]/")]
-        public async Task<ActionResult<IEnumerable<PluginModel>>> GetPlugin(string jtoken)
+        public async Task<ActionResult<IEnumerable<PluginModel>>> GetPlugin(string jtoken, [FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
             if (jtoken is null)
             {
@@ -46,8 +48,8 @@ namespace Backend.Controllers.UserDashboard
             int id = Convert.ToInt32(tokenuser.Claims.First().Value);
             UserModel user = await _userRepository.GetUserById(id);
 
-            IEnumerable<PluginModel> plugins  = await _context.PluginLicense.Include(l => l.License).ThenInclude(u => u.User).Include(p => p.Plugin).Where(p => p.License.User.Id == user.Id).Select(p => p.Plugin).ToListAsync();
-
+            //IEnumerable<PluginModel> plugins  = await _context.PluginLicense.Include(l => l.License).ThenInclude(u => u.User).Include(p => p.Plugin).Where(p => p.License.User.Id == user.Id).Select(p => p.Plugin).ToListAsync();
+            IEnumerable<PluginModel> plugins = await this._pluginRepository.GetPluginsByUser(filter, sort, user);
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
             Request.HttpContext.Response.Headers.Add("Content-Range", "plugins 0-5/1");
             Request.HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");

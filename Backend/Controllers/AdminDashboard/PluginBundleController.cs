@@ -28,7 +28,7 @@ namespace Backend.Controllers.AdminDashboard
 
         // GET: api/PluginBundle
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PluginBundleModel>>> GetPluginBundle()
+        public async Task<ActionResult<IEnumerable<PluginBundleModel>>> GetPluginBundle([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
             Request.HttpContext.Response.Headers.Add("Content-Range", "pluginbundles 0-5/1");

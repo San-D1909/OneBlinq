@@ -34,7 +34,7 @@ namespace Backend.Infrastructure.Data.Repositories
             _context.Plugin.Add(plugin);
         }
 
-        public IEnumerable<PluginModel> GetPluginsByUser(string filter, string sort, UserModel user)
+        public async Task<IEnumerable<PluginModel>> GetPluginsByUser(string filter, string sort, UserModel user)
         {
             IEnumerable<PluginLicenseModel> plugins = _context.PluginLicense.Include(p => p.Plugin).Include(l => l.License).ThenInclude(u => u.User).Where(p => p.License.User.Id == user.Id);
 

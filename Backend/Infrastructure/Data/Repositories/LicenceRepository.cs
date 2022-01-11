@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Backend.Core.Logic;
+using Backend.DTO.Out;
 using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -38,19 +40,87 @@ namespace Backend.Infrastructure.Data.Repositories
             return Task.FromResult(results);
         }
 
-        public Task<IEnumerable<LicenseModel>> GetLicensesForPlugin(string filter, string sort, PluginModel user)
+        public async Task<IEnumerable<LicenseOutput>> GetLicenseOutputs(string filter, string sort, UserModel user)
         {
-            throw new NotImplementedException();
+            IEnumerable<PluginLicenseModel> pluginLicenses = _context.PluginLicense.Include(pl => pl.Plugin).Include(pl => pl.License).ThenInclude(l => l.User).Where(l => l.License.User == user);
+
+            RequestSortFilterLogic filterLogic = new RequestSortFilterLogic();
+
+            pluginLicenses = filterLogic.FilterDatabaseModel<PluginLicenseModel>(pluginLicenses, filter).ToList();
+
+
+            List<LicenseOutput> licenseOutputs = new List<LicenseOutput>();
+
+            foreach (PluginLicenseModel pluginLicense in pluginLicenses)
+            {
+                //license.LicenseType = await _context.LicenseType.Where(lt => lt.Id == license.LicenseTypeId).FirstOrDefaultAsync();
+                IEnumerable<DeviceModel> devices = await _context.Device.Where(d => d.LicenseId == pluginLicense.License.Id).ToListAsync();
+                //PluginLicenseModel pluginLicense = await _context.PluginLicense.Where(pl => pl.LicenseId == license.Id).FirstOrDefaultAsync();
+                //pluginLicense.Plugin = await _context.Plugin.Where(p => p.Id == pluginLicense.PluginId).FirstOrDefaultAsync();
+
+                licenseOutputs.Add(new LicenseOutput
+                {
+                    License = pluginLicense.License,
+                    Id = pluginLicense.License.Id,
+                    TimesActivated = pluginLicense.TimesActivated,
+                    LicenseType = pluginLicense.License.LicenseType,
+                    Plugin = pluginLicense.Plugin,
+                    PluginBundle = pluginLicense.PluginBundle,
+                    PluginBundleId = pluginLicense.PluginBundleId,
+                    PluginId = pluginLicense.PluginId,
+                    Devices = devices,
+                    User = pluginLicense.License.User
+                });
+            }
+
+            return licenseOutputs;
+;
         }
 
-        public Task<IEnumerable<LicenseModel>> GetLicensesForUser(string filter, string sort, UserModel user)
+        public async Task<IEnumerable<LicenseModel>> GetLicenses(string filter, string sort)
         {
-            throw new NotImplementedException();
+            IEnumerable<PluginLicenseModel> pluginLicenses = _context.PluginLicense.Include(pl => pl.Plugin).Include(pl => pl.License).ThenInclude(l => l.User);
+
+            RequestSortFilterLogic filterLogic = new RequestSortFilterLogic();
+
+            pluginLicenses = filterLogic.FilterDatabaseModel<PluginLicenseModel>(pluginLicenses, filter);
+
+            return pluginLicenses.Select(pl => pl.License).ToList();
         }
 
-        public Task<IEnumerable<LicenseModel>> GetLicensesForUserAndPlugin(string filter, string sort, PluginModel plugin, UserModel user)
+        public async Task<IEnumerable<LicenseModel>> GetLicensesForPlugin(string filter, string sort, PluginModel plugin)
         {
-            throw new NotImplementedException();
+            IEnumerable<LicenseModel> licenses = _context.PluginLicense.Include(pl => pl.Plugin).Include(pl => pl.License).Where(pl => pl.Plugin == plugin).Select(pl => pl.License);
+
+            RequestSortFilterLogic filterLogic = new RequestSortFilterLogic();
+
+            licenses = filterLogic.FilterDatabaseModel<LicenseModel>(licenses, filter);
+
+            return licenses.ToList();
+        }
+
+        public async Task<IEnumerable<LicenseModel>> GetLicensesForUser(string filter, string sort, UserModel user)
+        {
+            IEnumerable<LicenseModel> licenses = _context.License.Include(l => l.User).Where(l => l.User == user);
+
+            RequestSortFilterLogic filterLogic = new RequestSortFilterLogic();
+
+            licenses = filterLogic.FilterDatabaseModel<LicenseModel>(licenses, filter);
+
+            return licenses.ToList();
+        }
+
+        public async Task<IEnumerable<LicenseModel>> GetLicensesForUserAndPlugin(string filter, string sort, PluginModel plugin, UserModel user)
+        {
+            IEnumerable<LicenseModel> licenses = _context.PluginLicense.Include(pl => pl.Plugin)
+                .Include(pl => pl.License).ThenInclude(l => l.User)
+                .Where(pl => pl.Plugin == plugin || pl.License.User == user).Select(pl => pl.License);
+
+            RequestSortFilterLogic filterLogic = new RequestSortFilterLogic();
+
+            licenses = filterLogic.FilterDatabaseModel<LicenseModel>(licenses, filter);
+
+            return licenses.ToList();
         }
     }
 }

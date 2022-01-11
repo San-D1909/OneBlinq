@@ -57,7 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="DefaultImages\Seeder\" />
   </ItemGroup>
 
 </Project>

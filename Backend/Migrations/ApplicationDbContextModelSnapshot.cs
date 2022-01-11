@@ -179,6 +179,27 @@ namespace Backend.Migrations
                     b.ToTable("PluginBundles");
                 });
 
+            modelBuilder.Entity("Backend.Models.PluginImageModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("LONGTEXT")
+                        .HasColumnName("imagedata");
+
+                    b.Property<int?>("PluginId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PluginId");
+
+                    b.ToTable("PluginImage");
+                });
+
             modelBuilder.Entity("Backend.Models.PluginLicenseModel", b =>
                 {
                     b.Property<int>("Id")
@@ -357,6 +378,15 @@ namespace Backend.Migrations
                     b.Navigation("Plugin");
 
                     b.Navigation("PluginBundle");
+                });
+
+            modelBuilder.Entity("Backend.Models.PluginImageModel", b =>
+                {
+                    b.HasOne("Backend.Models.PluginModel", "Plugin")
+                        .WithMany()
+                        .HasForeignKey("PluginId");
+
+                    b.Navigation("Plugin");
                 });
 
             modelBuilder.Entity("Backend.Models.PluginLicenseModel", b =>

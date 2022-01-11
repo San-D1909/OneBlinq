@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Backend.Migrations
 {
-    public partial class deviceandstripeinit : Migration
+    public partial class image : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -126,6 +126,26 @@ namespace Backend.Migrations
                         name: "FK_User_Company_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Company",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PluginImage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    PluginId = table.Column<int>(type: "int", nullable: true),
+                    imagedata = table.Column<string>(type: "LONGTEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PluginImage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PluginImage_Plugin_PluginId",
+                        column: x => x.PluginId,
+                        principalTable: "Plugin",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -271,6 +291,11 @@ namespace Backend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PluginImage_PluginId",
+                table: "PluginImage",
+                column: "PluginId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PluginLicense_PluginBundleId",
                 table: "PluginLicense",
                 column: "PluginBundleId");
@@ -304,6 +329,9 @@ namespace Backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "PluginBundles");
+
+            migrationBuilder.DropTable(
+                name: "PluginImage");
 
             migrationBuilder.DropTable(
                 name: "PluginLicense");

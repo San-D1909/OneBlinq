@@ -38,7 +38,7 @@ namespace Backend.Controllers.AdminDashboard
 
         // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserModel>>> GetUser()
+        public async Task<ActionResult<IEnumerable<UserModel>>> GetUser([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
             IEnumerable<UserModel> users = await _context.User.Include(c => c.Company).ToListAsync();
 
