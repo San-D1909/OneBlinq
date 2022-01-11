@@ -94,6 +94,7 @@ namespace Backend.Controllers.UserDashboard
 		{
 			var jtoken = data.Jtoken;
 			var deviceInfo = data.DeviceInfo;
+			var deviceName = data.DeviceName;
 
 			if (jtoken is null || deviceInfo is null)
 			{
@@ -123,7 +124,7 @@ namespace Backend.Controllers.UserDashboard
 			DeviceModel device = new DeviceModel
 			{
 				DeviceToken = dtoken,
-				DeviceName = "Test",
+				DeviceName = deviceName,
 				LicenseId = license.Id,
 			};
 			try

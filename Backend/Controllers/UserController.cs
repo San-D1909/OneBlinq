@@ -61,6 +61,7 @@ namespace Backend.Controllers
         {
             UserModel userbyid = await _userRepository.GetUserById(userInfo.User.Id);
             CompanyModel companybyid = await _userRepository.GetCompanyById(userInfo.Company.Id);
+
             if (userbyid is null)
             {
                 return NotFound();
@@ -69,10 +70,12 @@ namespace Backend.Controllers
             {
                 await _userRepository.UpdateUser(userInfo.User);
             }
-            if(companybyid != userInfo.Company)
+            if(companybyid != null && companybyid != userInfo.Company)
             {
                 await _userRepository.UpdateCompany(userInfo.Company);
             }
+
+            await _userRepository.SaveAsync();
             return Ok();
         }
     }

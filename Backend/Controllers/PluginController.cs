@@ -84,26 +84,6 @@ namespace Backend.Controllers
             return Ok(plugin);
         }
 
-
-        [HttpGet("macaddress")]
-        public IActionResult MacTest()
-        {
-            try
-            {
-                var firstMacAddress = NetworkInterface
-                    .GetAllNetworkInterfaces()
-                    .Where(nic => nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
-                    .Select(nic => nic.GetPhysicalAddress().ToString())
-                    .FirstOrDefault();
-
-                return Ok(firstMacAddress);
-            }
-            catch (Exception e)
-            {
-                return Unauthorized(e);
-            }
-        }
-
         // PUT: api/Plugins/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

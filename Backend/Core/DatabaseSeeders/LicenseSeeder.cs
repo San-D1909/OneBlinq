@@ -26,7 +26,7 @@ namespace Backend.Core.DatabaseSeeders
                     LicenseTypeId = LicenseTypeSeeder.LICENSETYPE_BUSINESS.Id,
                     CreationTime = DateTime.Now,
                     ExpirationTime = DateTime.Now.AddYears(4),
-                    TimesActivated = 1,
+                    TimesActivated = 0,
                     User = UserSeeder.USER_CUSTOMER
                 };
 
@@ -39,7 +39,7 @@ namespace Backend.Core.DatabaseSeeders
                     LicenseTypeId = LicenseTypeSeeder.LICENSETYPE_PREMIUM.Id,
                     CreationTime = DateTime.Now,
                     ExpirationTime = DateTime.Now.AddYears(4),
-                    TimesActivated = 1,
+                    TimesActivated = 0,
                     User = UserSeeder.USER_CUSTOMER
                 };
 
