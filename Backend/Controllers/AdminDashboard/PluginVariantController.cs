@@ -102,7 +102,7 @@ namespace Backend.Controllers.AdminDashboard
                 Currency = "eur",
                 Product = plugin.StripeProductId,
                 BillingScheme = "per_unit",
-                TaxBehavior = "inclusive"
+                TaxBehavior = "exclusive"
                 // TODO: tax
             };
             var service = new PriceService();
