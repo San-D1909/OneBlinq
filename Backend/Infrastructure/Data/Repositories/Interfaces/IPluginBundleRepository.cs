@@ -8,7 +8,7 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
 {
     public interface IPluginBundleRepository
     {
-        Task<IEnumerable<PluginBundleModel>> GetAllPluginBundle(string filter, string sort);
+        Task<IEnumerable<PluginBundleModel>> GetAllPluginBundle(string filter = null, string sort = null);
         Task<PluginBundleModel> GetPluginBundle(int id);
         Task<IEnumerable<PluginBundleModel>> GetPluginBundleByName(string searchString);
         PluginBundleModel UpdatePlugin(int id, PluginBundleModel pluginBundle);

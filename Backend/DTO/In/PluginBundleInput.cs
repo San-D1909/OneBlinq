@@ -26,5 +26,7 @@ namespace Backend.DTO.In
 		public string BundleDescription { get; set; }
 		public decimal Price { get; set; }
 		public IEnumerable<int> PluginIds { get; set; }
+		public string FileName { get; set; }
+		public string EncodedFileContent { get; set; }
 	}
 }

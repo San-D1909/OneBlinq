@@ -149,7 +149,7 @@ namespace Oneblinq.Test
 
             this.context.SaveChanges();
 
-            IEnumerable<PluginModel> plugins = pluginRepository.GetPluginsByUser(null, null, user);
+            IEnumerable<PluginModel> plugins = (IEnumerable<PluginModel>)pluginRepository.GetPluginsByUser(null, null, user);
             Assert.IsTrue(plugins.Count() == 2);
         }
         //[TestMethod]

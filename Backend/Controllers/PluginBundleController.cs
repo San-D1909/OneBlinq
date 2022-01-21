@@ -39,23 +39,51 @@ namespace Backend.Controllers
 
         // GET: api/PluginBundle
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PluginBundleModel>>> GetPluginBundle()
+        public async Task<ActionResult<IEnumerable<PluginBundleOutput>>> GetPluginBundle()
         {
-            return await _context.PluginBundle.ToListAsync();
+            List<PluginBundleOutput> pluginBundleOutputs = new List<PluginBundleOutput>();
+            IEnumerable<PluginBundleModel> pluginBundles = await _pluginBundleRepository.GetAllPluginBundle();
+
+            foreach (PluginBundleModel pluginBundle in pluginBundles)
+            {
+                IEnumerable<PluginModel> plugins = _context.PluginBundles.Where(pb => pb.PluginBundleId == pluginBundle.Id).Include(pb => pb.Plugin).Select(pb => pb.Plugin).ToList();
+                PluginBundleImageModel image = _context.PluginBundleImage.Where(p => p.PluginBundle.Id == pluginBundle.Id).FirstOrDefault();
+                pluginBundleOutputs.Add(new PluginBundleOutput
+                {
+                    Id = pluginBundle.Id,
+                    BundleDescription = pluginBundle.BundleDescription,
+                    BundleName = pluginBundle.BundleName,
+                    Plugins = plugins,
+                    Price = pluginBundle.Price,
+                    Image = image
+                });
+            }
+
+            return pluginBundleOutputs;
         }
 
         // GET: api/Plugins/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PluginOutput>> GetPlugin(int id)
+        public async Task<ActionResult<PluginBundleOutput>> GetPlugin(int id)
         {
-            var pluginBundle = await _pluginBundleRepository.GetPluginBundle(id);
+            var pluginBundleModel = await _context.PluginBundle.FindAsync(id);
 
-            if (pluginBundle == null)
+            if (pluginBundleModel == null)
             {
                 return NotFound();
             }
 
-            return Ok(pluginBundle);
+            IEnumerable<PluginModel> plugins = this._context.PluginBundles.Include(p => p.Plugin).Include(p => p.PluginBundle).Where(p => p.PluginBundleId == pluginBundleModel.Id).Select(p => p.Plugin).ToList();
+            PluginBundleOutput pluginBundle = new PluginBundleOutput(pluginBundleModel, this._context.PluginBundles.Where(p => p.PluginBundleId == pluginBundleModel.Id).Select(p => p.Plugin).ToList());
+
+            var image = _context.PluginBundleImage.Where(p => p.PluginBundle.Id == id).FirstOrDefault();
+            if (image != null)
+            {
+                pluginBundle.Image = image;
+            }
+
+
+            return pluginBundle;
         }
 
         // PUT: api/Plugins/5
@@ -96,6 +124,7 @@ namespace Backend.Controllers
         {
             _context.PluginBundle.Add(pluginBundle);
             await _context.SaveChangesAsync();
+
 
             // TODO: create stripe product object
             // TODO: create stripe payment object

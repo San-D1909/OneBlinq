@@ -20,21 +20,42 @@ namespace Backend.Controllers.AdminDashboard
     {
         private readonly ApplicationDbContext _context;
         private readonly IUserRepository _userRepository;
-        public PluginBundleController(ApplicationDbContext context, IUserRepository userRepository)
+        private readonly IPluginBundleRepository _pluginBundleRepository;
+        public PluginBundleController(ApplicationDbContext context, IUserRepository userRepository, IPluginBundleRepository pluginBundleRepository)
         {
             _context = context;
             this._userRepository = userRepository;
+            this._pluginBundleRepository = pluginBundleRepository;
         }
 
         // GET: api/PluginBundle
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PluginBundleModel>>> GetPluginBundle([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
+        public async Task<ActionResult<IEnumerable<PluginBundleOutput>>> GetPluginBundle([FromQuery(Name = "filter")] string filter, [FromQuery(Name = "sort")] string sort)
         {
+            List<PluginBundleOutput> pluginBundleOutputs = new List<PluginBundleOutput>();
+            IEnumerable<PluginBundleModel> pluginBundles = await _pluginBundleRepository.GetAllPluginBundle(filter, sort);
+
+            foreach (PluginBundleModel pluginBundle in pluginBundles)
+            {
+                IEnumerable<UserModel> users = await _userRepository.GetUsersByPluginBundle(null, null, pluginBundle);
+                IEnumerable<PluginModel> plugins = _context.PluginBundles.Where(pb => pb.PluginBundleId == pluginBundle.Id).Include(pb => pb.Plugin).Select(pb => pb.Plugin).ToList();
+                PluginBundleImageModel image = _context.PluginBundleImage.Where(p => p.PluginBundle.Id == pluginBundle.Id).FirstOrDefault();
+                pluginBundleOutputs.Add(new PluginBundleOutput
+                {
+                    Id = pluginBundle.Id,
+                    BundleDescription = pluginBundle.BundleDescription,
+                    BundleName = pluginBundle.BundleName,
+                    Plugins = plugins,
+                    Price = pluginBundle.Price,
+                    Image = image
+                });
+            }
+
             Request.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
             Request.HttpContext.Response.Headers.Add("Content-Range", "pluginbundles 0-5/1");
             Request.HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
 
-            return await _context.PluginBundle.ToListAsync();
+            return pluginBundleOutputs;
         }
 
         // GET: api/PluginBundle/5
@@ -50,8 +71,16 @@ namespace Backend.Controllers.AdminDashboard
 
             IEnumerable<PluginModel> plugins = this._context.PluginBundles.Include(p => p.Plugin).Include(p => p.PluginBundle).Where(p => p.PluginBundleId == pluginBundleModel.Id).Select(p => p.Plugin).ToList();
             IEnumerable<UserModel> users = await this._userRepository.GetUsersByPluginBundle(null, null, pluginBundleModel);
+            PluginBundleOutput pluginBundle = new PluginBundleOutput(pluginBundleModel, this._context.PluginBundles.Where(p => p.PluginBundleId == pluginBundleModel.Id).Select(p => p.Plugin).ToList(), users);
 
-            return new PluginBundleOutput(pluginBundleModel, this._context.PluginBundles.Where(p => p.PluginBundleId == pluginBundleModel.Id).Select(p => p.Plugin).ToList(), users);
+            var image = _context.PluginBundleImage.Where(p => p.PluginBundle.Id == id).FirstOrDefault();
+            if (image != null)
+            {
+                pluginBundle.Image = image;
+            }
+            
+
+            return pluginBundle;
         }
 
         // PUT: api/PluginBundle/5
@@ -92,11 +121,18 @@ namespace Backend.Controllers.AdminDashboard
         [HttpPost]
         public async Task<ActionResult<PluginBundleModel>> PostPluginBundleModel(PluginBundleInput pluginBundleInput)
         {
+
             PluginBundleModel pluginBundleModel = pluginBundleInput.GetPluginBundleModel();
             _context.PluginBundle.Add(pluginBundleModel);
             await _context.SaveChangesAsync();
 
-            foreach(int pluginId in pluginBundleInput.PluginIds)
+            PluginBundleImageModel image = new PluginBundleImageModel
+            {
+                ImageData = pluginBundleInput.EncodedFileContent,
+                PluginBundle = pluginBundleModel
+            };
+
+            foreach (int pluginId in pluginBundleInput.PluginIds)
             {
                 PluginBundlesModel pluginBundles = new PluginBundlesModel
                 {
@@ -106,8 +142,10 @@ namespace Backend.Controllers.AdminDashboard
                 _context.PluginBundles.Add(pluginBundles);
             }
 
-            _context.SaveChanges();
-            
+            _context.PluginBundleImage.Add(image);
+            await _context.SaveChangesAsync();
+
+
 
             return CreatedAtAction("GetPluginBundleModel", new { id = pluginBundleModel.Id }, pluginBundleModel);
         }
