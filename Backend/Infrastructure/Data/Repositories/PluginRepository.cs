@@ -13,13 +13,16 @@ namespace Backend.Infrastructure.Data.Repositories
     {
         public PluginRepository(ApplicationDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<PluginModel>> GetPlugins(string filter, string sort)
+        public async Task<IEnumerable<PluginModel>> GetPlugins(string filter = null, string sort = null)
         {
             IEnumerable<PluginModel> plugins = _context.Plugin;
 
             RequestSortFilterLogic filterLogic = new RequestSortFilterLogic();
             
-            plugins = filterLogic.FilterDatabaseModel<PluginModel>(plugins, filter);
+            if (filter != null)
+            {
+                plugins = filterLogic.FilterDatabaseModel<PluginModel>(plugins, filter);
+            }
 
             return plugins.ToList();
         }
