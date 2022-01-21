@@ -37,6 +37,7 @@ namespace Backend.DTO.Out
 		public decimal Price{get; set;}
 		public IEnumerable<UserModel> Users { get; set; }
 		public IEnumerable<PluginModel> Plugins { get; set; }
+		public PluginBundleImageModel Image { get; set; }
 	}
 
 }

@@ -19,13 +19,17 @@ namespace Backend.Infrastructure.Data.Repositories
             _context.PluginBundle.Add(pluginBundle);
         }
 
-        public async Task<IEnumerable<PluginBundleModel>> GetAllPluginBundle(string filter, string sort)
+        public async Task<IEnumerable<PluginBundleModel>> GetAllPluginBundle(string filter = null, string sort = null)
         {
             IEnumerable<PluginBundleModel> pluginBundles = _context.PluginBundle;
 
             RequestSortFilterLogic filterLogic = new RequestSortFilterLogic();
 
-            pluginBundles = filterLogic.FilterDatabaseModel<PluginBundleModel>(pluginBundles, filter);
+            if (filter != null)
+            {
+                pluginBundles = filterLogic.FilterDatabaseModel<PluginBundleModel>(pluginBundles, filter);
+            }
+            
 
             return pluginBundles.ToList();
         }
