@@ -35,8 +35,10 @@ namespace Backend.Controllers
         [HttpPost("create-checkout-session")]
         public ActionResult Create()
         {
-
+            var isSubscription = Request.Form["isSubscription"];
             var priceId = Request.Form["priceId"];
+
+            var mode = isSubscription == "true" ? "subscription" : "payment";
 
             var domain = _config["DOMAIN"];
             var options = new SessionCreateOptions
@@ -50,7 +52,7 @@ namespace Backend.Controllers
                     Quantity = 1,
                   }
                 },
-                Mode = "subscription",
+                Mode = mode,
                 SuccessUrl = domain + "/order?success=true&session_id={CHECKOUT_SESSION_ID}",
                 CancelUrl = domain + "?canceled=true",
                 AutomaticTax = new SessionAutomaticTaxOptions { Enabled = true },

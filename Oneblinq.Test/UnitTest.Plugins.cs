@@ -40,8 +40,6 @@ namespace Oneblinq.Test
                 Id = 1,
                 PluginName = "Ronaldo's plugin",
                 PluginDescription = "b",
-                FullPrice = 6,
-                MonthlyPrice = 6
             };
             pluginRepository.AddPlugin(plugin);
             await pluginRepository.SaveAsync();
@@ -58,8 +56,6 @@ namespace Oneblinq.Test
                 Id = 1,
                 PluginName = "TestPlugin 1",
                 PluginDescription = "Just testing a plugin.",
-                FullPrice = 8,
-                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin1);
             PluginModel plugin2 = new PluginModel
@@ -67,8 +63,6 @@ namespace Oneblinq.Test
                 Id = 2,
                 PluginName = "TestPlugin 2",
                 PluginDescription = "Just testing a plugin.",
-                FullPrice = 8,
-                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin1); 
             PluginModel plugin3 = new PluginModel
@@ -76,8 +70,6 @@ namespace Oneblinq.Test
                 Id = 3,
                 PluginName = "TestPlugin 3",
                 PluginDescription = "Just testing a plugin.",
-                FullPrice = 8,
-                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin1);
             byte[] salt;
@@ -96,15 +88,6 @@ namespace Oneblinq.Test
 
             this.context.User.Add(user);
 
-            LicenseTypeModel type = new LicenseTypeModel
-            {
-                Id = 1,
-                CreationTime = DateTime.Now,
-                MaxAmount = 5,
-                TypeName = "ShortLicenseType"
-            };
-
-            this.context.LicenseType.Add(type);
             this.context.SaveChanges();
 
             LicenseModel license = new LicenseModel
@@ -115,7 +98,6 @@ namespace Oneblinq.Test
                 IsActive = true,
                 LicenseKey = "ERFQE-RGEQF-EFWAQF-EFWEFEW",
                 TimesActivated = 3,
-                LicenseType = type,
                 User = user 
             };
 
@@ -168,8 +150,6 @@ namespace Oneblinq.Test
                 Id = 1,
                 PluginName = "Ronaldo's plugin",
                 PluginDescription = "b",
-                FullPrice = 8,
-                MonthlyPrice = 8
             };
             pluginRepository.AddPlugin(plugin);
             await pluginRepository.SaveAsync();

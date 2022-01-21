@@ -95,39 +95,25 @@ namespace Backend.Controllers.AdminDashboard
             var plugin = _pluginRepository.GetById(pluginVariant.PluginId);
             if(plugin == null) return NotFound();
 
-            var options = new PriceCreateOptions();
-
-            if(pluginVariant.IsSubscription)
+            var options = new PriceCreateOptions
             {
-                options = new PriceCreateOptions
-                {
-                    UnitAmountDecimal = pluginVariant.Price * 100,
-                    Currency = "eur",
-                    Product = plugin.StripeProductId,
-                    BillingScheme = "per_unit",
-                    TaxBehavior = "exclusive",
-                    Recurring = new PriceRecurringOptions
-                    {
-                        Interval = "month",
-                        IntervalCount = 1,
-                        AggregateUsage = null,
-                        UsageType = "licensed"
+                UnitAmountDecimal = pluginVariant.Price * 100,
+                Currency = "eur",
+                Product = plugin.StripeProductId,
+                BillingScheme = "per_unit",
+                TaxBehavior = "exclusive"
+            };
 
-                    }
+            if (pluginVariant.IsSubscription)
+            {
+                options.Recurring = new PriceRecurringOptions
+                {
+                    Interval = "month",
+                    IntervalCount = 1,
+                    AggregateUsage = null,
+                    UsageType = "licensed"
                 };
             }
-            else
-            {
-                options = new PriceCreateOptions
-                {
-                    UnitAmountDecimal = pluginVariant.Price * 100,
-                    Currency = "eur",
-                    Product = plugin.StripeProductId,
-                    BillingScheme = "per_unit",
-                    TaxBehavior = "exclusive",
-                };
-            }
-
 
             var service = new PriceService();
             var price = service.Create(options);

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220119120129_testing")]
-    partial class testing
+    [Migration("20220121105044_initialize")]
+    partial class initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,34 +107,16 @@ namespace Backend.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("VariantId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("LicenseTypeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("VariantId");
+
                     b.ToTable("License");
-                });
-
-            modelBuilder.Entity("Backend.Models.LicenseTypeModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("MaxAmount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LicenseType");
                 });
 
             modelBuilder.Entity("Backend.Models.PluginBundleImageModel", b =>
@@ -259,12 +241,6 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<decimal>("FullPrice")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("MonthlyPrice")
-                        .HasColumnType("decimal(18, 2)");
-
                     b.Property<string>("PluginDescription")
                         .IsRequired()
                         .HasColumnType("text");
@@ -290,6 +266,12 @@ namespace Backend.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsSubscription")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("MaxActivations")
+                        .HasColumnType("int");
 
                     b.Property<int>("PluginId")
                         .HasColumnType("int");
@@ -369,19 +351,17 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.LicenseModel", b =>
                 {
-                    b.HasOne("Backend.Models.LicenseTypeModel", "LicenseType")
-                        .WithMany()
-                        .HasForeignKey("LicenseTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Backend.Models.UserModel", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("LicenseType");
+                    b.HasOne("Backend.Models.PluginVariantModel", "Variant")
+                        .WithMany()
+                        .HasForeignKey("VariantId");
 
                     b.Navigation("User");
+
+                    b.Navigation("Variant");
                 });
 
             modelBuilder.Entity("Backend.Models.PluginBundleImageModel", b =>

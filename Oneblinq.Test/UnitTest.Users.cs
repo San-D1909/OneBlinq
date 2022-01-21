@@ -42,8 +42,6 @@ namespace Oneblinq.Test
                 Id = 1,
                 PluginName = "TestPlugin 1",
                 PluginDescription = "Just testing a plugin.",
-                FullPrice = 8,
-                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin1);
             PluginModel plugin2 = new PluginModel
@@ -51,8 +49,6 @@ namespace Oneblinq.Test
                 Id = 2,
                 PluginName = "TestPlugin 2",
                 PluginDescription = "Just testing a plugin.",
-                FullPrice = 8,
-                MonthlyPrice = 8
             };
             this.context.Plugin.Add(plugin2);
             byte[] salt;
@@ -96,16 +92,6 @@ namespace Oneblinq.Test
             this.context.User.Add(user1);
             this.context.User.Add(user2);
             this.context.User.Add(user3);
-
-            LicenseTypeModel type = new LicenseTypeModel
-            {
-                Id = 1,
-                CreationTime = DateTime.Now,
-                MaxAmount = 5,
-                TypeName = "ShortLicenseType"
-            };
-
-            this.context.LicenseType.Add(type);
             this.context.SaveChanges();
 
             LicenseModel license1 = new LicenseModel
@@ -116,7 +102,6 @@ namespace Oneblinq.Test
                 IsActive = true,
                 LicenseKey = "ERFQE-RGEQF-EFWAQF-EFWEFEW",
                 TimesActivated = 3,
-                LicenseType = type,
                 User = user1
             };
 
@@ -128,7 +113,6 @@ namespace Oneblinq.Test
                 IsActive = true,
                 LicenseKey = "ERFQE-RGEQF-EFWAQF-FSDJAOF",
                 TimesActivated = 4,
-                LicenseType = type,
                 User = user2
             };
 
@@ -140,7 +124,6 @@ namespace Oneblinq.Test
                 IsActive = true,
                 LicenseKey = "ERFQE-RGEQF-EFWAQF-SFDEHJ",
                 TimesActivated = 2,
-                LicenseType = type,
                 User = user3
             };
 
