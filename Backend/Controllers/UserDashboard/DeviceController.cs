@@ -117,9 +117,7 @@ namespace Backend.Controllers.UserDashboard
 			LicenseModel license = await _context.License.Where(l => l.LicenseKey == data.LicenseKey).FirstOrDefaultAsync();
 			if(!license.IsActive) { return NotFound(); }
 
-			LicenseTypeModel licenseType = await _context.LicenseType.FindAsync(license.LicenseTypeId);
-
-			if(license.TimesActivated >= licenseType.MaxAmount) { return NotFound(); }
+			if(license.TimesActivated >= license.Variant.MaxActivations) { return NotFound(); }
 
 			DeviceModel device = new DeviceModel
 			{

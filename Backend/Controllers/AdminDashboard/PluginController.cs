@@ -52,8 +52,6 @@ namespace Backend.Controllers.AdminDashboard
                     Id = plugin.Id,
                     PluginName = plugin.PluginName,
                     PluginDescription = plugin.PluginDescription,
-                    FullPrice = plugin.FullPrice,
-                    MonthlyPrice = plugin.MonthlyPrice,
                     Users = users,
                     Image = image
                 });
@@ -88,8 +86,6 @@ namespace Backend.Controllers.AdminDashboard
                 Id = plugin.Id,
                 PluginName = plugin.PluginName,
                 PluginDescription = plugin.PluginDescription,
-                FullPrice = plugin.FullPrice,
-                MonthlyPrice = plugin.MonthlyPrice,
                 Users = users,
                 Image = image
             };

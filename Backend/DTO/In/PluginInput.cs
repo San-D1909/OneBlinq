@@ -15,15 +15,11 @@ namespace Backend.DTO.In
 			{
 				PluginName = this.PluginName,
 				PluginDescription = this.PluginDescription,
-				MonthlyPrice = this.MonthlyPrice,
-				FullPrice = this.FullPrice,
 				StripeProductId = this.StripeProductId,
 			};
         }
 		public string PluginName { get; set; }
 		public string PluginDescription { get; set; }
-		public decimal MonthlyPrice { get; set; }
-		public decimal FullPrice { get; set; }
 		public string StripeProductId { get; set; }
 		public string FileName { get; set; }
 		public string EncodedFileContent { get; set; }

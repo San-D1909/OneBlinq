@@ -15,8 +15,9 @@ namespace Backend.Models
 		public string LicenseKey { get; set; }
 		[Required]
 		public UserModel User { get; set; }
-		public LicenseTypeModel LicenseType { get; set; }
+		public PluginVariantModel Variant { get; set; }
         public int LicenseTypeId { get; set; }
+
 		[Required]
 		public bool IsActive { get; set; }
         private DateTime? _creationTime = null;

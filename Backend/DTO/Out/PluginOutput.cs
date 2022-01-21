@@ -12,8 +12,6 @@ namespace Backend.DTO.Out
 		public int Id { get; set; }
 		public string PluginName { get; set; }
 		public string PluginDescription { get; set; }
-		public decimal FullPrice { get; set; }
-		public decimal MonthlyPrice { get; set; }
 		public IEnumerable<UserModel> Users { get; set; } 
 		public PluginImageModel Image { get; set; }
 	}

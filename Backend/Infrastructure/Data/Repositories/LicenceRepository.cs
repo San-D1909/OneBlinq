@@ -63,7 +63,7 @@ namespace Backend.Infrastructure.Data.Repositories
                     License = pluginLicense.License,
                     Id = pluginLicense.License.Id,
                     TimesActivated = pluginLicense.TimesActivated,
-                    LicenseType = pluginLicense.License.LicenseType,
+                    Variant = pluginLicense.License.Variant,
                     Plugin = pluginLicense.Plugin,
                     PluginBundle = pluginLicense.PluginBundle,
                     PluginBundleId = pluginLicense.PluginBundleId,

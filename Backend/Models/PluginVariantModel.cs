@@ -14,5 +14,11 @@ namespace Backend.Models
         [Required]
         public decimal Price { get; set; }
         public string StripePriceId { get; set; }
+
+        [Required]
+        public int MaxActivations { get; set; }
+
+        [Required]
+        public bool IsSubscription { get; set; }
     }
 }

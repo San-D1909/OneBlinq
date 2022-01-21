@@ -80,7 +80,7 @@ namespace Backend.Controllers.UserDashboard
             PluginLicenseModel pluginLicense = await _context.PluginLicense.Where(pl => pl.LicenseId == license.Id).FirstOrDefaultAsync();
             pluginLicense.Plugin = await _context.Plugin.Where(p => p.Id == pluginLicense.PluginId).FirstOrDefaultAsync();
             IEnumerable<DeviceModel> devices = await _context.Device.Where(d => d.LicenseId == license.Id).ToListAsync();
-            license.LicenseType = await _context.LicenseType.Where(lt => lt.Id == license.LicenseTypeId).FirstOrDefaultAsync();
+            license.Variant = await _context.PluginVariant.Where(v => v.Id == license.Variant.Id).FirstOrDefaultAsync();
 
             //PluginLicenseModel licenseModel = await _context.PluginLicense.Include(l => l.License).ThenInclude(f => f.LicenseType).Include(l => l.License).ThenInclude(u => u.User).Include(p => p.Plugin).Where(p => p.License.User.Id == user.Id && p.Id == id).FirstOrDefaultAsync();
 
@@ -89,7 +89,7 @@ namespace Backend.Controllers.UserDashboard
                 License = license,
                 Id = license.Id,
                 TimesActivated = license.TimesActivated,
-                LicenseType = license.LicenseType,
+                Variant = license.Variant,
                 Plugin = pluginLicense.Plugin,
                 PluginBundle = pluginLicense.PluginBundle,
                 PluginBundleId = pluginLicense.PluginBundleId,

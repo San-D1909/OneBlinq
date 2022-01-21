@@ -43,7 +43,7 @@ namespace Backend.Controllers.AdminDashboard
         [HttpGet("{id}")]
         public async Task<ActionResult<LicenseModel>> GetLicenseModel(int id)
         {
-            var licenseModel =  _context.License.Include(t => t.LicenseType).Include(t => t.User).ToList().Find(p => p.Id == id);
+            var licenseModel =  _context.License.Include(t => t.Variant).Include(t => t.User).ToList().Find(p => p.Id == id);
 
             if (licenseModel == null)
             {

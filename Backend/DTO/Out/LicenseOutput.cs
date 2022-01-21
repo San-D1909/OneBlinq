@@ -16,7 +16,7 @@ namespace Backend.DTO.Out
 
 		public LicenseModel License { get; set; }
 
-		public LicenseTypeModel LicenseType { get; set; }
+		public PluginVariantModel Variant { get; set; }
 
 		public int? PluginId { get; set; }
 

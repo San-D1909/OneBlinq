@@ -56,8 +56,6 @@ namespace Backend.Controllers
                     Id = plugin.Id,
                     PluginName = plugin.PluginName,
                     PluginDescription = plugin.PluginDescription,
-                    FullPrice = plugin.FullPrice,
-                    MonthlyPrice = plugin.MonthlyPrice,
                     Users = users
                 });
             }

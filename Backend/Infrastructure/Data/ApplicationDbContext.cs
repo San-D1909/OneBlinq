@@ -20,7 +20,6 @@ namespace Backend.Infrastructure.Data
 		public DbSet<UserModel> User { get; set; }
 		public DbSet<PluginModel> Plugin { get; set; }
 		public DbSet<CompanyModel> Company { get; set; }
-		public DbSet<LicenseTypeModel> LicenseType { get; set; }
 		public DbSet<PluginBundleModel> PluginBundle { get; set; }
 		public DbSet<DeviceModel> Device { get; set; }
 		public DbSet<ResetTokenModel> ResetToken { get; set; }
