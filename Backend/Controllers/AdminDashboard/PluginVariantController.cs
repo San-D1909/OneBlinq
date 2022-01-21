@@ -97,14 +97,21 @@ namespace Backend.Controllers.AdminDashboard
 
             var options = new PriceCreateOptions
             {
-                
                 UnitAmountDecimal = pluginVariant.Price * 100,
                 Currency = "eur",
                 Product = plugin.StripeProductId,
                 BillingScheme = "per_unit",
-                TaxBehavior = "inclusive"
-                // TODO: tax
+                TaxBehavior = "exclusive",
+                Recurring = new PriceRecurringOptions
+                {
+                    Interval = "month",
+                    IntervalCount = 1,
+                    AggregateUsage = null,
+                    UsageType = "licensed"
+
+                }
             };
+
             var service = new PriceService();
             var price = service.Create(options);
 

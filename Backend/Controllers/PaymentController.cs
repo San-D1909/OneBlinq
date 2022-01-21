@@ -50,7 +50,7 @@ namespace Backend.Controllers
                     Quantity = 1,
                   }
                 },
-                Mode = "payment",
+                Mode = "subscription",
                 SuccessUrl = domain + "/order?success=true&session_id={CHECKOUT_SESSION_ID}",
                 CancelUrl = domain + "?canceled=true",
                 AutomaticTax = new SessionAutomaticTaxOptions { Enabled = true },

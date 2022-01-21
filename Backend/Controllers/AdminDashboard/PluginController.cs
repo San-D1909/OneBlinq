@@ -141,7 +141,7 @@ namespace Backend.Controllers.AdminDashboard
             };
 
             var service = new ProductService();
-            //var productId = service.Create(options);
+            var productId = service.Create(options);
             
             PluginModel plugin = pluginInput.GetPluginModel();
             PluginImageModel image = new PluginImageModel
@@ -150,7 +150,7 @@ namespace Backend.Controllers.AdminDashboard
                 Plugin = plugin
             };
 
-            //plugin.StripeProductId = productId.Id;
+            plugin.StripeProductId = productId.Id;
 
             _pluginRepository.Add(plugin);
             _context.PluginImage.Add(image);
