@@ -51,6 +51,7 @@ namespace Backend.Controllers
             foreach (PluginModel plugin in plugins)
             {
                 IEnumerable<UserModel> users = await _userRepository.GetUsersByPlugin(null, null, plugin);
+                PluginImageModel image = _context.PluginImage.Where(p => p.Plugin.Id == plugin.Id).FirstOrDefault();
                 pluginOutput.Add(new PluginOutput
                 {
                     Id = plugin.Id,
@@ -58,7 +59,7 @@ namespace Backend.Controllers
                     PluginDescription = plugin.PluginDescription,
                     FullPrice = plugin.FullPrice,
                     MonthlyPrice = plugin.MonthlyPrice,
-                    Users = users
+                    Image = image
                 });
             }
 
