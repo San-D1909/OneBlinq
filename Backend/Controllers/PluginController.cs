@@ -30,10 +30,23 @@ namespace Backend.Controllers
         }
 
         [HttpPost("SearchForPlugin")]
-        public async Task<ActionResult<IEnumerable<PluginModel>>> SearchForPlugin([FromQuery(Name = "searchString")] string searchString)
+        public async Task<ActionResult<IEnumerable<PluginOutput>>> SearchForPlugin([FromQuery(Name = "searchString")] string searchString)
         {
+            List<PluginOutput> pluginOutput = new List<PluginOutput>(); 
             IEnumerable<PluginModel> pluginResults = await _pluginRepository.GetPluginsByNameAsync(searchString);
-            return Ok(pluginResults);
+            foreach (PluginModel plugin in pluginResults)
+            {
+                PluginImageModel image = _context.PluginImage.Where(p => p.Plugin.Id == plugin.Id).FirstOrDefault();
+                pluginOutput.Add(new PluginOutput
+                {
+                    Id = plugin.Id,
+                    PluginName = plugin.PluginName,
+                    PluginDescription = plugin.PluginDescription,
+                    Image = image
+                });
+            }
+
+            return Ok(pluginOutput);
         }
 
         // GET: api/Plugins

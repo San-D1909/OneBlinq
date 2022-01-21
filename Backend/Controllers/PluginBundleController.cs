@@ -30,10 +30,25 @@ namespace Backend.Controllers
         }
 
         [HttpPost("SearchForPluginBundle")]
-        public async Task<ActionResult<IEnumerable<PluginBundleModel>>> SearchForPluginBundle([FromQuery(Name = "searchString")] string searchString)
+        public async Task<ActionResult<IEnumerable<PluginBundleOutput>>> SearchForPluginBundle([FromQuery(Name = "searchString")] string searchString)
         {
+            List<PluginBundleOutput> pluginBundleOutputs = new List<PluginBundleOutput>();
             IEnumerable<PluginBundleModel> pluginBundleResults = await _pluginBundleRepository.GetPluginBundleByName(searchString);
-            return Ok(pluginBundleResults);
+            foreach (PluginBundleModel pluginBundle in pluginBundleResults)
+            {
+                IEnumerable<PluginModel> plugins = _context.PluginBundles.Where(pb => pb.PluginBundleId == pluginBundle.Id).Include(pb => pb.Plugin).Select(pb => pb.Plugin).ToList();
+                PluginBundleImageModel image = _context.PluginBundleImage.Where(p => p.PluginBundle.Id == pluginBundle.Id).FirstOrDefault();
+                pluginBundleOutputs.Add(new PluginBundleOutput
+                {
+                    Id = pluginBundle.Id,
+                    BundleDescription = pluginBundle.BundleDescription,
+                    BundleName = pluginBundle.BundleName,
+                    Plugins = plugins,
+                    Price = pluginBundle.Price,
+                    Image = image
+                });
+            }
+            return Ok(pluginBundleOutputs);
         }
 
 
