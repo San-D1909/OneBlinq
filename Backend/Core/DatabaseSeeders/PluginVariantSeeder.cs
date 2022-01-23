@@ -21,24 +21,24 @@ namespace Backend.Core.DatabaseSeeders
                 PLUGIN_VARIANT_FORMS1 = new PluginVariantModel
                 {
                     Id = 1,
-                    StripePriceId = PluginSeeder.PLUGIN_FORMS.StripeProductId,
+                    StripePriceId = "price_1KL7GWLEIzrCONviC522d94Q",
                     Description = "Variant",
-                    IsSubscription = true,
+                    IsSubscription = false,
                     MaxActivations = 10,
                     Plugin = PluginSeeder.PLUGIN_FORMS,
                     PluginId = PluginSeeder.PLUGIN_FORMS.Id,
-                    Price = 69
+                    Price = 10
                 };                
                 PLUGIN_VARIANT_FORMS2 = new PluginVariantModel
                 {
                     Id = 2,
-                    StripePriceId = PluginSeeder.PLUGIN_LINEHEIGHT.StripeProductId,
+                    StripePriceId = "price_1KL7GWLEIzrCONviC522d94Q",
                     Description = "Variant",
-                    IsSubscription = true,
+                    IsSubscription = false,
                     MaxActivations = 100,
                     Plugin = PluginSeeder.PLUGIN_LINEHEIGHT,
                     PluginId = PluginSeeder.PLUGIN_LINEHEIGHT.Id,
-                    Price = 21
+                    Price = 10
                 };
 
                 context.Add(PLUGIN_VARIANT_FORMS1);
