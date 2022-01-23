@@ -100,6 +100,7 @@ namespace Backend
                 context.Database.Migrate();
                 UserSeeder.SeedData(context, new PasswordEncrypter(this.Configuration));
                 PluginSeeder.SeedData(context);
+                PluginVariantSeeder.SeedData(context);
                 LicenseSeeder.SeedData(context);
                 PluginLicenseSeeder.SeedData(context);
                 PluginBundleSeeder.SeedData(context);
