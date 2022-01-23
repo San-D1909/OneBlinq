@@ -44,7 +44,7 @@ namespace Backend.Controllers
                     BundleDescription = pluginBundle.BundleDescription,
                     BundleName = pluginBundle.BundleName,
                     Plugins = plugins,
-                    Price = pluginBundle.Price,
+                    StripeProductId = pluginBundle.StripeProductId,
                     Image = image
                 });
             }
@@ -69,7 +69,7 @@ namespace Backend.Controllers
                     BundleDescription = pluginBundle.BundleDescription,
                     BundleName = pluginBundle.BundleName,
                     Plugins = plugins,
-                    Price = pluginBundle.Price,
+                    StripeProductId = pluginBundle.StripeProductId,
                     Image = image
                 });
             }

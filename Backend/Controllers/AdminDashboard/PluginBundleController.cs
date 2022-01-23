@@ -46,7 +46,7 @@ namespace Backend.Controllers.AdminDashboard
                     BundleDescription = pluginBundle.BundleDescription,
                     BundleName = pluginBundle.BundleName,
                     Plugins = plugins,
-                    Price = pluginBundle.Price,
+                    StripeProductId = pluginBundle.StripeProductId,
                     Image = image
                 });
             }

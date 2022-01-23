@@ -18,8 +18,8 @@ namespace Backend.Core.DatabaseSeeders
                 {
                     Id = 1,
                     BundleName = "All in one deal",
-                    BundleDescription = "This is a one in a life time deal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                    Price = 4,
+                    BundleDescription = "This is a one in a life time deal!!!",
+                    StripeProductId = "5",
                 };
 
 

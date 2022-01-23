@@ -18,13 +18,13 @@ namespace Backend.DTO.In
 				Id = this.Id,
 				BundleName = this.BundleName,
 				BundleDescription = this.BundleDescription,
-				Price = this.Price
+				StripeProductId = this.StripeProductId
 			};
         }
 		public int Id { get; set; }
 		public string BundleName { get; set; }
 		public string BundleDescription { get; set; }
-		public decimal Price { get; set; }
+		public string StripeProductId { get; set; }
 		public IEnumerable<int> PluginIds { get; set; }
 		public string FileName { get; set; }
 		public string EncodedFileContent { get; set; }
