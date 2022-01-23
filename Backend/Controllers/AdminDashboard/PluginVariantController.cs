@@ -9,6 +9,7 @@ using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.DTO.Out;
 using Stripe;
 using Backend.Infrastructure.Data.Repositories;
+using System;
 
 namespace Backend.Controllers.AdminDashboard
 {
@@ -94,14 +95,20 @@ namespace Backend.Controllers.AdminDashboard
         {
             var plugin = _pluginRepository.GetById(pluginVariant.PluginId);
             if(plugin == null) return NotFound();
-
             var options = new PriceCreateOptions
             {
                 UnitAmountDecimal = pluginVariant.Price * 100,
                 Currency = "eur",
                 Product = plugin.StripeProductId,
                 BillingScheme = "per_unit",
-                TaxBehavior = "exclusive"
+                TaxBehavior = "exclusive",
+                Metadata = new Dictionary<string, string>
+                {
+                    { "MaxActivations", pluginVariant.MaxActivations.ToString() },
+                    { "PluginId", pluginVariant.PluginId.ToString() },
+                    { "Description", pluginVariant.Description },
+                    { "IsSubscription", Convert.ToString(pluginVariant.IsSubscription)}
+                }
             };
 
             if (pluginVariant.IsSubscription)

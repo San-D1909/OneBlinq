@@ -99,12 +99,13 @@ namespace Backend
                 
                 context.Database.Migrate();
                 UserSeeder.SeedData(context, new PasswordEncrypter(this.Configuration));
-                PluginSeeder.SeedData(context);
+                PluginSeeder.SeedData(context, this.Configuration);
                 LicenseSeeder.SeedData(context);
                 PluginLicenseSeeder.SeedData(context);
                 PluginBundleSeeder.SeedData(context);
                 PluginBundlesSeeder.SeedData(context);
                 PluginImageSeeder.SeedData(context);
+                PluginVariantSeeder.SeedData(context, this.Configuration);
             }
 
             StripeConfiguration.ApiKey = Configuration["STRIPE_SECRET_KEY"];
