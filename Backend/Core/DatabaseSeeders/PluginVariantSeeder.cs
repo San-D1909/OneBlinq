@@ -1,10 +1,12 @@
-﻿using Backend.Infrastructure.Data;
+﻿using Backend.Core.Logic;
+using Backend.Infrastructure.Data;
 using Backend.Models;
 using Microsoft.Extensions.Configuration;
 using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Backend.Core.DatabaseSeeders
@@ -29,14 +31,14 @@ namespace Backend.Core.DatabaseSeeders
                             continue;
                         }
                         var pluginVariant = new PluginVariantModel()
-                        {
+                {
                             PluginId = Convert.ToInt32(price.Metadata["PluginId"]),
                             MaxActivations = Convert.ToInt32(price.Metadata["MaxActivations"]),
                             Description = price.Metadata["Description"],
                             IsSubscription = Convert.ToBoolean(price.Metadata["IsSubscription"]),
                             StripePriceId = price.ProductId.ToString(),
                             Price = (price.UnitAmountDecimal == null ? 0 : ((decimal)price.UnitAmountDecimal / 100))
-                        };
+                };
 
                         context.Add(pluginVariant);
                     }

@@ -17,6 +17,6 @@ namespace Backend.Models
 		[Required]
 		public string BundleDescription { get; set; }
 		[Required]
-		public decimal Price { get; set; }
+		public string StripeProductId { get; set; }
 	}
 }

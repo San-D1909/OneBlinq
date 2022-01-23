@@ -28,5 +28,6 @@ namespace Backend.Infrastructure.Data
 		public DbSet<PluginVariantModel> PluginVariant { get; set; }
 		public DbSet<PluginImageModel> PluginImage { get; set; }
 		public DbSet<PluginBundleImageModel> PluginBundleImage { get; set; }
+		public DbSet<PluginBundleVariantModel> PluginBundleVariant { get; set; }
 	}
 }

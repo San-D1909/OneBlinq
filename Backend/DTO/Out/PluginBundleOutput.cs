@@ -18,7 +18,7 @@ namespace Backend.DTO.Out
 			this.Id = pluginBundle.Id;
 			this.BundleName = pluginBundle.BundleName;
 			this.BundleDescription = pluginBundle.BundleDescription;
-			this.Price = pluginBundle.Price;
+			this.StripeProductId = pluginBundle.StripeProductId;
         }
 
 		public PluginBundleOutput(PluginBundleModel pluginBundle, IEnumerable<PluginModel> plugins): this(pluginBundle)
@@ -34,7 +34,7 @@ namespace Backend.DTO.Out
 		public int Id { get; set; }
 		public string BundleName { get; set; }
 		public string BundleDescription { get; set; }
-		public decimal Price{get; set;}
+		public string StripeProductId { get; set;}
 		public IEnumerable<UserModel> Users { get; set; }
 		public IEnumerable<PluginModel> Plugins { get; set; }
 		public PluginBundleImageModel Image { get; set; }

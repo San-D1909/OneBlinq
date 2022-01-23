@@ -66,7 +66,7 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     BundleName = table.Column<string>(type: "text", nullable: false),
                     BundleDescription = table.Column<string>(type: "text", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false)
+                    StripeProductId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

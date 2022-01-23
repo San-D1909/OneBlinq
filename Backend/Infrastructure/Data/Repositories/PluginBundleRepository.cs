@@ -33,7 +33,6 @@ namespace Backend.Infrastructure.Data.Repositories
 
             return pluginBundles.ToList();
         }
-
         public Task<PluginBundleModel> GetPluginBundle(int id)
         {
             return _context.PluginBundle.Where(p => p.Id == id).FirstAsync();

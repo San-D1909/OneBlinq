@@ -53,7 +53,7 @@ namespace Backend.Core.DatabaseSeeders
                     FullName = "Moet Korter",
                     Company = null,
                     Email = "t@t",
-                    IsAdmin = false,
+                    IsAdmin = true,
                     IsVerified = true,
                     Password = encryptor.EncryptPassword("t" + salt),
                     Salt = salt
