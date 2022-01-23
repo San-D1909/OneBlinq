@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220121105044_initialize")]
+    [Migration("20220121133803_initialize")]
     partial class initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,9 +97,6 @@ namespace Backend.Migrations
                     b.Property<string>("LicenseKey")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("LicenseTypeId")
-                        .HasColumnType("int");
 
                     b.Property<int>("TimesActivated")
                         .HasColumnType("int");

@@ -50,7 +50,7 @@ namespace Backend.Infrastructure.Data.Repositories
 
                 if (item == null)
                 {
-                    throw new Exception($"Couldn't find entity with email={Email}");
+                    return null;
                 }
 
                 return item;

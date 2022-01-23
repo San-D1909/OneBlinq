@@ -212,7 +212,6 @@ namespace Backend.Migrations
                     LicenseKey = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true),
                     VariantId = table.Column<int>(type: "int", nullable: true),
-                    LicenseTypeId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime", nullable: false),
                     ExpirationTime = table.Column<DateTime>(type: "datetime", nullable: false),

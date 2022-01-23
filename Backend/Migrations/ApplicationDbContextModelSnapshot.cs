@@ -96,9 +96,6 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("LicenseTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TimesActivated")
                         .HasColumnType("int");
 

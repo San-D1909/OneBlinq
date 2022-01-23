@@ -7,19 +7,22 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-	public class LicenseModel
-	{
-		[Key]
+    public class LicenseModel
+    {
+        [Key]
         public int Id { get; set; }
-        [Required]
-		public string LicenseKey { get; set; }
-		[Required]
-		public UserModel User { get; set; }
-		public PluginVariantModel Variant { get; set; }
-        public int LicenseTypeId { get; set; }
 
-		[Required]
-		public bool IsActive { get; set; }
+        [Required]
+        public string LicenseKey { get; set; }
+        public int UserId { get; set; }
+
+        public UserModel User { get; set; }
+        public PluginVariantModel Variant { get; set; }
+
+        public int? VariantId { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
         private DateTime? _creationTime = null;
         [Required]
         public DateTime CreationTime
@@ -28,7 +31,7 @@ namespace Backend.Models
             {
                 return this._creationTime.HasValue
                     ? this._creationTime.Value
-                    : DateTime.Now;
+                    : DateTime.UtcNow;
             }
             set
             {
@@ -38,6 +41,6 @@ namespace Backend.Models
         [Required]
         public DateTime ExpirationTime { get; set; }
         [Required]
-		public int TimesActivated { get; set; }
-	}
+        public int TimesActivated { get; set; }
+    }
 }

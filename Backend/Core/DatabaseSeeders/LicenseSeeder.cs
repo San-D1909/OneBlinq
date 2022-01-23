@@ -25,7 +25,9 @@ namespace Backend.Core.DatabaseSeeders
                     CreationTime = DateTime.Now,
                     ExpirationTime = DateTime.Now.AddYears(4),
                     TimesActivated = 0,
-                    User = UserSeeder.USER_CUSTOMER
+                    User = UserSeeder.USER_CUSTOMER,
+                    Variant = null,
+                    VariantId = null,
                 };
 
                 LICENSE_PREMIUM_USER = new LicenseModel
@@ -36,7 +38,9 @@ namespace Backend.Core.DatabaseSeeders
                     CreationTime = DateTime.Now,
                     ExpirationTime = DateTime.Now.AddYears(4),
                     TimesActivated = 0,
-                    User = UserSeeder.USER_CUSTOMER
+                    User = UserSeeder.USER_CUSTOMER,
+                    Variant = null,
+                    VariantId = null,
                 };
 
                 context.Add(LICENSE_BUSINESS_USER);
