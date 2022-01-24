@@ -9,9 +9,8 @@ namespace Backend.Infrastructure.Data.Repositories
 {
     public class PluginVariantRepository : GenericRepository<PluginVariantModel>, IPluginVariantRepository
     {
-        private ApplicationDbContext _context;
         public PluginVariantRepository(ApplicationDbContext context) : base(context) { 
-            _context = context;
+
         }
 
         public async Task<IEnumerable<PluginVariantModel>> PluginVariantsByFilter(string filter, string sort)

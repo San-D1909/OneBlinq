@@ -7,8 +7,8 @@ namespace Backend.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public int PluginId { get; set; }
-        public PluginModel Plugin { get; set; }
+        public int PluginBundleId { get; set; }
+        public PluginBundleModel PluginBundle { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]

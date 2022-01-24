@@ -26,7 +26,6 @@ namespace Backend.Core.DatabaseSeeders
                 {
                     Id = 1,
                     PluginName = "Forms",
-                    StripeProductId = "prod_L19W1tPZJh8rai",
                     PluginDescription = "<div class=\"ql - editor\" data-gramm=\"false\" contenteditable=\"false\"><p>Forms is the plugin to get your form design game on point. Enjoy custom forms integrated with <strong>your design library</strong>. Pick from your own font styles, spacings and colors. Every form element will <strong>automatically</strong> generate variants for error, disabled, focus and hover <strong>states</strong> so you don’t have to! 😉 🎉</p><p><br></p><p><strong>Key features:</strong></p><p>— Custom forms</p><p>— All elements are generated with the elements primary states</p><p>— Apply your library styles or pick new ones</p><p>— Different component page so your workspace doesn't get cluttered</p><p>— Use inputs, textareas, checkboxes, buttons and more to come</p><p>— Free trial</p><p><br></p><p><strong>Customer support:</strong></p><p><a href=\"mailto:support@oneblinq.com\" rel=\"noreferrer noopener nofollow\" target=\"_blank\">support@oneblinq.com</a></p><p><br></p><p><strong>Buy your license:</strong></p><p><a href=\"https://gumroad.com/l/obforms\" rel=\"noreferrer noopener nofollow\" target=\"_blank\">https://gumroad.com/l/obforms</a></p></div>",
                 };
                 var optionForms = new ProductCreateOptions
@@ -44,7 +43,6 @@ namespace Backend.Core.DatabaseSeeders
                 {
                     Id = 2,
                     PluginName = "Lineheight",
-                    StripeProductId = "prod_L19W1tPZJh8rai",
                     PluginDescription = "Test",
                 };
                 var optionLineHeight = new ProductCreateOptions
