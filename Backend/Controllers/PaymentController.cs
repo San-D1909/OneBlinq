@@ -76,12 +76,15 @@ namespace Backend.Controllers
 
             if (mode == "subscription")
             {
-                options.Metadata = new Dictionary<string, string>
-                    {
-                        { "maxActivations", maxActivations },
-                        { "description", description },
-                        { "variantId", variantId }
-                    };
+                options.SubscriptionData = new SessionSubscriptionDataOptions
+                {
+                    Metadata = new Dictionary<string, string>
+                        {
+                            { "maxActivations", maxActivations },
+                            { "description", description },
+                            { "variantId", variantId }
+                        },
+                };
             }
             else
             {
@@ -92,7 +95,7 @@ namespace Backend.Controllers
                         { "maxActivations", maxActivations },
                         { "description", description },
                         { "variantId", variantId }
-                    }
+                    }, 
                 };
             }
 
@@ -117,58 +120,13 @@ namespace Backend.Controllers
 
             if(stripeEvent.Type == Events.SubscriptionScheduleCanceled)
             {
-
-            }
-    
-            if(stripeEvent.Type == Events.CheckoutSessionCompleted)
-            {
                 var session = stripeEvent.Data.Object as Session;
+                var paymentIntentId = session.PaymentIntentId;
 
-                var service = new CustomerService();
-                var customer = service.Get(session.CustomerId);
-
-                Console.WriteLine($"Session ID: {session.Id}");
-                // Take some action based on session.
-                var email = customer.Email;
-
-                var key = _licenseGenerator.CreateLicenseKey(email, session.Metadata["description"], session.Metadata["maxActivations"]);
-                // TODO: plugin + variant ids
-
-                var emailCheck = await _userRepository.GetUserByEmail(email);
-
-                if (emailCheck == null)
-                {
-                    UserModel user = new UserModel
-                    {
-                        Company = null,
-                        Email = email,
-                        FullName = customer.Name,
-                        IsAdmin = false,
-                        IsVerified = true,
-                        Password = "",
-                        Salt = new byte[0]
-                    };
-
-                    _userRepository.Add(user);
-                    await _userRepository.SaveAsync();
-
-                    _resetPasswordHelper.SendResetLink(email);
-                }
-
-                var license = new LicenseModel
-                {
-                    IsActive = true,
-                    LicenseKey = key,
-                    UserId = _userRepository.GetUserByEmail(email).Result.Id,
-                    TimesActivated = 0,
-                    VariantId = Convert.ToInt32(session.Metadata["variantId"]),
-                    ExpirationTime = DateTime.UtcNow.AddYears(9999)
-                };
-
-                _licenceRepository.Add(license);
+                LicenseModel license = await _licenceRepository.GetLicenseByIntent(paymentIntentId);
+                license.IsActive = false;
+                _licenceRepository.Update(license);
                 await _licenceRepository.SaveAsync();
-
-                await _mail.PurchaseConfirmationMail("oneblinq@stuur.men", email, "Purchase confirmation", key);
             }
 
             if (stripeEvent.Type == Events.PaymentIntentSucceeded)
@@ -182,7 +140,7 @@ namespace Backend.Controllers
                 // Take some action based on session.
                 var email = customer.Email;
 
-                var key = _licenseGenerator.CreateLicenseKey(email, session.Metadata["description"], session.Metadata["maxActivations"]);
+                var key = _licenseGenerator.CreateLicenseKey(email, session.Metadata["description"], session.Metadata["variantId"]);
                 // TODO: plugin + variant ids
 
                 var emailCheck = await _userRepository.GetUserByEmail(email);
@@ -213,7 +171,8 @@ namespace Backend.Controllers
                     UserId = _userRepository.GetUserByEmail(email).Result.Id,
                     TimesActivated = 0,
                     VariantId = Convert.ToInt32(session.Metadata["variantId"]),
-                    ExpirationTime = DateTime.UtcNow.AddYears(1)
+                    ExpirationTime = DateTime.UtcNow.AddYears(1),
+                    PaymentIntentId = session.Id
                 };
 
                 _licenceRepository.Add(license);

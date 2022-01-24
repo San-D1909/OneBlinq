@@ -67,6 +67,13 @@ namespace Backend.Infrastructure.Data.Repositories
 ;
         }
 
+        public async Task<LicenseModel> GetLicenseByIntent(string intentId)
+        {
+            LicenseModel license = _context.License.Where(l => l.PaymentIntentId == intentId).FirstOrDefault();
+
+            return license;
+        }
+
         public async Task<IEnumerable<LicenseModel>> GetLicenses(string filter, string sort)
         {
             IEnumerable<PluginLicenseModel> pluginLicenses = _context.PluginLicense.Include(pl => pl.Plugin).Include(pl => pl.License).ThenInclude(l => l.User);
