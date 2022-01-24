@@ -12,6 +12,7 @@ using Backend.Infrastructure.Data.Repositories;
 using Backend.Models;
 using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.Infrastructure.Data;
+using Backend.Core.Logic.EmailClients;
 
 public class StripeOptions
 {
@@ -31,6 +32,7 @@ namespace Backend.Controllers
         private ILicenceRepository _licenceRepository;
         private IUserRepository _userRepository;
         private ApplicationDbContext _context;
+        private ResetPasswordHelper _resetPasswordHelper;
 
         public CheckoutApiController(IConfiguration config, MailClient mailClient, LicenseGenerator licenseGenerator, ILicenceRepository licenseRepo, IUserRepository userRepo, ApplicationDbContext context)
         {
@@ -40,6 +42,7 @@ namespace Backend.Controllers
             _licenceRepository = licenseRepo;
             _userRepository = userRepo;
             _context = context;
+            _resetPasswordHelper = new ResetPasswordHelper(config, mailClient);
         }
 
         [HttpPost("create-checkout-session")]
@@ -47,6 +50,9 @@ namespace Backend.Controllers
         {
             var isSubscription = Request.Form["isSubscription"];
             var priceId = Request.Form["priceId"];
+            var variantId = Request.Form["variantId"];
+            var description = Request.Form["description"];
+            var maxActivations = Request.Form["maxActivations"];
 
             var mode = isSubscription == "true" ? "subscription" : "payment";
 
@@ -56,16 +62,25 @@ namespace Backend.Controllers
                 //CustomerEmail = Request.Form["email"],
                 LineItems = new List<SessionLineItemOptions>
                 {
-                  new SessionLineItemOptions
-                  {
-                    Price = priceId,
-                    Quantity = 1,
-                  }
+                    new SessionLineItemOptions
+                    {
+                        Price = priceId,
+                        Quantity = 1,
+                    }
                 },
                 Mode = mode,
                 SuccessUrl = domain + "/order?success=true&session_id={CHECKOUT_SESSION_ID}",
                 CancelUrl = domain + "?canceled=true",
                 AutomaticTax = new SessionAutomaticTaxOptions { Enabled = true },
+                PaymentIntentData = new SessionPaymentIntentDataOptions
+                {
+                    Metadata = new Dictionary<string, string>
+                    {
+                        { "maxActivations", maxActivations },
+                        { "description", description },
+                        { "variantId", variantId }
+                    }
+                }
             };
 
             var service = new SessionService();
@@ -99,7 +114,7 @@ namespace Backend.Controllers
                 // Take some action based on session.
                 var email = customer.Email;
 
-                var key = _licenseGenerator.CreateLicenseKey(email, "plugin", "variant");
+                var key = _licenseGenerator.CreateLicenseKey(email, session.Metadata["description"], session.Metadata["maxActivations"]);
                 // TODO: plugin + variant ids
 
                 var emailCheck = await _userRepository.GetUserByEmail(email);
@@ -119,6 +134,8 @@ namespace Backend.Controllers
 
                     _userRepository.Add(user);
                     await _userRepository.SaveAsync();
+
+                    _resetPasswordHelper.SendResetLink(email);
                 }
 
                 var license = new LicenseModel
@@ -127,15 +144,15 @@ namespace Backend.Controllers
                     LicenseKey = key,
                     UserId = _userRepository.GetUserByEmail(email).Result.Id,
                     TimesActivated = 0,
-                    VariantId = 1,
+                    VariantId = Convert.ToInt32(session.Metadata["variantId"]),
                     ExpirationTime = DateTime.UtcNow.AddYears(1)
-                    //TODO get real Variant
                 };
 
                 _licenceRepository.Add(license);
                 await _licenceRepository.SaveAsync();
 
                 await _mail.PurchaseConfirmationMail("oneblinq@stuur.men", email, "Purchase confirmation", key);
+
             }
 
             return Ok();
