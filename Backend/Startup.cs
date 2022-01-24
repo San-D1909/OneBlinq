@@ -89,6 +89,8 @@ namespace Backend
             services.AddScoped<IPluginBundleVariantRepository, PluginBundleVariantRepository>();
             services.AddScoped<IPluginVariantRepository, PluginVariantRepository>();
             services.AddScoped<IPluginBundleRepository, PluginBundleRepository>();
+            services.AddScoped<IPluginBundlesRepository, PluginBundlesRepository>();
+            services.AddScoped<IPluginLicenseRepository, PluginLicenseRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
