@@ -96,6 +96,9 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("text");
+
                     b.Property<int>("TimesActivated")
                         .HasColumnType("int");
 

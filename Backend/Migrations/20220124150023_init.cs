@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Backend.Migrations
 {
-    public partial class initialize : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -235,6 +235,7 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     LicenseKey = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "text", nullable: true),
                     VariantId = table.Column<int>(type: "int", nullable: true),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime", nullable: false),

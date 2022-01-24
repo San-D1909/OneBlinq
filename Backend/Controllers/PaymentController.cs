@@ -80,7 +80,20 @@ namespace Backend.Controllers
                 SuccessUrl = domain + "/order?success=true&session_id={CHECKOUT_SESSION_ID}",
                 CancelUrl = domain + "?canceled=true",
                 AutomaticTax = new SessionAutomaticTaxOptions { Enabled = true },
-                PaymentIntentData = new SessionPaymentIntentDataOptions
+            };
+
+            if (mode == "subscription")
+            {
+                options.Metadata = new Dictionary<string, string>
+                    {
+                        { "maxActivations", maxActivations },
+                        { "description", description },
+                        { "variantId", variantId }
+                    };
+            }
+            else
+            {
+                options.PaymentIntentData = new SessionPaymentIntentDataOptions
                 {
                     Metadata = new Dictionary<string, string>
                     {
@@ -88,8 +101,8 @@ namespace Backend.Controllers
                         { "description", description },
                         { "variantId", variantId }
                     }
-                }
-            };
+                };
+            }
 
 
             var service = new SessionService();
@@ -112,6 +125,61 @@ namespace Backend.Controllers
             
             Console.WriteLine($"Webhook notification with type: {stripeEvent.Type} found for {stripeEvent.Id}");
 
+            if(stripeEvent.Type == Events.SubscriptionScheduleCanceled)
+            {
+
+            }
+    
+            if(stripeEvent.Type == Events.CheckoutSessionCompleted)
+            {
+                var session = stripeEvent.Data.Object as Session;
+
+                var service = new CustomerService();
+                var customer = service.Get(session.CustomerId);
+
+                Console.WriteLine($"Session ID: {session.Id}");
+                // Take some action based on session.
+                var email = customer.Email;
+
+                var key = _licenseGenerator.CreateLicenseKey(email, session.Metadata["description"], session.Metadata["maxActivations"]);
+                // TODO: plugin + variant ids
+
+                var emailCheck = await _userRepository.GetUserByEmail(email);
+
+                if (emailCheck == null)
+                {
+                    UserModel user = new UserModel
+                    {
+                        Company = null,
+                        Email = email,
+                        FullName = customer.Name,
+                        IsAdmin = false,
+                        IsVerified = true,
+                        Password = "",
+                        Salt = new byte[0]
+                    };
+
+                    _userRepository.Add(user);
+                    await _userRepository.SaveAsync();
+
+                    _resetPasswordHelper.SendResetLink(email);
+                }
+
+                var license = new LicenseModel
+                {
+                    IsActive = true,
+                    LicenseKey = key,
+                    UserId = _userRepository.GetUserByEmail(email).Result.Id,
+                    TimesActivated = 0,
+                    VariantId = Convert.ToInt32(session.Metadata["variantId"]),
+                    ExpirationTime = DateTime.UtcNow.AddYears(9999)
+                };
+
+                _licenceRepository.Add(license);
+                await _licenceRepository.SaveAsync();
+
+                await _mail.PurchaseConfirmationMail("oneblinq@stuur.men", email, "Purchase confirmation", key);
+            }
 
             if (stripeEvent.Type == Events.PaymentIntentSucceeded)
             {

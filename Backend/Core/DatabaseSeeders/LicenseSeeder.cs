@@ -28,6 +28,7 @@ namespace Backend.Core.DatabaseSeeders
                     User = UserSeeder.USER_CUSTOMER,
                     Variant = null,
                     VariantId = null,
+                    PaymentIntentId = null,
                 };
 
                 LICENSE_PREMIUM_USER = new LicenseModel
@@ -41,6 +42,7 @@ namespace Backend.Core.DatabaseSeeders
                     User = UserSeeder.USER_CUSTOMER,
                     Variant = null,
                     VariantId = null,
+                    PaymentIntentId = null,
                 };
 
                 context.Add(LICENSE_BUSINESS_USER);

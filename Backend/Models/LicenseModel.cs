@@ -16,6 +16,8 @@ namespace Backend.Models
         public string LicenseKey { get; set; }
         public int UserId { get; set; }
 
+        public string PaymentIntentId{ get; set; }
+
         public UserModel User { get; set; }
         public PluginVariantModel Variant { get; set; }
 
