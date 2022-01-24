@@ -104,6 +104,7 @@ namespace Backend
                 LicenseSeeder.SeedData(context);
                 PluginLicenseSeeder.SeedData(context);
                 PluginBundleSeeder.SeedData(context, this.Configuration);
+                PluginBundleVariantSeeder.SeedData(context, this.Configuration);
                 PluginBundlesSeeder.SeedData(context);
                 PluginImageSeeder.SeedData(context);
                 PluginVariantSeeder.SeedData(context, this.Configuration);
