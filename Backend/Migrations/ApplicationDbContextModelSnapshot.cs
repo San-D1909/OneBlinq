@@ -99,7 +99,7 @@ namespace Backend.Migrations
                     b.Property<int>("TimesActivated")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<int?>("VariantId")
@@ -149,12 +149,45 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<string>("StripeProductId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("PluginBundle");
+                });
+
+            modelBuilder.Entity("Backend.Models.PluginBundleVariantModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsSubscription")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("MaxActivations")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PluginBundleId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("StripePriceId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PluginBundleId");
+
+                    b.ToTable("PluginBundleVariant");
                 });
 
             modelBuilder.Entity("Backend.Models.PluginBundlesModel", b =>
@@ -348,7 +381,9 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.UserModel", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Backend.Models.PluginVariantModel", "Variant")
                         .WithMany()
@@ -364,6 +399,17 @@ namespace Backend.Migrations
                     b.HasOne("Backend.Models.PluginBundleModel", "PluginBundle")
                         .WithMany()
                         .HasForeignKey("PluginBundleId");
+
+                    b.Navigation("PluginBundle");
+                });
+
+            modelBuilder.Entity("Backend.Models.PluginBundleVariantModel", b =>
+                {
+                    b.HasOne("Backend.Models.PluginBundleModel", "PluginBundle")
+                        .WithMany()
+                        .HasForeignKey("PluginBundleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PluginBundle");
                 });

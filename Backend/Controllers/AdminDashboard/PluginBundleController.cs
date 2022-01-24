@@ -10,6 +10,7 @@ using Backend.Models;
 using Backend.DTO.In;
 using Backend.DTO.Out;
 using Backend.Infrastructure.Data.Repositories.Interfaces;
+using Stripe;
 
 namespace Backend.Controllers.AdminDashboard
 {
@@ -122,7 +123,19 @@ namespace Backend.Controllers.AdminDashboard
         public async Task<ActionResult<PluginBundleModel>> PostPluginBundleModel(PluginBundleInput pluginBundleInput)
         {
 
+            var options = new ProductCreateOptions
+            {
+                Name = pluginBundleInput.BundleName,
+                Description = pluginBundleInput.BundleDescription,
+                TaxCode = "txcd_10000000",
+                // TODO: Add image field
+            };
+
+            var service = new ProductService();
+            var productId = service.Create(options);
+
             PluginBundleModel pluginBundleModel = pluginBundleInput.GetPluginBundleModel();
+            pluginBundleModel.StripeProductId = productId.Id;
             _context.PluginBundle.Add(pluginBundleModel);
             await _context.SaveChangesAsync();
 

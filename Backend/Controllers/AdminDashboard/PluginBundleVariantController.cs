@@ -9,6 +9,7 @@ using Backend.Infrastructure.Data.Repositories.Interfaces;
 using Backend.DTO.Out;
 using Stripe;
 using Backend.Infrastructure.Data.Repositories;
+using System;
 
 namespace Backend.Controllers.AdminDashboard
 {
@@ -92,15 +93,23 @@ namespace Backend.Controllers.AdminDashboard
         [HttpPost]
         public async Task<ActionResult<PluginBundleVariantModel>> PostPlugin(PluginBundleVariantModel pluginVariant)
         {
-            var plugin = _pluginBundleRepository.GetPluginBundle(pluginVariant.PluginId);
-            if (plugin == null) return NotFound();
+            var pluginBundle = await _pluginBundleRepository.GetPluginBundle(pluginVariant.PluginBundleId);
+            if (pluginBundle == null) return NotFound();
 
             var options = new PriceCreateOptions
             {
                 UnitAmountDecimal = pluginVariant.Price * 100,
                 Currency = "eur",
+                Product = pluginBundle.StripeProductId,
                 BillingScheme = "per_unit",
-                TaxBehavior = "exclusive"
+                TaxBehavior = "exclusive",
+                Metadata = new Dictionary<string, string>
+                {
+                    { "MaxActivations", pluginVariant.MaxActivations.ToString() },
+                    { "PluginBundleId", pluginVariant.PluginBundleId.ToString() },
+                    { "Description", pluginVariant.Description },
+                    { "IsSubscription", Convert.ToString(pluginVariant.IsSubscription)}
+                }
             };
 
             if (pluginVariant.IsSubscription)

@@ -91,8 +91,16 @@ namespace Backend.Controllers
             {
                 return NotFound();
             }
+            PluginImageModel image = _context.PluginImage.Where(p => p.Plugin.Id == plugin.Id).FirstOrDefault();
+            var pluginOutput = new PluginOutput
+            {
+                Id = plugin.Id,
+                PluginName = plugin.PluginName,
+                PluginDescription = plugin.PluginDescription,
+                Image = image
+            };
 
-            return Ok(plugin);
+            return Ok(pluginOutput);
         }
 
         // PUT: api/Plugins/5

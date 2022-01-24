@@ -66,7 +66,7 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     BundleName = table.Column<string>(type: "text", nullable: false),
                     BundleDescription = table.Column<string>(type: "text", nullable: false),
-                    StripeProductId = table.Column<string>(type: "text", nullable: true)
+                    StripeProductId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,13 +204,37 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PluginBundleVariant",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    PluginBundleId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
+                    StripePriceId = table.Column<string>(type: "text", nullable: true),
+                    MaxActivations = table.Column<int>(type: "int", nullable: false),
+                    IsSubscription = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PluginBundleVariant", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PluginBundleVariant_PluginBundle_PluginBundleId",
+                        column: x => x.PluginBundleId,
+                        principalTable: "PluginBundle",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "License",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     LicenseKey = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     VariantId = table.Column<int>(type: "int", nullable: true),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -231,7 +255,7 @@ namespace Backend.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -301,6 +325,11 @@ namespace Backend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PluginBundleVariant_PluginBundleId",
+                table: "PluginBundleVariant",
+                column: "PluginBundleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PluginImage_PluginId",
                 table: "PluginImage",
                 column: "PluginId");
@@ -342,6 +371,9 @@ namespace Backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "PluginBundles");
+
+            migrationBuilder.DropTable(
+                name: "PluginBundleVariant");
 
             migrationBuilder.DropTable(
                 name: "PluginImage");
