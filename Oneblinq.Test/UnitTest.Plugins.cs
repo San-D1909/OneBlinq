@@ -49,7 +49,7 @@ namespace Oneblinq.Test
 
 
         [TestMethod]
-        public void Plugin_GetPluginsByUser_TrueIfTwoOfTheThreePluginsAreGiven()
+        public async Task Plugin_GetPluginsByUser_TrueIfTwoOfTheThreePluginsAreGivenAsync()
         {
             PluginModel plugin1 = new PluginModel
             {
@@ -131,16 +131,9 @@ namespace Oneblinq.Test
 
             this.context.SaveChanges();
 
-            IEnumerable<PluginModel> plugins = (IEnumerable<PluginModel>)pluginRepository.GetPluginsByUser(null, null, user);
+            IEnumerable<PluginModel> plugins = (IEnumerable<PluginModel>) await pluginRepository.GetPluginsByUser(null, null, user);
             Assert.IsTrue(plugins.Count() == 2);
         }
-        //[TestMethod]
-        //public void Plugin_GetPlugins_TrueIfPluginExists()
-        //{
-        //    PluginModel plugin = pluginRepository.GetPlugins("Ronaldo's", "v").Result.FirstOrDefault();
-
-        //    Assert.IsTrue(plugin != null);
-        //}
 
         [TestMethod]
         public async Task Plugin_GetPluginsByNameAsync_TrueIfNameIsCorrect()
