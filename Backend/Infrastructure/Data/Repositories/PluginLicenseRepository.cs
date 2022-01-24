@@ -16,9 +16,19 @@ namespace Backend.Infrastructure.Data.Repositories
             return this._context.PluginBundleVariant.Where(pbv => pbv.StripePriceId == stripePriceId).Select(pbv => pbv.PluginBundle).FirstOrDefault();
         }
 
+        public async Task<PluginBundleModel> GetPluginBundleByVariantId(int variantId)
+        {
+            return this._context.PluginBundleVariant.Where(pbv => pbv.Id == variantId).Select(pbv => pbv.PluginBundle).FirstOrDefault();
+        }
+
         public async Task<PluginModel> GetPluginByStripePriceId(string stripePriceId)
         {
             return this._context.PluginVariant.Where(pbv => pbv.StripePriceId == stripePriceId).Select(pbv => pbv.Plugin).FirstOrDefault();
+        }
+
+        public async Task<PluginModel> GetPluginByVariantId(int variantId)
+        {
+            return this._context.PluginVariant.Where(pbv => pbv.Id == variantId).Select(pbv => pbv.Plugin).FirstOrDefault();
         }
     }
 }

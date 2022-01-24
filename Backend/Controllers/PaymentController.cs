@@ -54,13 +54,33 @@ namespace Backend.Controllers
         }
 
         [HttpPost("create-checkout-session")]
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
             var isSubscription = Request.Form["isSubscription"];
             var priceId = Request.Form["priceId"];
-            var variantId = Request.Form["variantId"];
-            var description = Request.Form["description"];
-            var maxActivations = Request.Form["maxActivations"];
+
+            var pluginVariant = await this._pluginVariantRepository.GetPluginVariantByPriceId(priceId);
+            var pluginBundleVariant = await this._pluginBundleVariantRepository.GetPluginBundleVariantByPriceId(priceId);
+
+            var variantId = "";
+            var description = "";
+            var maxActivations = "";
+
+            if (pluginVariant != null)
+            {
+                variantId = pluginVariant.Id.ToString();
+                description = pluginVariant.Description;
+                maxActivations = pluginVariant.MaxActivations.ToString();
+            }else if (pluginBundleVariant != null)
+            {
+                variantId = pluginBundleVariant.Id.ToString();
+                description = pluginBundleVariant.Description;
+                maxActivations = pluginBundleVariant.MaxActivations.ToString();
+            }
+            else
+            {
+                return NotFound();
+            }
 
             var mode = isSubscription == "true" ? "subscription" : "payment";
 
@@ -80,6 +100,13 @@ namespace Backend.Controllers
                 SuccessUrl = domain + "/order?success=true&session_id={CHECKOUT_SESSION_ID}",
                 CancelUrl = domain + "?canceled=true",
                 AutomaticTax = new SessionAutomaticTaxOptions { Enabled = true },
+                Metadata = new Dictionary<string, string>
+                {
+                        { "maxActivations", maxActivations },
+                        { "description", description },
+                        { "variantId", variantId },
+                        { "priceId", priceId }
+                }
             };
 
             if (mode == "subscription")
@@ -132,47 +159,45 @@ namespace Backend.Controllers
             {
                 var session = stripeEvent.Data.Object as Session;
                 var paymentIntentId = session.PaymentIntentId;
-
                 LicenseModel license = await _licenceRepository.GetLicenseByIntent(paymentIntentId);
                 license.IsActive = false;
                 _licenceRepository.Update(license);
                 await _licenceRepository.SaveAsync();
             }
 
-            if (stripeEvent.Type == Events.PaymentIntentSucceeded)
+            if (stripeEvent.Type == Events.CheckoutSessionCompleted)
             {
-                var session = stripeEvent.Data.Object as PaymentIntent;
-
-                var service = new CustomerService();
-                var customer = service.Get(session.CustomerId);
-
-                Console.WriteLine($"Session ID: {session.Id}");
-                // Take some action based on session.
-                var email = customer.Email;
-
-                var key = _licenseGenerator.CreateLicenseKey(email, session.Metadata["description"], session.Metadata["variantId"]);
-                // TODO: plugin + variant ids
-
-                var emailCheck = await _userRepository.GetUserByEmail(email);
-
-                if (emailCheck == null)
+                var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
+                if (session.PaymentStatus == "paid")
                 {
-                    UserModel user = new UserModel
+                    var service = new CustomerService();
+                    var customer = service.Get(session.CustomerId);
+
+                    Console.WriteLine($"Session ID: {session.Id}");
+                    // Take some action based on session.
+                    var email = customer.Email;
+
+                    var key = _licenseGenerator.CreateLicenseKey(email, session.Metadata["description"], session.Metadata["variantId"]);
+                    var emailCheck = await _userRepository.GetUserByEmail(email);
+
+                    if (emailCheck == null)
                     {
-                        Company = null,
-                        Email = email,
-                        FullName = customer.Name,
-                        IsAdmin = false,
-                        IsVerified = true,
-                        Password = "",
-                        Salt = new byte[0]
-                    };
+                        UserModel user = new UserModel
+                        {
+                            Company = null,
+                            Email = email,
+                            FullName = customer.Name,
+                            IsAdmin = false,
+                            IsVerified = true,
+                            Password = "",
+                            Salt = new byte[0]
+                        };
 
-                    _userRepository.Add(user);
-                    await _userRepository.SaveAsync();
+                        _userRepository.Add(user);
+                        await _userRepository.SaveAsync();
 
-                    _resetPasswordHelper.SendResetLink(email);
-                }
+                        _resetPasswordHelper.SendResetLink(email);
+                    }
 
                 var license = new LicenseModel
                 {
@@ -185,46 +210,46 @@ namespace Backend.Controllers
                     PaymentIntentId = session.Id
                 };
 
-                _licenceRepository.Add(license);
-                await _licenceRepository.SaveAsync();
+                    _licenceRepository.Add(license);
+                    await _licenceRepository.SaveAsync();
 
 
-                var plugin = await this._pluginLicenseRepository.GetPluginByStripePriceId(session.Metadata["variantId"]);
-                var pluginBundle = await this._pluginLicenseRepository.GetPluginBundleByStripePriceId(session.Metadata["variantId"]);
+                    var plugin = await this._pluginLicenseRepository.GetPluginByStripePriceId(session.Metadata["priceId"]);
+                    var pluginBundle = await this._pluginLicenseRepository.GetPluginBundleByStripePriceId(session.Metadata["priceId"]);
 
-                if (plugin != null)
-                {
-                    this._pluginLicenseRepository.Add(new PluginLicenseModel()
-                    {
-                        License = license,
-                        LicenseId = license.Id,
-                        Plugin = plugin,
-                        PluginId = plugin.Id,
-                        TimesActivated = 0
-                    });
-                    await this._pluginLicenseRepository.SaveAsync();
-                }
-                else if(pluginBundle != null)
-                {
-                    var plugins = await this._pluginBundlesRepository.GetPluginsFromBundle(pluginBundle.Id);
-                    foreach (PluginModel p in plugins)
+                    if (plugin != null)
                     {
                         this._pluginLicenseRepository.Add(new PluginLicenseModel()
                         {
                             License = license,
                             LicenseId = license.Id,
-                            Plugin = p,
-                            PluginId = p.Id,
-                            TimesActivated = 0,
-                            PluginBundle = pluginBundle,
-                            PluginBundleId = pluginBundle.Id
+                            Plugin = plugin,
+                            PluginId = plugin.Id,
+                            TimesActivated = 0
                         });
+                        await this._pluginLicenseRepository.SaveAsync();
                     }
-                    await this._pluginLicenseRepository.SaveAsync();
+                    else if (pluginBundle != null)
+                    {
+                        var plugins = await this._pluginBundlesRepository.GetPluginsFromBundle(pluginBundle.Id);
+                        foreach (PluginModel p in plugins)
+                        {
+                            this._pluginLicenseRepository.Add(new PluginLicenseModel()
+                            {
+                                License = license,
+                                LicenseId = license.Id,
+                                Plugin = p,
+                                PluginId = p.Id,
+                                TimesActivated = 0,
+                                PluginBundle = pluginBundle,
+                                PluginBundleId = pluginBundle.Id
+                            });
+                        }
+                        await this._pluginLicenseRepository.SaveAsync();
+                    }
+
+                    await _mail.PurchaseConfirmationMail("oneblinq@stuur.men", email, "Purchase confirmation", key);
                 }
-
-                await _mail.PurchaseConfirmationMail("oneblinq@stuur.men", email, "Purchase confirmation", key);
-
             }
 
             return Ok();

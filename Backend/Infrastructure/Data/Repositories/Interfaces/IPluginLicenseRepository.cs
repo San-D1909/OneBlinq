@@ -10,7 +10,9 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
     {
         public void Add(PluginLicenseModel entity);
         public Task<PluginModel> GetPluginByStripePriceId(string stripePriceId);
+        public Task<PluginModel> GetPluginByVariantId(int variantId);
         public Task<PluginBundleModel> GetPluginBundleByStripePriceId(string stripePriceId);
+        public Task<PluginBundleModel> GetPluginBundleByVariantId(int variantId);
         public Task<int> SaveAsync();
     }
 }

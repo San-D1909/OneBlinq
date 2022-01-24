@@ -13,6 +13,11 @@ namespace Backend.Infrastructure.Data.Repositories
 
         }
 
+        public async Task<PluginVariantModel> GetPluginVariantByPriceId(string stripePriceId)
+        {
+            return _context.PluginVariant.Where(pv => pv.StripePriceId == stripePriceId).FirstOrDefault();
+        }
+
         public async Task<IEnumerable<PluginVariantModel>> PluginVariantsByFilter(string filter, string sort)
         {
             IEnumerable<PluginVariantModel> plugins = _context.PluginVariant;

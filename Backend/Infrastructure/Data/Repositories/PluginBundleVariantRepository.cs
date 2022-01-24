@@ -15,6 +15,11 @@ namespace Backend.Infrastructure.Data.Repositories
             _context = context;
         }
 
+        public async Task<PluginBundleVariantModel> GetPluginBundleVariantByPriceId(string stripePriceId)
+        {
+            return _context.PluginBundleVariant.Where(pbv => pbv.StripePriceId == stripePriceId).FirstOrDefault();
+        }
+
         public async Task<IEnumerable<PluginBundleVariantModel>> PluginBundleVariantsByFilter(string filter, string sort)
         {
             IEnumerable<PluginBundleVariantModel> plugins = _context.PluginBundleVariant;

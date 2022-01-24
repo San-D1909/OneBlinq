@@ -9,5 +9,6 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
     public interface IPluginVariantRepository: IGenericRepository<PluginVariantModel>
     {
         Task<IEnumerable<PluginVariantModel>> PluginVariantsByFilter(string filter, string sort);
+        Task<PluginVariantModel> GetPluginVariantByPriceId(string stripePriceId);
     }
 }
