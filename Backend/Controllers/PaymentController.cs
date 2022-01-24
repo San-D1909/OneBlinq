@@ -31,15 +31,23 @@ namespace Backend.Controllers
         private LicenseGenerator _licenseGenerator;
         private ILicenceRepository _licenceRepository;
         private IUserRepository _userRepository;
+        private readonly IPluginBundleVariantRepository _pluginBundleVariantRepository;
+        private readonly IPluginVariantRepository _pluginVariantRepository;
+        private readonly IPluginLicenseRepository _pluginLicenseRepository;
+        private readonly IPluginBundlesRepository _pluginBundlesRepository;
         private ApplicationDbContext _context;
         private ResetPasswordHelper _resetPasswordHelper;
 
-        public CheckoutApiController(IConfiguration config, MailClient mailClient, LicenseGenerator licenseGenerator, ILicenceRepository licenseRepo, IUserRepository userRepo, ApplicationDbContext context)
+        public CheckoutApiController(IConfiguration config, MailClient mailClient, LicenseGenerator licenseGenerator, ILicenceRepository licenseRepo, IUserRepository userRepo, IPluginBundleVariantRepository pluginBundleVariantRepository, IPluginVariantRepository pluginVariantRepository, IPluginLicenseRepository pluginLicenseRepository, IPluginBundlesRepository pluginBundlesRepository, ApplicationDbContext context)
         {
             _config = config;
             _mail = mailClient;
             _licenseGenerator = licenseGenerator;
             _licenceRepository = licenseRepo;
+            _pluginBundleVariantRepository = pluginBundleVariantRepository;
+            _pluginVariantRepository = pluginVariantRepository;
+            _pluginLicenseRepository = pluginLicenseRepository;
+            _pluginBundlesRepository = pluginBundlesRepository;
             _userRepository = userRepo;
             _context = context;
             _resetPasswordHelper = new ResetPasswordHelper(config, mailClient);
@@ -83,6 +91,7 @@ namespace Backend.Controllers
                 }
             };
 
+
             var service = new SessionService();
             Session session = service.Create(options);
 
@@ -100,6 +109,7 @@ namespace Backend.Controllers
                 Request.Headers["Stripe-Signature"],
                 _config["STRIPE_WEBHOOK_SECRET"]
             );
+            
             Console.WriteLine($"Webhook notification with type: {stripeEvent.Type} found for {stripeEvent.Id}");
 
 
@@ -150,6 +160,41 @@ namespace Backend.Controllers
 
                 _licenceRepository.Add(license);
                 await _licenceRepository.SaveAsync();
+
+
+                var plugin = await this._pluginLicenseRepository.GetPluginByStripePriceId(session.Metadata["variantId"]);
+                var pluginBundle = await this._pluginLicenseRepository.GetPluginBundleByStripePriceId(session.Metadata["variantId"]);
+
+                if (plugin != null)
+                {
+                    this._pluginLicenseRepository.Add(new PluginLicenseModel()
+                    {
+                        License = license,
+                        LicenseId = license.Id,
+                        Plugin = plugin,
+                        PluginId = plugin.Id,
+                        TimesActivated = 0
+                    });
+                    await this._pluginLicenseRepository.SaveAsync();
+                }
+                else if(pluginBundle != null)
+                {
+                    var plugins = await this._pluginBundlesRepository.GetPluginsFromBundle(pluginBundle.Id);
+                    foreach (PluginModel p in plugins)
+                    {
+                        this._pluginLicenseRepository.Add(new PluginLicenseModel()
+                        {
+                            License = license,
+                            LicenseId = license.Id,
+                            Plugin = p,
+                            PluginId = p.Id,
+                            TimesActivated = 0,
+                            PluginBundle = pluginBundle,
+                            PluginBundleId = pluginBundle.Id
+                        });
+                    }
+                    await this._pluginLicenseRepository.SaveAsync();
+                }
 
                 await _mail.PurchaseConfirmationMail("oneblinq@stuur.men", email, "Purchase confirmation", key);
 
