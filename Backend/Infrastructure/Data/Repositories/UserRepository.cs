@@ -61,11 +61,6 @@ namespace Backend.Infrastructure.Data.Repositories
             }
         }
 
-        public Task<IEnumerable<UserModel>> GetUsers(string filter, string sort)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<UserModel>> GetUsersByPlugin(string filter, string sort, PluginModel plugin)
         {
             IEnumerable<PluginLicenseModel> plugins = _context.PluginLicense.Include(p => p.Plugin).Include(l => l.License).ThenInclude(u => u.User).Where(p => p.Plugin.Id == plugin.Id);
@@ -76,22 +71,6 @@ namespace Backend.Infrastructure.Data.Repositories
 
             return plugins.Select(p => p.License.User).ToList();
         }
-
-        public Task<UserModel> CreateUser(UserModel user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<UserModel> UpdateUser(int id, UserModel user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteUser(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<UserModel>> GetUsersByPluginBundle(string filter, string sort, PluginBundleModel pluginBundle)
         {
             IEnumerable<PluginLicenseModel> pluginbundles = _context.PluginLicense.Include(p => p.PluginBundle).Include(l => l.License).ThenInclude(u => u.User).Where(p => p.PluginBundle.Id == pluginBundle.Id);

@@ -12,8 +12,6 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
         Task<IEnumerable<PluginModel>> GetPlugins(string filter = null, string sort = null);
         Task<PluginModel> GetPlugin(int id);
         Task<IEnumerable<PluginModel>> GetPluginsByNameAsync(string searchString);
-        PluginModel UpdatePlugin(int id, PluginModel plugin);
-        Task DeletePlugin(int id);
         void AddPlugin(PluginModel plugin);
     }
 }

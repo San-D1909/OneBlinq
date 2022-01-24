@@ -43,15 +43,5 @@ namespace Backend.Infrastructure.Data.Repositories
             return await _context.PluginBundle.Where(s => s.BundleName.Contains(searchString == null ? "" : searchString)).ToListAsync();
         }
 
-        public PluginBundleModel UpdatePlugin(int id, PluginBundleModel pluginBundle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeletePlugin(int id)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

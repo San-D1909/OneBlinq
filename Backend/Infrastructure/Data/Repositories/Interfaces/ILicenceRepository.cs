@@ -15,7 +15,5 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
         public Task<IEnumerable<LicenseOutput>> GetLicenseOutputs(string filter, string sort, UserModel user);
         public Task<IEnumerable<LicenseModel>> GetLicensesForPlugin(string filter, string sort, PluginModel plugin);
         public Task<IEnumerable<LicenseModel>> GetLicensesForUserAndPlugin(string filter, string sort, PluginModel plugin, UserModel user);
-        public Task<LicenseModel> DeactivateLicense(int id);
-        public Task<LicenseModel> ActivateLicense(int id);
     }
 }

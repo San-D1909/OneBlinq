@@ -48,16 +48,6 @@ namespace Backend.Infrastructure.Data.Repositories
             return plugins.Select(p => p.Plugin).ToList();
         }
 
-        public PluginModel UpdatePlugin(int id, PluginModel plugin)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeletePlugin(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<PluginModel> GetPlugin(int id)
         {
             return _context.Plugin.Where(p => p.Id == id).FirstAsync();

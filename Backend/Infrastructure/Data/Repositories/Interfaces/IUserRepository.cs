@@ -11,11 +11,7 @@ namespace Backend.Infrastructure.Data.Repositories.Interfaces
         Task<UserModel> GetUserByEmail(string email);
         Task<UserModel> UpdateUser(UserModel user);
         Task<CompanyModel> GetCompanyById(int? companyId);
-        Task<IEnumerable<UserModel>> GetUsers(string filter, string sort);
         Task<IEnumerable<UserModel>> GetUsersByPlugin(string filter, string sort, PluginModel plugin);
         Task<IEnumerable<UserModel>> GetUsersByPluginBundle(string filter, string sort, PluginBundleModel pluginBundle);
-        Task<UserModel> CreateUser(UserModel user);
-        Task<UserModel> UpdateUser(int id, UserModel user);
-        Task DeleteUser(int id);
     }
 }

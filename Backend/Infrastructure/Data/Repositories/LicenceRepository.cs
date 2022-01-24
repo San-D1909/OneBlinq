@@ -14,16 +14,6 @@ namespace Backend.Infrastructure.Data.Repositories
     {
         public LicenceRepository(ApplicationDbContext context) : base(context) { }
 
-        public Task<LicenseModel> ActivateLicense(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<LicenseModel> DeactivateLicense(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<List<LicenseModel>> GetLicencesDb(int userID)
 
         {
