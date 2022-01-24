@@ -21,8 +21,8 @@ namespace Backend.Core.DatabaseSeeders
 
                 var service = new PriceService();
                 StripeList<Stripe.Price> pricelist = service.List();
-                
-                foreach(var price in pricelist.Data)
+
+                foreach (var price in pricelist.Data)
                 {
                     if (price.Deleted == null)
                     {
@@ -31,14 +31,14 @@ namespace Backend.Core.DatabaseSeeders
                             continue;
                         }
                         var pluginVariant = new PluginVariantModel()
-                {
+                        {
                             PluginId = Convert.ToInt32(price.Metadata["PluginId"]),
                             MaxActivations = Convert.ToInt32(price.Metadata["MaxActivations"]),
                             Description = price.Metadata["Description"],
                             IsSubscription = Convert.ToBoolean(price.Metadata["IsSubscription"]),
-                            StripePriceId = price.ProductId.ToString(),
+                            StripePriceId = price.Id.ToString(),
                             Price = (price.UnitAmountDecimal == null ? 0 : ((decimal)price.UnitAmountDecimal / 100))
-                };
+                        };
 
                         context.Add(pluginVariant);
                     }

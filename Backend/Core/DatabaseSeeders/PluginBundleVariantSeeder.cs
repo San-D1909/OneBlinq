@@ -15,31 +15,30 @@ namespace Backend.Core.DatabaseSeeders
     {
         public static void SeedData(ApplicationDbContext context, IConfiguration configuration)
         {
-            if (context.PluginVariant.ToList().Count == 0)
+            if (context.PluginBundleVariant.ToList().Count == 0)
             {
                 StripeConfiguration.ApiKey = configuration.GetValue<string>("STRIPE_SECRET_KEY");
 
                 var service = new PriceService();
                 StripeList<Stripe.Price> pricelist = service.List();
-                
-                foreach(var price in pricelist.Data)
+
+                foreach (var price in pricelist.Data)
                 {
                     if (price.Deleted == null)
                     {
-                        if (!price.Metadata.ContainsKey("PluginId") || !price.Metadata.ContainsKey("MaxActivations") || !price.Metadata.ContainsKey("Description") || !price.Metadata.ContainsKey("IsSubscription"))
+                        if (!price.Metadata.ContainsKey("PluginBundleId") || !price.Metadata.ContainsKey("MaxActivations") || !price.Metadata.ContainsKey("Description") || !price.Metadata.ContainsKey("IsSubscription"))
                         {
                             continue;
                         }
                         var pluginVariant = new PluginBundleVariantModel()
-                {
+                        {
                             PluginBundleId = Convert.ToInt32(price.Metadata["PluginBundleId"]),
                             MaxActivations = Convert.ToInt32(price.Metadata["MaxActivations"]),
                             Description = price.Metadata["Description"],
                             IsSubscription = Convert.ToBoolean(price.Metadata["IsSubscription"]),
-                            StripePriceId = price.ProductId.ToString(),
+                            StripePriceId = price.Id.ToString(),
                             Price = (price.UnitAmountDecimal == null ? 0 : ((decimal)price.UnitAmountDecimal / 100))
-                };
-
+                        };
                         context.Add(pluginVariant);
                     }
                 }
