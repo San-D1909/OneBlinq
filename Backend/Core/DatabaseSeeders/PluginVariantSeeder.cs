@@ -24,7 +24,7 @@ namespace Backend.Core.DatabaseSeeders
 
                 foreach (var price in pricelist.Data)
                 {
-                    if (price.Deleted == null)
+                    if (price.Deleted == null && price.Active == true)
                     {
                         if (!price.Metadata.ContainsKey("PluginId") || !price.Metadata.ContainsKey("MaxActivations") || !price.Metadata.ContainsKey("Description") || !price.Metadata.ContainsKey("IsSubscription"))
                         {

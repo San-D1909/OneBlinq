@@ -18,6 +18,7 @@ namespace Oneblinq.Test
     public class UnitTestPlugins
     {
         IPluginRepository pluginRepository;
+        IPluginBundleRepository pluginBundleRepository;
         ApplicationDbContext context;
 
         [TestInitialize]
@@ -30,6 +31,7 @@ namespace Oneblinq.Test
             context = new ApplicationDbContext(options);
 
             pluginRepository = new PluginRepository(context);
+            pluginBundleRepository = new PluginBundleRepository(context);
         }
 
         [TestMethod]
@@ -64,7 +66,7 @@ namespace Oneblinq.Test
                 PluginName = "TestPlugin 2",
                 PluginDescription = "Just testing a plugin.",
             };
-            this.context.Plugin.Add(plugin1); 
+            this.context.Plugin.Add(plugin1);
             PluginModel plugin3 = new PluginModel
             {
                 Id = 3,
@@ -98,7 +100,7 @@ namespace Oneblinq.Test
                 IsActive = true,
                 LicenseKey = "ERFQE-RGEQF-EFWAQF-EFWEFEW",
                 TimesActivated = 3,
-                User = user 
+                User = user
             };
 
             context.License.Add(license);
@@ -131,7 +133,7 @@ namespace Oneblinq.Test
 
             this.context.SaveChanges();
 
-            IEnumerable<PluginModel> plugins = (IEnumerable<PluginModel>) await pluginRepository.GetPluginsByUser(null, null, user);
+            IEnumerable<PluginModel> plugins = (IEnumerable<PluginModel>)await pluginRepository.GetPluginsByUser(null, null, user);
             Assert.IsTrue(plugins.Count() == 2);
         }
 
@@ -150,6 +152,31 @@ namespace Oneblinq.Test
             var plugins = await pluginRepository.GetPluginsByNameAsync(searchString);
 
             Assert.IsTrue(plugins.First() != null);
+        }
+        [TestMethod]
+        public async Task PluginBundle_GetAllPluginBundles_TrueIf2IsReturned()
+        {
+            PluginBundleModel pluginBundleModel1 = new PluginBundleModel()
+            {
+                Id= 1,
+                BundleName = "bundle1",
+                BundleDescription = "b",
+                StripeProductId = "blabla",
+            };
+            PluginBundleModel pluginBundleModel2 = new PluginBundleModel()
+            {
+                Id= 2,
+                BundleName = "bundle2",
+                BundleDescription = "b",
+                StripeProductId = "blabla",
+            };
+            context.PluginBundle.Add(pluginBundleModel1);
+            context.PluginBundle.Add(pluginBundleModel2);
+            await context.SaveChangesAsync();
+
+            var bundlesAll = await pluginBundleRepository.GetAllPluginBundle();
+
+            Assert.IsTrue(bundlesAll.Count() == 2);
         }
     }
 }
